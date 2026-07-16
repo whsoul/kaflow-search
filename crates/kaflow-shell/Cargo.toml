@@ -1,0 +1,29 @@
+[package]
+name = "kaflow-shell"
+version = "0.1.0"
+edition = "2021"
+# license 필드 없음 = proprietary/source-available (루트 LICENSE 참조).
+# Apache-2.0 오픈은 추후 결정 시 명시적으로 (library_split_design.md §6-L, 2026-07-16 개정).
+publish = false
+
+# public repo(`kaflow`) 로 그대로 이동할 crate.
+# **private crate 를 의존하지 않는다** — 모든 비즈니스는 `KafkaToolEngine` trait 경유.
+# 이 불변식이 깨지면 mock-only 빌드가 실패한다 (CI: public-seam-guard.yml).
+[features]
+# 바이너리의 `debug-api` 가 pass-through 로 켠다. shell 자체는 debug 명령을 갖지 않고,
+# `build_info` 가 FE 에 "이 빌드는 debug 빌드" 를 알려주기 위해서만 읽는다.
+# (private crate 의존은 여전히 0 — 이 feature 는 dep 을 켜지 않는다.)
+debug-api = []
+
+[dependencies]
+kaflow-api-types = { path = "../kaflow-api-types" }
+kaflow-api-traits = { path = "../kaflow-api-traits" }
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# 로컬 디스크 총량/여유 조회 (대문 디스크 게이지) — cross-platform.
+fs2 = "0.4"
+# 머신 고유 ID(deviceIdHash 원본) — cross-platform: Linux /etc/machine-id · macOS IOPlatformUUID · Win MachineGuid.
+machine-uid = "0.5"
+# deviceIdHash — 머신ID 를 SHA-256 (원본 raw 는 전송/저장하지 않는다). appProfile clientInfo 용.
+sha2 = "0.10"

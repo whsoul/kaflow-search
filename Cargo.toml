@@ -1,0 +1,9 @@
+# Kaflow Search — public workspace (source-available; see LICENSE)
+#
+# Self-sufficient by design: builds with the mock engine only, no private
+# dependencies. The production engine lives in a separate private repository
+# and consumes these crates as its public seam (KafkaToolEngine trait).
+
+[workspace]
+resolver = "2"
+members = ["crates/*"]

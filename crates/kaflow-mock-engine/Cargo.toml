@@ -1,0 +1,19 @@
+[package]
+name = "kaflow-mock-engine"
+version = "0.1.0"
+edition = "2021"
+description = "Kaflow public mock engine — KafkaToolEngine 구현체 (CI / 데모용, 인프라 의존 없음)"
+# license 필드 없음 = proprietary/source-available (루트 LICENSE 참조).
+# Apache-2.0 오픈은 추후 결정 시 명시적으로 (library_split_design.md §6-L, 2026-07-16 개정).
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+kaflow-api-traits = { path = "../kaflow-api-traits" }
+kaflow-api-types = { path = "../kaflow-api-types" }
+# 경량 whitespace 토크나이저(+무사전 CJK 폴백) — mock 데모에서 일/중도 분절되게.
+kaflow-tokenizer = { path = "../kaflow-tokenizer" }
+async-trait = "0.1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
