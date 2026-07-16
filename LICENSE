@@ -1,0 +1,102 @@
+Kaflow Search — License
+
+Copyright (c) 2026 [Legal Name], operating under the name "Kaflow Search".
+All rights reserved.
+
+This repository is **source-available, not open source.** The source code is
+published for transparency, evaluation, and issue reporting. No open-source
+license applies to this repository unless a file or directory explicitly
+states otherwise (see Section 3).
+
+--------------------------------------------------------------------------
+1. Limited Permission
+--------------------------------------------------------------------------
+
+Subject to the terms below, you are granted a non-exclusive, non-transferable,
+royalty-free permission to:
+
+  1. view and study the contents of this repository;
+  2. clone, fork, or mirror this repository as a whole through ordinary
+     source-control operations; and
+  3. build and run the applications contained in this repository (including
+     the demo binaries) on your own systems, for evaluation and for your own
+     personal or internal, non-commercial-redistribution use.
+
+Use of official Kaflow Search installers and compiled applications is
+governed by the Kaflow Search End User License Agreement (EULA) instead.
+
+--------------------------------------------------------------------------
+2. Restrictions
+--------------------------------------------------------------------------
+
+Except as expressly permitted above or by a separate written agreement with
+the copyright holder, you may not:
+
+  - redistribute the contents of this repository, in whole or in part,
+    outside of ordinary source-control cloning/forking of the repository
+    as a whole;
+  - modify the contents to create derivative works for distribution;
+  - extract, reuse, or incorporate the contents (in whole or in part) into
+    any other product or service;
+  - use the contents to create a product that competes with Kaflow Search;
+  - reverse engineer, decompile, or disassemble pre-built assets contained
+    in this repository (e.g. the contents of dist/), except to the extent
+    such restriction is prohibited by applicable law.
+
+--------------------------------------------------------------------------
+3. Future Open-Source Components
+--------------------------------------------------------------------------
+
+Selected components of this repository (for example, public API contracts,
+examples, or mock implementations) may in the future be released under an
+open-source license to enable third-party implementations.
+
+Any such release will be explicit: the affected files or directories will be
+clearly identified, and the applicable license text will be included in the
+repository. Until then, no open-source rights are granted.
+
+--------------------------------------------------------------------------
+4. Official Binary Distribution
+--------------------------------------------------------------------------
+
+Official Kaflow Search installers and compiled applications are distributed
+under the Kaflow Search End User License Agreement (EULA).
+
+--------------------------------------------------------------------------
+5. Third-Party Components
+--------------------------------------------------------------------------
+
+This repository and the Kaflow Search application include third-party
+open-source components. Those components are governed by their respective
+license terms, which are not limited by this file or by the EULA. See
+THIRD_PARTY_NOTICES.md.
+
+--------------------------------------------------------------------------
+6. Trademarks
+--------------------------------------------------------------------------
+
+The Kaflow Search name, logos, and icons are proprietary brand assets. No
+permission is granted to use them in a way that suggests endorsement,
+affiliation, or official status without prior written permission. You may
+truthfully state that your software interoperates with Kaflow Search.
+
+--------------------------------------------------------------------------
+7. Contributions
+--------------------------------------------------------------------------
+
+This repository primarily accepts issues, feature requests, and feedback.
+Code contributions are not currently accepted; substantial contributions
+require a prior written agreement with the copyright holder.
+
+If you nevertheless submit a contribution (for example, a documentation
+fix), you grant the copyright holder a perpetual, worldwide, irrevocable,
+royalty-free license to use, modify, and distribute it under any terms.
+
+--------------------------------------------------------------------------
+8. No Warranty
+--------------------------------------------------------------------------
+
+THE CONTENTS OF THIS REPOSITORY ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
+ANY KIND, EXPRESS OR IMPLIED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE
+LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OF
+THESE FILES.
