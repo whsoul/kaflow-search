@@ -6,4 +6,4 @@
 
 [workspace]
 resolver = "2"
-members = ["crates/*"]
+members = ["crates/*", "bin/kaflow-demo"]
