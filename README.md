@@ -5,7 +5,7 @@ Kafka topic messages, with fast local indexing (RocksDB) and multi-condition
 search — built for day-to-day debugging and incident digging.
 
 **Kaflow Search is free to use** for personal use and for internal business
-use within your organization. See [EULA.md](EULA.md).
+use within your organization. See [EULA.md](legal/EULA.md).
 
 ## ⚠️ Source-available, not open source
 
@@ -33,7 +33,7 @@ from official sources.
 - The app contacts the Kaflow app-check service only for version/compatibility
   checks, sending a small fixed set of technical fields (random instance ID,
   hashed machine ID, app version, OS, locale). Details, including server log
-  retention: [PRIVACY.md](PRIVACY.md).
+  retention: [PRIVACY.md](legal/PRIVACY.md).
 - Diagnostic reports are generated locally and shared only if you choose to.
 
 ## What this repository is for
@@ -49,9 +49,9 @@ feedback are very welcome.
 ## Legal
 
 - [LICENSE](LICENSE) — repository terms (source-available)
-- [EULA.md](EULA.md) ([한국어](EULA.ko.md)) — application license
-- [PRIVACY.md](PRIVACY.md) ([한국어](PRIVACY.ko.md)) — privacy notice
-- [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) — third-party licenses
+- [EULA.md](legal/EULA.md) ([한국어](legal/EULA.ko.md)) — application license
+- [PRIVACY.md](legal/PRIVACY.md) ([한국어](legal/PRIVACY.ko.md)) — privacy notice
+- [THIRD_PARTY_NOTICES.md](legal/THIRD_PARTY_NOTICES.md) — third-party licenses
 
 Kaflow Search, its name, logo, and icons are proprietary brand assets.
 
