@@ -1,3 +1,6 @@
 /target
 node_modules
 .DS_Store
+
+# tauri build-time generated (schemas)
+bin/*/gen/
