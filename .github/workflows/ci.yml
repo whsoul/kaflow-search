@@ -1,0 +1,54 @@
+name: CI
+
+# Public repo self-sufficiency guard.
+#
+# This workspace must build and test with the mock engine only — no private
+# dependencies. If a change here starts requiring the private engine, that is
+# a seam regression, not a CI problem.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: build & test (mock engine only)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Tauri system dependencies (linux)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev \
+            librsvg2-dev patchelf libgtk-3-dev
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: cargo check (workspace)
+        run: cargo check --workspace
+
+      - name: cargo test (public crates)
+        run: cargo test -p kaflow-mock-engine -p kaflow-shell
+
+  no-sourcemap:
+    name: dist/ must not contain sourcemaps
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # dist/ is a pre-built frontend bundle committed to this repository.
+      # A .map file would expose original identifiers and module structure.
+      - name: check committed dist/ for .map files
+        run: |
+          if find dist -name '*.map' -print -quit | grep -q .; then
+            echo "::error::dist/ contains sourcemap files."
+            find dist -name '*.map'
+            exit 1
+          fi
+          echo "OK — no sourcemaps"
