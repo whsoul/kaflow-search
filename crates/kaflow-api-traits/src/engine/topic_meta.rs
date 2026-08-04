@@ -47,6 +47,16 @@ pub trait TopicMetaApi: Send + Sync {
         topic: &str,
     ) -> Result<TopicMessageCount, EngineError>;
 
+    /// 여러 토픽의 메시지 카운트 **배치** 조회 — picker 오픈 시 전 토픽 순회용.
+    /// per-topic `get_topic_message_count` 반복(토픽수 × 메타데이터 + 파티션 순차 RPC)의
+    /// 왕복 비용을 캐시 연결 1개 + 메타데이터 1회로 줄인다. 값은 캐시하지 않는다(호출 시점
+    /// 최신 offset). 메타데이터에 없는 토픽(삭제 등)은 결과에서 누락된다(부분 성공).
+    async fn list_topic_message_counts(
+        &self,
+        bootstrap: &str,
+        topics: &[String],
+    ) -> Result<Vec<TopicMessageCount>, EngineError>;
+
     /// 인덱싱 정책 추천 입력값 — 샘플 메시지 raw bytes 평균 + cleanup.policy (RocksDB 미접근).
     async fn get_topic_size_profile(
         &self,

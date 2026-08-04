@@ -50,3 +50,21 @@ pub const PLAN_LIMIT_MSG: &str = "plan limit:";
 /// FE 폴링이 이 토큰으로 "진짜 삭제 신호"(list 성공 + 부재)를 판별해 고아 인덱스
 /// 정리 모달을 띄운다. 통신 실패류 메시지와 반드시 구분되어야 한다 (i18n_design.md §5-2).
 pub const TOPIC_NOT_FOUND_MSG: &str = "topic not found:";
+
+// ── Kafka 연결 대표 에러 sentinel (2026-07-16) — **로케일 불변 계약** ─────────
+// kafka-client 가 사용자 대면 연결 에러 메시지 맨 앞에 붙이고, FE 연결 실패 모달
+// (ConnectScreen)이 이 토큰으로 로케일 안내문(4개 언어)을 원문 위에 표시한다.
+// BE 원문 = 영어 기술 상세로 병기 노출. FE 의 자연어 문장 매칭은 금지 — 이 상수만 계약.
+
+/// 연결 시간 초과 (broker 무응답 — 네트워크/방화벽/자격증명 silent close 후보).
+pub const KAFKA_CONNECT_TIMEOUT_MSG: &str = "kafka connect timeout:";
+/// SASL 인증 실패 (사용자/비밀번호/메커니즘).
+pub const KAFKA_AUTH_FAILED_MSG: &str = "kafka auth failed:";
+/// broker 가 선택한 SASL 메커니즘을 지원하지 않음.
+pub const KAFKA_SASL_MECHANISM_MSG: &str = "kafka sasl mechanism rejected:";
+/// TLS 연결/인증서 실패.
+pub const KAFKA_TLS_FAILED_MSG: &str = "kafka tls failed:";
+/// 그 외 연결 실패 (원인 미분류 폴백).
+pub const KAFKA_CONNECT_FAILED_MSG: &str = "kafka connect failed:";
+/// AWS MSK IAM 인가 거부 (원인 4종 비구분 — msk_iam::explain_access_denied).
+pub const MSK_ACCESS_DENIED_MSG: &str = "msk access denied:";
