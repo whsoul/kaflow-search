@@ -196,6 +196,18 @@ impl TopicMetaApi for MockEngine {
         })
     }
 
+    async fn list_topic_message_counts(
+        &self,
+        bootstrap: &str,
+        topics: &[String],
+    ) -> Result<Vec<TopicMessageCount>, EngineError> {
+        let mut out = Vec::with_capacity(topics.len());
+        for t in topics {
+            out.push(self.get_topic_message_count(bootstrap, t).await?);
+        }
+        Ok(out)
+    }
+
     async fn get_topic_size_profile(
         &self,
         _bootstrap: &str,

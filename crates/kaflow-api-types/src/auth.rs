@@ -168,6 +168,19 @@ pub struct AwsProfileSummary {
     pub sso_only: bool,
 }
 
+/// 엔진이 **실제로 보는** AWS 파일 경로. 화면이 "어디서 읽었는지" 를 정직하게 표시하기 위한 것.
+///
+/// FE 가 `~/.aws/...` 를 하드코딩해 보여주면 `AWS_SHARED_CREDENTIALS_FILE` / `AWS_CONFIG_FILE`
+/// 이 설정된 환경에서 **거짓 경로**를 찍게 된다 — 그래서 해석 결과를 엔진이 내려준다.
+/// 경로를 구할 수 없으면(HOME 미설정 등) 빈 문자열. 파일의 존재 여부는 보장하지 않는다.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+pub struct AwsPaths {
+    /// 표준 자격증명 파일 (사용자가 다른 파일을 고르지 않았을 때 읽는 곳).
+    pub credentials: String,
+    /// region 폴백에만 쓰는 config 파일.
+    pub config: String,
+}
+
 /// 선택된 프로파일의 실제 자격증명 — **비밀 포함**.
 ///
 /// 화면 폼을 채우는 용도로만 쓰고 디스크에 저장하지 않는다 (`StoredAuthConfig` 정책과 동일).
@@ -196,6 +209,18 @@ pub struct StoredAuthConfig {
     /// AWS MSK IAM 전용 region (비밀 아님 — 저장).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub aws_region: Option<String>,
+    /// AWS MSK IAM 전용 — 지난번에 고른 자격증명 파일 경로. **비밀이 아니라 "어디서 읽을지" 힌트다**
+    /// (키/시크릿/세션토큰은 여전히 저장하지 않는다).
+    ///
+    /// 왜 저장하나: SSO 임시 자격증명은 수 시간이면 만료되어 `aws sso login` 으로 파일이 갱신된다.
+    /// 경로+프로파일명만 기억해 두면 재접속 시 **그 시점의 최신 값을 파일에서 다시 읽어** 채울 수
+    /// 있어, SSO OIDC 자동갱신(엔터프라이즈 트랙) 없이도 재선택 마찰이 사라진다.
+    /// 빈 값/None = 표준 위치(`~/.aws/credentials`).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub aws_credentials_file: Option<String>,
+    /// AWS MSK IAM 전용 — 지난번에 고른 프로파일 이름 (예: `807743875261_SRE`). 비밀 아님.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub aws_profile: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ca_cert_path: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -250,6 +275,10 @@ impl StoredAuthConfig {
                 ca_cert_path: ca_cert_path.clone(),
                 client_cert_path: client_cert_path.clone(),
                 client_key_path: client_key_path.clone(),
+                // 자격증명 파일/프로파일 힌트는 **런타임 KafkaAuth 가 들고 있지 않다**
+                // (연결 시점엔 이미 키가 폼에서 materialize 된 상태라 출처를 모른다).
+                // 이 힌트는 화면이 아는 값이라 FE 가 저장용 구조체에 직접 넣어 보낸다.
+                ..Default::default()
             },
         }
     }

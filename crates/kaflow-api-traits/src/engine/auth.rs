@@ -1,7 +1,7 @@
 //! Kafka 인증 API — bootstrap 별 KafkaAuth 메모리 캐시 관리 + 사전 검증.
 
 use async_trait::async_trait;
-use kaflow_api_types::{AwsProfileCredentials, AwsProfileSummary, KafkaAuth};
+use kaflow_api_types::{AwsPaths, AwsProfileCredentials, AwsProfileSummary, KafkaAuth};
 
 use crate::error::EngineError;
 
@@ -38,6 +38,10 @@ pub trait AuthApi: Send + Sync {
         &self,
         path: Option<String>,
     ) -> Result<Vec<AwsProfileSummary>, EngineError>;
+
+    /// 엔진이 **실제로 보는** AWS 파일 경로 (환경변수 해석 반영). 화면의 출처 표시용.
+    /// 파일 접근을 하지 않으므로 실패하지 않는다 — 구할 수 없으면 빈 문자열.
+    async fn resolve_aws_paths(&self) -> AwsPaths;
 
     /// 선택된 프로파일 하나의 자격증명(비밀 포함)을 읽어 돌려준다.
     /// 화면 폼을 채우는 용도 — 엔진은 이 값을 저장하지 않는다.

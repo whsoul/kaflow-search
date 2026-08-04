@@ -3,7 +3,7 @@
 use async_trait::async_trait;
 use kaflow_api_traits::engine::AuthApi;
 use kaflow_api_traits::error::EngineError;
-use kaflow_api_types::{AwsProfileCredentials, AwsProfileSummary, KafkaAuth};
+use kaflow_api_types::{AwsPaths, AwsProfileCredentials, AwsProfileSummary, KafkaAuth};
 
 use crate::MockEngine;
 
@@ -44,6 +44,11 @@ impl AuthApi for MockEngine {
         _path: Option<String>,
     ) -> Result<Vec<AwsProfileSummary>, EngineError> {
         Ok(vec![])
+    }
+
+    /// mock 은 로컬 파일을 보지 않으므로 경로도 비워 둔다 (화면은 출처 표시를 감춘다).
+    async fn resolve_aws_paths(&self) -> AwsPaths {
+        AwsPaths::default()
     }
 
     async fn load_aws_profile(

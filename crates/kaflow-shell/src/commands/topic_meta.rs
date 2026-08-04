@@ -78,6 +78,19 @@ pub async fn get_topic_message_count(
         .map_err(|e| e.into_string())
 }
 
+/// 여러 토픽 메시지 카운트 배치 — picker 오픈 시 전 토픽 일괄 (연결/메타데이터 1회).
+#[tauri::command]
+pub async fn list_topic_message_counts(
+    engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
+    bootstrap: String,
+    topics: Vec<String>,
+) -> Result<Vec<TopicMessageCount>, String> {
+    engine
+        .list_topic_message_counts(&bootstrap, &topics)
+        .await
+        .map_err(|e| e.into_string())
+}
+
 #[tauri::command]
 pub async fn get_topic_size_profile(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,

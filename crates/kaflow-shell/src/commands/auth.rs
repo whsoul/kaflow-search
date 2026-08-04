@@ -1,7 +1,7 @@
 //! Kafka 인증 Tauri 어댑터 — `Arc<dyn KafkaToolEngine>` 경유.
 
 use kaflow_api_traits::KafkaToolEngine;
-use kaflow_api_types::{AwsProfileCredentials, AwsProfileSummary, KafkaAuth};
+use kaflow_api_types::{AwsPaths, AwsProfileCredentials, AwsProfileSummary, KafkaAuth};
 use std::sync::Arc;
 
 #[tauri::command]
@@ -59,6 +59,13 @@ pub async fn list_aws_profiles(
         .list_aws_profiles(path)
         .await
         .map_err(|e| e.into_string())
+}
+
+#[tauri::command]
+pub async fn resolve_aws_paths(
+    engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
+) -> Result<AwsPaths, String> {
+    Ok(engine.resolve_aws_paths().await)
 }
 
 #[tauri::command]
