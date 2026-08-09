@@ -37,15 +37,15 @@
 | 🔐 **Connects where you are** | **AWS MSK (IAM)** · SASL/SCRAM · SSL/TLS · Confluent Schema Registry |
 | 🔌 **Works offline** | Indexed data stays searchable when the cluster is unreachable |
 
-**Fast** — seconds across millions of rows · searching never re-reads Kafka
+⚡ **Fast** — seconds across millions of rows · searching never re-reads Kafka
 
-**Light** — one desktop app · no server, connector or database · auto-cleanup within a limit you set
+🪶 **Light** — one desktop app · no server, connector or database · auto-cleanup within a limit you set
 
-**Powerful** — nested JSON and header conditions · AND/OR/NOT · time-series drill-down · Avro/Protobuf · **connects to AWS MSK and other managed clusters**
+🧠 **Powerful** — nested JSON and header conditions · AND/OR/NOT · time-series drill-down · Avro/Protobuf · connects to AWS MSK and other managed clusters
 
-**Private** — installed on your machine, not a cloud service · messages never leave it · passwords never stored
+🛡️ **Private** — installed on your machine, not a cloud service · messages never leave it · passwords never stored
 
-**Easy on your cluster** — read-only, and it only reads while indexing or syncing. After that, **repeated queries request nothing from the cluster**
+🤝 **Easy on your cluster** — read-only, and it only reads while indexing or syncing. After that, repeated queries request nothing from the cluster
 
 ---
 
