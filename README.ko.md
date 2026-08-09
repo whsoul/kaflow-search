@@ -1,6 +1,6 @@
 
 <p align="right">
-<a href="README.md"><kbd>English</kbd></a> &nbsp; <kbd><b>한국어</b></kbd>
+<a href="README.md"><kbd>English</kbd></a> &nbsp; <kbd><b>한국어</b></kbd> &nbsp; <a href="README.ja.md"><kbd>日本語</kbd></a> &nbsp; <a href="README.zh.md"><kbd>中文</kbd></a>
 </p>
 
 <div align="center">
@@ -108,7 +108,7 @@
 > **앱에서 유해한 것이 발견됐다는 뜻이 아닙니다.** 아래 절차대로 **한 번만 허용**하시면
 > 그다음부터는 평소처럼 실행됩니다.
 >
-> *(원하시면 받으신 파일이 변조되지 않았는지 [직접 확인](#받은-파일이-변조되지-않았는지-확인하기)하실 수도 있습니다. 필수는 아닙니다.)*
+> *(원하시면 받으신 파일이 변조되지 않았는지 [직접 확인](#데이터와-안전성)하실 수도 있습니다. 필수는 아닙니다.)*
 >
 > <sub>[후원](#프로젝트-후원)이 모이면 개발자 인증부터 진행합니다.</sub>
 

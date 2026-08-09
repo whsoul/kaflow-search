@@ -1,9 +1,9 @@
 
 <!-- Language tabs. GitHub has no README localisation, so this is a hand-written row of
      links; <kbd> is used because GitHub themes it for both light and dark mode. Add
-     Japanese and Chinese here once those translations land. -->
+     each language's own file. -->
 <p align="right">
-<kbd><b>English</b></kbd> &nbsp; <a href="README.ko.md"><kbd>한국어</kbd></a>
+<kbd><b>English</b></kbd> &nbsp; <a href="README.ko.md"><kbd>한국어</kbd></a> &nbsp; <a href="README.ja.md"><kbd>日本語</kbd></a> &nbsp; <a href="README.zh.md"><kbd>中文</kbd></a>
 </p>
 
 <div align="center">
@@ -113,7 +113,7 @@ Nothing else to install — no runtime, no database, no service.
 > unidentified developer. It does **not** mean anything harmful was found. **Allow it once** using
 > the steps below and it runs normally from then on.
 >
-> *(If you want to, you can also [check that your download wasn't tampered with](#verifying-your-download-wasnt-tampered-with). Not required.)*
+> *(If you want to, you can also [check that your download wasn't tampered with](#data-and-safety). Not required.)*
 >
 > <sub>If [support](#supporting-the-project) adds up, developer verification is the first thing it pays for.</sub>
 
