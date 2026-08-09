@@ -1,34 +1,36 @@
-name: CI
+name: Build
 
-# What this repository's CI is for, and what it deliberately leaves alone.
+# Does the published copy of the Rust workspace compile and pass its tests on its own?
 #
-# The crates here are copied in from the authoring repository, so most correctness is
-# already settled before anything lands. What is *not* settled is whether the copy that
-# arrived is complete and builds on its own. A publish that omits a file leaves the
-# authoring repository perfectly green and breaks only here, so that is the question this
-# workflow answers: does the published set compile and pass its tests with the mock
-# engine, with no private dependency anywhere in it?
+# Correctness of these sources is settled in the authoring repository before anything is
+# copied here. What is not settled is whether the copy that arrived is complete. A publish
+# that omits a file leaves the authoring repository perfectly green and breaks only here.
 #
-# Not here, on purpose:
+# The trigger covers every crate, not only the demo binary. The failure this job exists to
+# catch is a change in one crate breaking another — a trait gaining a method that
+# kaflow-mock-engine does not implement, say. Narrowing the trigger to the binary would
+# skip exactly that case.
+#
+# Not this repository's job, on purpose:
 #   - Desktop bundles for macOS and Windows. Expensive, and tangled up with signing and
-#     release, which are the authoring repository's job.
-#   - Anything that publishes. Code moves one way, in to here. A workflow that pushed
-#     back out would create the return path this split exists to prevent.
-#   - Secrets. There are none, and there should stay none: once this repository is
-#     public, workflows run on pull requests from forks.
-#   - Formatting and lint. The sources are authored elsewhere; a complaint raised here
-#     has nowhere to be fixed.
+#     release, which belong where the sources are authored.
+#   - Anything that publishes. Code moves one way, in to here. A workflow that pushed back
+#     out would create the return path this split exists to prevent.
+#   - Secrets. There are none, and there should stay none: once this repository is public,
+#     workflows run on pull requests from forks.
+#   - Formatting and lint. The sources are authored elsewhere; a complaint raised here has
+#     nowhere to be fixed.
 #
-# Triggers: `push: ["**"]` together with `pull_request` runs every pull request commit
-# twice, once per event. Limiting push to main gives each situation exactly one run —
-# a branch is covered by its pull request, main by its push.
+# `push: ["**"]` together with `pull_request` would run every pull request commit twice,
+# once per event. Push is limited to main so each situation runs once — a branch through
+# its pull request, main through its push.
 
 on:
   push:
     branches: [main]
-    paths-ignore: ['**/*.md', 'assets/**', 'legal/**']
+    paths: ['crates/**', 'bin/**', 'Cargo.toml', 'Cargo.lock', '.github/workflows/ci.yml']
   pull_request:
-    paths-ignore: ['**/*.md', 'assets/**', 'legal/**']
+    paths: ['crates/**', 'bin/**', 'Cargo.toml', 'Cargo.lock', '.github/workflows/ci.yml']
   workflow_dispatch:
 
 # Only the newest commit on a branch is worth a verdict.
@@ -42,21 +44,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      # First, because it takes three seconds and guards against something that cannot be
-      # taken back. dist/ is a pre-built frontend bundle committed to this repository, and
-      # it is the only thing keeping the frontend sources out of reach; a .map file would
-      # restore the original identifiers and module structure. Kept in this job rather
-      # than its own because billing rounds every job up to a whole minute, and a
-      # three-second job still costs one.
-      - name: committed dist/ must not contain sourcemaps
-        run: |
-          if find dist -name '*.map' -print -quit | grep -q .; then
-            echo "::error::dist/ contains sourcemap files."
-            find dist -name '*.map'
-            exit 1
-          fi
-          echo "OK — no sourcemaps"
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable

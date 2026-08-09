@@ -1,0 +1,31 @@
+name: Bundle
+
+# dist/ is the compiled frontend, copied in rather than built here — its sources are not
+# in this repository. So there is no build to run and no tests to run against it. What is
+# left is what a published artifact can get wrong on its own: shipping the debug map that
+# undoes the compilation, pointing at the wrong backend, or carrying paths from the
+# machine that produced it. Each is invisible in a green build elsewhere.
+#
+# Runs only when the bundle changes; the Rust workspace has its own workflow.
+
+on:
+  push:
+    branches: [main]
+    paths: ['dist/**', 'scripts/check-dist.mjs', '.github/workflows/bundle.yml']
+  pull_request:
+    paths: ['dist/**', 'scripts/check-dist.mjs', '.github/workflows/bundle.yml']
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-bundle:
+    name: committed frontend bundle is fit to publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: check dist/
+        run: node scripts/check-dist.mjs
