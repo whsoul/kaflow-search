@@ -291,21 +291,9 @@ depends on broker config, network policy and provider-specific auth, not the ver
 <details>
 <summary><b>Resource limits</b></summary>
 
-Kaflow works to a budget, so that indexing cannot quietly fill your disk or bog the
-machine down. There is a ceiling on how many clusters and topics it keeps, how many rows
-it indexes per topic, how much disk the index may use, and how elaborate one search can
-get.
-
-**The app shows the figures that currently apply, under Settings**, and enforces exactly
-what it shows. They are not fixed at build time — they reach the app from the service and
-can be adjusted without asking you to update, so the app is the honest answer and a
-number printed here would only go stale.
-
-| | |
-|---|---|
-| **Disk** | The local index is capped per cluster, and you can set it lower. Budget for it as described under [Download](#download) |
-| **Scale** | A topic is indexed up to a few million rows |
-| **Past the limit** | Indexing does not stop — the least useful indexes are cleaned up first, following the policy you chose for that topic |
+Limits on disk, on scale, and on how indexes are kept and cleaned up are set so that
+Kaflow stays well-behaved on your machine. The app shows the ones in force under
+**Settings**, and enforces exactly what it shows.
 
 Indexing time and disk use vary with message count, size, partitions, indexed fields and
 disk speed. No fixed performance is guaranteed.
