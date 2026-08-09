@@ -1,11 +1,11 @@
 
 <div align="center">
 
-<img src="assets/kaflow-icon.png" alt="Kaflow Search" width="112" />
+<img src="assets/social-preview-en.png" alt="Kaflow Search — fast desktop search for Kafka messages, locally indexed rather than scanned. Works with any Kafka, Avro and Protobuf, SASL / TLS / AWS MSK IAM." width="920" />
 
 # Kaflow Search
 
-### A local search engine, synced from your Kafka topics
+### A desktop search engine for your Kafka messages
 
 **Find one message among millions — in seconds, on your own machine.**
 
@@ -369,7 +369,7 @@ belong to their respective owners.
 
 <div align="center">
 
-**Kaflow Search** — a local search engine, synced from your Kafka topics.
+**Kaflow Search** — a desktop search engine for your Kafka messages.
 
 [Download](https://github.com/whsoul/kaflow-search/releases/latest) ·
 [Issues](https://github.com/whsoul/kaflow-search/issues) ·

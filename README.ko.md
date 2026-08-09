@@ -1,11 +1,12 @@
 
 <div align="center">
 
-<img src="assets/kaflow-icon.png" alt="Kaflow Search" width="112" />
+<!-- Korean banner variant is not ready yet; the English one is used here for now. -->
+<img src="assets/social-preview-en.png" alt="Kaflow Search — Kafka 메시지를 위한 빠른 데스크톱 검색. 훑지 않고 로컬에 색인합니다. 모든 Kafka · Avro & Protobuf · SASL / TLS / AWS MSK IAM." width="920" />
 
 # Kaflow Search
 
-### 내 PC에 설치하는 Kafka 메시지 검색엔진
+### 내 데스크톱에 설치하는 Kafka 메시지 검색엔진
 
 **수백만 건 중에서 원하는 메시지를 초 단위로 찾습니다.**
 
@@ -363,7 +364,7 @@ proprietary 소프트웨어이며, EULA에 따라 현재 **개인용·조직 내
 
 <div align="center">
 
-**Kaflow Search** — 내 PC에 설치하는 Kafka 메시지 검색엔진
+**Kaflow Search** — 내 데스크톱에 설치하는 Kafka 메시지 검색엔진
 
 [다운로드](https://github.com/whsoul/kaflow-search/releases/latest) ·
 [이슈](https://github.com/whsoul/kaflow-search/issues) ·
