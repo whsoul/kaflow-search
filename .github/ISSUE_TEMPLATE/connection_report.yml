@@ -33,19 +33,34 @@ body:
       description: Roughly is fine.
       placeholder: "3.6.x"
 
+  # Two dropdowns rather than one, because the connect screen has two fields and they are
+  # independent. Folded together, SASL_SSL with SCRAM would report only the SCRAM half and
+  # lose whether TLS was in play — which is usually the thing that decides the answer.
   - type: dropdown
-    id: auth
+    id: protocol
     attributes:
-      label: How you authenticate
+      label: Security protocol
+      description: The first field on the connect screen.
       options:
-        - PLAINTEXT (no auth)
-        - SSL / TLS
-        - SASL PLAIN
-        - SASL SCRAM-SHA-256
-        - SASL SCRAM-SHA-512
-        - SASL OAUTHBEARER
+        - PLAINTEXT
+        - SSL
+        - SASL_PLAINTEXT
+        - SASL_SSL
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mechanism
+    attributes:
+      label: SASL mechanism
+      description: Leave as "Not applicable" if the protocol above is PLAINTEXT or SSL.
+      options:
+        - Not applicable
+        - PLAIN
+        - SCRAM-SHA-256
+        - SCRAM-SHA-512
+        - OAUTHBEARER
         - AWS MSK IAM
-        - Something else
     validations:
       required: true
 
@@ -71,6 +86,17 @@ body:
         - "Have not tried"
     validations:
       required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        **A diagnostic report helps more than a description does.** In the app, open the
+        App Log header and press **Report** — it writes a file, and the toast offers to
+        open the folder. Drag that file onto this issue.
+
+        It is built to be safe to post: message bodies, keys and values, search terms,
+        broker addresses and credentials are never collected. Topic names do appear as
+        they are, so remove them first if yours give away more than you would like.
 
   - type: textarea
     id: details

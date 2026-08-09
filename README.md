@@ -259,7 +259,7 @@ against that is what developer verification (code signing) does — which this p
 | **Kafka versions** | Target **2.4 – 4.x** · **verified:** Kafka 2.4.x (local), AWS MSK with IAM |
 
 Other versions and managed services are expected to work but aren't verified yet —
-[tell us how it went](https://github.com/whsoul/kaflow-search/issues/new?template=connection.yml). Connection success also
+[tell us how it went](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml). Connection success also
 depends on broker config, network policy and provider-specific auth, not the version alone.
 
 <details>
@@ -318,9 +318,9 @@ disk speed. No fixed performance is guaranteed.
 
 ## Feedback
 
-[Report a bug](https://github.com/whsoul/kaflow-search/issues/new?template=bug.yml) ·
-[Connection problem](https://github.com/whsoul/kaflow-search/issues/new?template=connection.yml) ·
-[Request a feature](https://github.com/whsoul/kaflow-search/issues/new?template=feature.yml) ·
+[Report a bug](https://github.com/whsoul/kaflow-search/issues/new?template=bug_report.yml) ·
+[Connection problem](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml) ·
+[Request a feature](https://github.com/whsoul/kaflow-search/issues/new?template=feature_request.yml) ·
 [All issues](https://github.com/whsoul/kaflow-search/issues)
 
 Each form asks only for what turns out to settle the question. For connection problems

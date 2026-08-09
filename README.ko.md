@@ -253,7 +253,7 @@ Get-FileHash <파일> -Algorithm SHA256
 | **Kafka 버전** | 목표 **2.4 ~ 4.x** · **검증 완료:** Kafka 2.4.x(로컬), AWS MSK(IAM) |
 
 그 외 버전과 매니지드 서비스도 동작할 것으로 보지만 아직 검증하지 못했습니다 —
-[써보셨다면 알려주세요](https://github.com/whsoul/kaflow-search/issues/new?template=connection.yml). 연결 성공 여부는 버전만이
+[써보셨다면 알려주세요](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml). 연결 성공 여부는 버전만이
 아니라 브로커 설정·네트워크 정책·제공업체별 인증 구현에도 영향을 받습니다.
 
 <details>
@@ -312,9 +312,9 @@ Get-FileHash <파일> -Algorithm SHA256
 
 ## 피드백
 
-[버그 제보](https://github.com/whsoul/kaflow-search/issues/new?template=bug.yml) ·
-[연결 문제](https://github.com/whsoul/kaflow-search/issues/new?template=connection.yml) ·
-[기능 제안](https://github.com/whsoul/kaflow-search/issues/new?template=feature.yml) ·
+[버그 제보](https://github.com/whsoul/kaflow-search/issues/new?template=bug_report.yml) ·
+[연결 문제](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml) ·
+[기능 제안](https://github.com/whsoul/kaflow-search/issues/new?template=feature_request.yml) ·
 [전체 이슈](https://github.com/whsoul/kaflow-search/issues)
 
 각 양식은 판단에 실제로 필요한 것만 묻습니다. 연결 문제라면 사용하는 서비스, Kafka 버전,
