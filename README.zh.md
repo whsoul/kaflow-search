@@ -34,15 +34,15 @@
 | 🔐 **连接你所在的环境** | **AWS MSK (IAM)** · SASL/SCRAM · SSL/TLS · Confluent Schema Registry |
 | 🔌 **离线可用** | 集群连不上时，已建索引的数据照样能搜 |
 
-⚡ **快** —— 数百万行几秒出结果 · 检索时不会重新读取 Kafka
+![快](https://img.shields.io/badge/%E5%BF%AB-4f46e5?style=flat-square) 数百万行几秒出结果 · 检索时不会重新读取 Kafka
 
-🪶 **轻** —— 一个桌面应用 · 无需服务端、连接器或数据库 · 在你设定的上限内自动清理
+![轻](https://img.shields.io/badge/%E8%BD%BB-4f46e5?style=flat-square) 一个桌面应用 · 无需服务端、连接器或数据库 · 在你设定的上限内自动清理
 
-🧠 **强** —— 嵌套 JSON 与 header 条件 · AND/OR/NOT · 时序下钻 · Avro/Protobuf · 可连接 AWS MSK 等托管集群
+![强](https://img.shields.io/badge/%E5%BC%BA-4f46e5?style=flat-square) 嵌套 JSON 与 header 条件 · AND/OR/NOT · 时序下钻 · Avro/Protobuf · 可连接 AWS MSK 等托管集群
 
-🛡️ **安全** —— 装在你自己的机器上，而非云服务 · 消息不会离开本机 · 从不保存密码
+![安全](https://img.shields.io/badge/%E5%AE%89%E5%85%A8-4f46e5?style=flat-square) 装在你自己的机器上，而非云服务 · 消息不会离开本机 · 从不保存密码
 
-🤝 **对集群友好** —— 只读，而且只在建索引和同步时读取。此后反复检索都不会向集群发起任何请求
+![对集群友好](https://img.shields.io/badge/%E5%AF%B9%E9%9B%86%E7%BE%A4%E5%8F%8B%E5%A5%BD-4f46e5?style=flat-square) 只读，而且只在建索引和同步时读取。此后反复检索都不会向集群发起任何请求
 
 ---
 
