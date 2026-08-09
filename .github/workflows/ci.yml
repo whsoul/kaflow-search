@@ -36,6 +36,18 @@ jobs:
       - name: cargo test (public crates)
         run: cargo test -p kaflow-mock-engine -p kaflow-shell
 
+  readme-sync:
+    name: READMEs must stay in sync across languages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The four READMEs are maintained by hand. Nobody here reads every language, so a
+      # section added to one and forgotten in the others would only surface when a reader
+      # hit it. This compares their structure, not their wording.
+      - name: check README structure
+        run: node scripts/check-readme-sync.mjs
+
   no-sourcemap:
     name: dist/ must not contain sourcemaps
     runs-on: ubuntu-latest
