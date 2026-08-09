@@ -37,15 +37,15 @@
 | 🔐 **Connects where you are** | **AWS MSK (IAM)** · SASL/SCRAM · SSL/TLS · Confluent Schema Registry |
 | 🔌 **Works offline** | Indexed data stays searchable when the cluster is unreachable |
 
-**Fast** — seconds across millions of rows · searching never re-reads Kafka
+![Fast](https://img.shields.io/badge/Fast-4f46e5?style=flat-square) seconds across millions of rows · searching never re-reads Kafka
 
-**Light** — one desktop app · no server, connector or database · auto-cleanup within a limit you set
+![Light](https://img.shields.io/badge/Light-4f46e5?style=flat-square) one desktop app · no server, connector or database · auto-cleanup within a limit you set
 
-**Powerful** — nested JSON and header conditions · AND/OR/NOT · time-series drill-down · Avro/Protobuf · **connects to AWS MSK and other managed clusters**
+![Powerful](https://img.shields.io/badge/Powerful-4f46e5?style=flat-square) nested JSON and header conditions · AND/OR/NOT · time-series drill-down · Avro/Protobuf · connects to AWS MSK and other managed clusters
 
-**Private** — installed on your machine, not a cloud service · messages never leave it · passwords never stored
+![Private](https://img.shields.io/badge/Private-4f46e5?style=flat-square) installed on your machine, not a cloud service · messages never leave it · passwords never stored
 
-**Easy on your cluster** — read-only, and it only reads while indexing or syncing. After that, **repeated queries request nothing from the cluster**
+![Easy on your cluster](https://img.shields.io/badge/Easy%20on%20your%20cluster-4f46e5?style=flat-square) read-only, and it only reads while indexing or syncing. After that, repeated queries request nothing from the cluster
 
 ---
 
@@ -85,8 +85,8 @@
 |---|---|---|
 | macOS | Apple Silicon | `.dmg` |
 | macOS | Intel | `.dmg` |
-| Windows | x64 | ⏳ In progress — get notified when it lands ↓ |
-| Linux | — | Planned based on demand — [let us know](https://github.com/whsoul/kaflow-search/issues) |
+| Windows | x64 | ⏳ In progress — [tell me when it lands](https://github.com/whsoul/kaflow-search/issues/5) |
+| Linux | — | Built if enough people want it — [add your vote](https://github.com/whsoul/kaflow-search/issues/6) |
 
 **[⬇ Get the latest release](https://github.com/whsoul/kaflow-search/releases/latest)** — download only from here.
 
@@ -259,7 +259,7 @@ against that is what developer verification (code signing) does — which this p
 | **Kafka versions** | Target **2.4 – 4.x** · **verified:** Kafka 2.4.x (local), AWS MSK with IAM |
 
 Other versions and managed services are expected to work but aren't verified yet —
-[tell us how it went](https://github.com/whsoul/kaflow-search/issues). Connection success also
+[tell us how it went](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml). Connection success also
 depends on broker config, network policy and provider-specific auth, not the version alone.
 
 <details>
@@ -289,22 +289,14 @@ depends on broker config, network policy and provider-specific auth, not the ver
 </details>
 
 <details>
-<summary><b>Resource limits in this version</b></summary>
+<summary><b>Resource limits</b></summary>
 
-Set so the app stays well-behaved on your machine; they may change over time.
+Limits on disk, on scale, and on how indexes are kept and cleaned up are set so that
+Kaflow stays well-behaved on your machine. The app shows the ones in force under
+**Settings**, and enforces exactly what it shows.
 
-| | Default |
-|---|---|
-| Saved cluster profiles | 2 |
-| Topics indexed at once | 5 |
-| Indexed rows per topic | 5,000,000 |
-| Local index disk usage | 10 GB (adjustable 1–100 GB) |
-| Condition groups per search | 2 groups × 3 conditions |
-| Tokenized fields per topic | 1 |
-
-Past the limit, the least useful indexes are cleaned up first per the policy you chose for that
-topic. Indexing time and disk use vary with message count, size, partitions, indexed fields and
-disk speed — no fixed performance is guaranteed.
+Indexing time and disk use vary with message count, size, partitions, indexed fields and
+disk speed. No fixed performance is guaranteed.
 
 </details>
 
@@ -326,15 +318,16 @@ disk speed — no fixed performance is guaranteed.
 
 ## Feedback
 
-[Report a bug](https://github.com/whsoul/kaflow-search/issues/new) ·
-[Request a feature](https://github.com/whsoul/kaflow-search/issues/new) ·
+[Report a bug](https://github.com/whsoul/kaflow-search/issues/new?template=bug_report.yml) ·
+[Connection problem](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml) ·
+[Request a feature](https://github.com/whsoul/kaflow-search/issues/new?template=feature_request.yml) ·
 [All issues](https://github.com/whsoul/kaflow-search/issues)
 
-For connection problems, include: OS and Kaflow version · Kafka service or distribution ·
-approximate Kafka version · auth method · error message with secrets removed · whether other
-Kafka clients connect.
+Each form asks only for what turns out to settle the question. For connection problems
+that is the service, the Kafka version, how you authenticate, and whether other clients
+reach the cluster from the same machine.
 
-> 🔒 **Never attach passwords, tokens, private keys, certificates or real business messages to a public issue.**
+> 🔒 **Never put passwords, tokens, private keys, certificates or real message contents in a public issue.**
 
 ## Supporting the project
 

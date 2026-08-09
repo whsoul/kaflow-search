@@ -34,15 +34,15 @@
 | 🔐 **今の環境につながる** | **AWS MSK (IAM)** · SASL/SCRAM · SSL/TLS · Confluent Schema Registry |
 | 🔌 **オフラインでも動く** | クラスタに届かなくても、インデックス済みのデータは検索できます |
 
-**速い** — 数百万行を数秒で · 検索のたびに Kafka を読み直しません
+![速い](https://img.shields.io/badge/%E9%80%9F%E3%81%84-4f46e5?style=flat-square) 数百万行を数秒で · 検索のたびに Kafka を読み直しません
 
-**軽い** — デスクトップアプリひとつ · サーバーもコネクタもデータベースも不要 · 決めた上限のなかで自動整理
+![軽い](https://img.shields.io/badge/%E8%BB%BD%E3%81%84-4f46e5?style=flat-square) デスクトップアプリひとつ · サーバーもコネクタもデータベースも不要 · 決めた上限のなかで自動整理
 
-**強力** — ネストした JSON とヘッダー条件 · AND/OR/NOT · 時系列ドリルダウン · Avro/Protobuf · **AWS MSK などのマネージドクラスタに接続**
+![強力](https://img.shields.io/badge/%E5%BC%B7%E5%8A%9B-4f46e5?style=flat-square) ネストした JSON とヘッダー条件 · AND/OR/NOT · 時系列ドリルダウン · Avro/Protobuf · AWS MSK などのマネージドクラスタに接続
 
-**安全** — クラウドサービスではなく手元のマシンにインストール · メッセージが外に出ません · パスワードは保存しません
+![安全](https://img.shields.io/badge/%E5%AE%89%E5%85%A8-4f46e5?style=flat-square) クラウドサービスではなく手元のマシンにインストール · メッセージが外に出ません · パスワードは保存しません
 
-**クラスタにやさしい** — 読み取り専用で、読むのはインデックス作成と同期のときだけ。以降は**何度検索してもクラスタには何も要求しません**
+![クラスタにやさしい](https://img.shields.io/badge/%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%BF%E3%81%AB%E3%82%84%E3%81%95%E3%81%97%E3%81%84-4f46e5?style=flat-square) 読み取り専用で、読むのはインデックス作成と同期のときだけ。以降は何度検索してもクラスタには何も要求しません
 
 ---
 
@@ -81,8 +81,8 @@
 |---|---|---|
 | macOS | Apple Silicon | `.dmg` |
 | macOS | Intel | `.dmg` |
-| Windows | x64 | ⏳ 作業中 — 公開されたら通知を受け取る ↓ |
-| Linux | — | ご要望を見て提供予定 — [ご意見はこちら](https://github.com/whsoul/kaflow-search/issues) |
+| Windows | x64 | ⏳ 作業中 — [公開されたら通知を受け取る](https://github.com/whsoul/kaflow-search/issues/5) |
+| Linux | — | ご要望が集まれば提供 — [賛同する](https://github.com/whsoul/kaflow-search/issues/6) |
 
 **[⬇ 最新リリースを入手](https://github.com/whsoul/kaflow-search/releases/latest)** — ダウンロードはここからのみお願いします。
 
@@ -253,7 +253,7 @@ Get-FileHash <file> -Algorithm SHA256
 | **Kafka バージョン** | 対象は **2.4 – 4.x** · **確認済み:** Kafka 2.4.x（ローカル）、AWS MSK (IAM) |
 
 それ以外のバージョンやマネージドサービスも動作する見込みですが、まだ確認できていません —
-[結果を教えてください](https://github.com/whsoul/kaflow-search/issues)。接続できるかどうかは
+[結果を教えてください](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml)。接続できるかどうかは
 バージョンだけでなく、ブローカー設定・ネットワークポリシー・プロバイダ固有の認証にも左右されます。
 
 <details>
@@ -283,20 +283,12 @@ Get-FileHash <file> -Algorithm SHA256
 </details>
 
 <details>
-<summary><b>このバージョンのリソース上限</b></summary>
+<summary><b>リソース上限</b></summary>
 
-お使いのマシンに負担をかけないように決めた値で、今後変わることがあります。
+ディスク、規模、インデックスの保持と整理のしかたに、それぞれ上限があります。お使いのマシンに
+負担をかけない範囲で決めた値です。現在適用されている値はアプリの**設定**画面に表示され、
+アプリは表示どおりに動きます。
 
-| | 既定値 |
-|---|---|
-| 保存できるクラスタプロファイル | 2 |
-| 同時にインデックスするトピック | 5 |
-| トピックあたりのインデックス件数 | 5,000,000 |
-| ローカルインデックスのディスク使用量 | 10 GB（1–100 GB で変更可） |
-| 検索あたりの条件グループ | 2 グループ × 3 条件 |
-| トピックあたりのトークン化フィールド | 1 |
-
-上限を超えると、そのトピックに選んだポリシーに従って、価値の低いインデックスから整理されます。
 インデックス作成の時間とディスク使用量は、件数・サイズ・パーティション数・インデックス対象
 フィールド・ディスク速度によって変わるため、一定の性能を保証するものではありません。
 
@@ -321,15 +313,15 @@ Get-FileHash <file> -Algorithm SHA256
 
 ## フィードバック
 
-[バグを報告](https://github.com/whsoul/kaflow-search/issues/new) ·
-[機能を要望](https://github.com/whsoul/kaflow-search/issues/new) ·
+[バグを報告](https://github.com/whsoul/kaflow-search/issues/new?template=bug_report.yml) ·
+[接続の問題](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml) ·
+[機能を要望](https://github.com/whsoul/kaflow-search/issues/new?template=feature_request.yml) ·
 [すべての Issue](https://github.com/whsoul/kaflow-search/issues)
 
-接続の問題については、次を添えてください: OS と Kaflow のバージョン · Kafka のサービスまたは
-ディストリビューション · おおよその Kafka バージョン · 認証方式 · 秘密情報を除いたエラーメッセージ ·
-ほかの Kafka クライアントでは接続できるかどうか。
+各フォームは、判断に本当に必要なことだけを尋ねます。接続の問題であれば、お使いのサービス、
+Kafka のバージョン、認証方式、そして同じマシンからほかの Kafka クライアントが接続できるか、です。
 
-> 🔒 **パスワード・トークン・秘密鍵・証明書・実業務のメッセージを公開 Issue に添付しないでください。**
+> 🔒 **パスワード・トークン・秘密鍵・証明書・実業務のメッセージを公開 Issue に載せないでください。**
 
 ## プロジェクトを支援する
 

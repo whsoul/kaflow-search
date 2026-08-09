@@ -62,7 +62,12 @@ function parse(path) {
     headings,
     tables,
     details: (raw.match(/<details/g) || []).length,
-    links: [...raw.matchAll(/\((https?:\/\/[^)\s]+)\)/g)].map((m) => m[1]).sort(),
+    // Links have to match; images only have to be equally numerous. An image is allowed
+    // to differ per language — a label badge carries translated text, and a banner may
+    // one day be drawn in each language — whereas a link goes to the same place for
+    // everyone, so a missing or stray one is a mistake.
+    links: [...raw.matchAll(/(^|[^!])\[[^\]]*\]\((https?:\/\/[^)\s]+)\)/g)].map((m) => m[2]).sort(),
+    images: (raw.match(/!\[[^\]]*\]\(/g) || []).length,
     anchors: [...raw.matchAll(/\]\((#[^)\s]+)\)/g)].map((m) => m[1]),
   };
 }
@@ -96,10 +101,20 @@ for (const f of rest) {
   if (f.details !== src.details) {
     fail(f.path, `has ${f.details} collapsible blocks, ${SOURCE} has ${src.details}.`);
   }
-  const missing = src.links.filter((l) => !f.links.includes(l));
-  const extra = f.links.filter((l) => !src.links.includes(l));
-  for (const l of missing) fail(f.path, `missing link present in ${SOURCE}: ${l}`);
-  for (const l of extra) fail(f.path, `has a link ${SOURCE} does not: ${l}`);
+  if (f.images !== src.images) {
+    fail(f.path, `has ${f.images} images, ${SOURCE} has ${src.images}.`);
+  }
+  // Counted, not merely looked up. The same URL appears several times over — the issue
+  // tracker is linked from the header, from a table row and from the feedback section —
+  // so asking only whether it appears at all would let one of them go missing unnoticed.
+  const tally = (urls) => urls.reduce((m, u) => m.set(u, (m.get(u) || 0) + 1), new Map());
+  const want = tally(src.links);
+  const got = tally(f.links);
+  for (const url of new Set([...want.keys(), ...got.keys()])) {
+    const n = want.get(url) || 0;
+    const m = got.get(url) || 0;
+    if (n !== m) fail(f.path, `links ${url} ${m} time(s), ${SOURCE} links it ${n}.`);
+  }
 }
 
 if (problems.length) {
