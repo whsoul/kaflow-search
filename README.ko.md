@@ -2,7 +2,7 @@
 <div align="center">
 
 <!-- Korean banner variant is not ready yet; the English one is used here for now. -->
-<img src="assets/social-preview-en.png" alt="Kaflow Search — Kafka 메시지를 위한 빠른 데스크톱 검색. 훑지 않고 로컬에 색인합니다. 모든 Kafka · Avro & Protobuf · SASL / TLS / AWS MSK IAM." width="920" />
+<img src="assets/banner-en.png" alt="Kaflow Search — Kafka 메시지를 위한 빠른 데스크톱 검색. 훑지 않고 로컬에 색인합니다. 모든 Kafka · Avro & Protobuf · SASL / TLS / AWS MSK IAM." width="920" />
 
 # Kaflow Search
 
