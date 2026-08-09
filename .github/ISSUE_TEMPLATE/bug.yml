@@ -1,0 +1,55 @@
+name: Bug report
+description: Something behaved differently from what you expected
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. If the app will not connect to a cluster, the
+        **Connection or compatibility** form asks better questions than this one.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what you got instead.
+      placeholder: |
+        1. Indexed a topic with about 2 million messages
+        2. Searched for an order ID
+        3. Expected one result; got none, though the message is in the topic
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Kaflow Search version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: "macOS 14.5, Apple Silicon"
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: Anything else
+      description: >
+        Error text, screenshots, roughly how large the topic is — whatever you have.
+        Optional.
+
+  - type: checkboxes
+    id: secrets
+    attributes:
+      label: Before you post
+      options:
+        - label: >
+            I have removed passwords, tokens, private keys, certificates and real
+            message contents from everything above. This issue is public.
+          required: true

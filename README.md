@@ -86,7 +86,7 @@
 | macOS | Apple Silicon | `.dmg` |
 | macOS | Intel | `.dmg` |
 | Windows | x64 | ⏳ In progress — get notified when it lands ↓ |
-| Linux | — | Planned based on demand — [let us know](https://github.com/whsoul/kaflow-search/issues) |
+| Linux | — | Planned based on demand — [let us know](https://github.com/whsoul/kaflow-search/issues/new?template=feature.yml) |
 
 **[⬇ Get the latest release](https://github.com/whsoul/kaflow-search/releases/latest)** — download only from here.
 
@@ -259,7 +259,7 @@ against that is what developer verification (code signing) does — which this p
 | **Kafka versions** | Target **2.4 – 4.x** · **verified:** Kafka 2.4.x (local), AWS MSK with IAM |
 
 Other versions and managed services are expected to work but aren't verified yet —
-[tell us how it went](https://github.com/whsoul/kaflow-search/issues). Connection success also
+[tell us how it went](https://github.com/whsoul/kaflow-search/issues/new?template=connection.yml). Connection success also
 depends on broker config, network policy and provider-specific auth, not the version alone.
 
 <details>
@@ -318,15 +318,16 @@ disk speed. No fixed performance is guaranteed.
 
 ## Feedback
 
-[Report a bug](https://github.com/whsoul/kaflow-search/issues/new) ·
-[Request a feature](https://github.com/whsoul/kaflow-search/issues/new) ·
+[Report a bug](https://github.com/whsoul/kaflow-search/issues/new?template=bug.yml) ·
+[Connection problem](https://github.com/whsoul/kaflow-search/issues/new?template=connection.yml) ·
+[Request a feature](https://github.com/whsoul/kaflow-search/issues/new?template=feature.yml) ·
 [All issues](https://github.com/whsoul/kaflow-search/issues)
 
-For connection problems, include: OS and Kaflow version · Kafka service or distribution ·
-approximate Kafka version · auth method · error message with secrets removed · whether other
-Kafka clients connect.
+Each form asks only for what turns out to settle the question. For connection problems
+that is the service, the Kafka version, how you authenticate, and whether other clients
+reach the cluster from the same machine.
 
-> 🔒 **Never attach passwords, tokens, private keys, certificates or real business messages to a public issue.**
+> 🔒 **Never put passwords, tokens, private keys, certificates or real message contents in a public issue.**
 
 ## Supporting the project
 
