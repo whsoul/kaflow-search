@@ -5,9 +5,9 @@
 
 <div align="center">
 
-<!-- Korean banner variant is not ready yet; the English one is used here for now. The
-     wordmark is in the banner, so it is not repeated — but the tagline below stays,
-     because this banner is in English and a Korean reader needs it in text. -->
+<!-- Korean banner variant is not ready yet; the English one is used here for now, which
+     is the more reason to keep the tagline below in text. The wordmark is in the banner,
+     so the title is not repeated. Structure follows README.md. -->
 <img src="assets/banner-en.png" alt="Kaflow Search — Kafka 메시지를 위한 빠른 데스크톱 검색. 훑지 않고 로컬에 색인합니다. 모든 Kafka · Avro & Protobuf · SASL / TLS / AWS MSK IAM." width="920" />
 
 ### 내 데스크톱에 설치하는 Kafka 메시지 검색엔진
