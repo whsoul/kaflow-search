@@ -34,15 +34,15 @@
 | 🔐 **주요 환경에 연결** | **AWS MSK (IAM)** · SASL/SCRAM · SSL/TLS · Confluent Schema Registry |
 | 🔌 **오프라인 동작** | 클러스터가 끊겨도 인덱싱된 건 계속 검색 |
 
-⚡ **빠릅니다** — 수백만 건에서도 초 단위 응답 · 검색할 때마다 Kafka를 다시 읽지 않습니다
+![빠릅니다](https://img.shields.io/badge/%EB%B9%A0%EB%A6%85%EB%8B%88%EB%8B%A4-4f46e5?style=flat-square) 수백만 건에서도 초 단위 응답 · 검색할 때마다 Kafka를 다시 읽지 않습니다
 
-🪶 **가볍습니다** — 데스크톱 앱 하나 · Server·Connector·DB 없음 · 정해둔 한도 안에서 자동 정리
+![가볍습니다](https://img.shields.io/badge/%EA%B0%80%EB%B3%8D%EC%8A%B5%EB%8B%88%EB%8B%A4-4f46e5?style=flat-square) 데스크톱 앱 하나 · Server·Connector·DB 없음 · 정해둔 한도 안에서 자동 정리
 
-🧠 **강력합니다** — 중첩 JSON·Header 조건 · AND/OR/NOT · 시계열 드릴다운 · Avro/Protobuf · AWS MSK 등 주요 환경 연동
+![강력합니다](https://img.shields.io/badge/%EA%B0%95%EB%A0%A5%ED%95%A9%EB%8B%88%EB%8B%A4-4f46e5?style=flat-square) 중첩 JSON·Header 조건 · AND/OR/NOT · 시계열 드릴다운 · Avro/Protobuf · AWS MSK 등 주요 환경 연동
 
-🛡️ **안전합니다** — 클라우드가 아니라 내 컴퓨터에 설치 · 메시지가 컴퓨터를 벗어나지 않음 · 비밀번호 미저장
+![안전합니다](https://img.shields.io/badge/%EC%95%88%EC%A0%84%ED%95%A9%EB%8B%88%EB%8B%A4-4f46e5?style=flat-square) 클라우드가 아니라 내 컴퓨터에 설치 · 메시지가 컴퓨터를 벗어나지 않음 · 비밀번호 미저장
 
-🤝 **클러스터에 부담이 적습니다** — 읽기 전용이라 쓰지 않고, 인덱싱·싱크 때만 읽습니다. 이후 반복 조회는 클러스터 데이터를 요청하지 않습니다
+![클러스터에 부담이 적습니다](https://img.shields.io/badge/%ED%81%B4%EB%9F%AC%EC%8A%A4%ED%84%B0%EC%97%90%20%EB%B6%80%EB%8B%B4%EC%9D%B4%20%EC%A0%81%EC%8A%B5%EB%8B%88%EB%8B%A4-4f46e5?style=flat-square) 읽기 전용이라 쓰지 않고, 인덱싱·싱크 때만 읽습니다. 이후 반복 조회는 클러스터 데이터를 요청하지 않습니다
 
 ---
 

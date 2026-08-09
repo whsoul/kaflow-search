@@ -37,15 +37,15 @@
 | 🔐 **Connects where you are** | **AWS MSK (IAM)** · SASL/SCRAM · SSL/TLS · Confluent Schema Registry |
 | 🔌 **Works offline** | Indexed data stays searchable when the cluster is unreachable |
 
-⚡ **Fast** — seconds across millions of rows · searching never re-reads Kafka
+![Fast](https://img.shields.io/badge/Fast-4f46e5?style=flat-square) seconds across millions of rows · searching never re-reads Kafka
 
-🪶 **Light** — one desktop app · no server, connector or database · auto-cleanup within a limit you set
+![Light](https://img.shields.io/badge/Light-4f46e5?style=flat-square) one desktop app · no server, connector or database · auto-cleanup within a limit you set
 
-🧠 **Powerful** — nested JSON and header conditions · AND/OR/NOT · time-series drill-down · Avro/Protobuf · connects to AWS MSK and other managed clusters
+![Powerful](https://img.shields.io/badge/Powerful-4f46e5?style=flat-square) nested JSON and header conditions · AND/OR/NOT · time-series drill-down · Avro/Protobuf · connects to AWS MSK and other managed clusters
 
-🛡️ **Private** — installed on your machine, not a cloud service · messages never leave it · passwords never stored
+![Private](https://img.shields.io/badge/Private-4f46e5?style=flat-square) installed on your machine, not a cloud service · messages never leave it · passwords never stored
 
-🤝 **Easy on your cluster** — read-only, and it only reads while indexing or syncing. After that, repeated queries request nothing from the cluster
+![Easy on your cluster](https://img.shields.io/badge/Easy%20on%20your%20cluster-4f46e5?style=flat-square) read-only, and it only reads while indexing or syncing. After that, repeated queries request nothing from the cluster
 
 ---
 
