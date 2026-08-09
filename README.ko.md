@@ -14,7 +14,7 @@
 
 **[⬇ 다운로드](#다운로드)** · **[설치 안내](#설치)** · [이슈](https://github.com/whsoul/kaflow-search/issues)
 
-[English](README.md) · 한국어
+<a href="README.md"><kbd>English</kbd></a> &nbsp; <kbd><b>한국어</b></kbd>
 
 </div>
 

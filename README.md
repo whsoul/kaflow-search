@@ -13,7 +13,10 @@
 
 **[⬇ Download](#download)** · **[Install guide](#install)** · [Issues](https://github.com/whsoul/kaflow-search/issues)
 
-English · [한국어](README.ko.md)
+<!-- Language tabs. GitHub has no README localisation, so this is a hand-written row of
+     links; <kbd> is used because GitHub themes it for both light and dark mode. Add
+     Japanese and Chinese here once those translations land. -->
+<kbd><b>English</b></kbd> &nbsp; <a href="README.ko.md"><kbd>한국어</kbd></a>
 
 </div>
 
