@@ -34,15 +34,15 @@
 | 🔐 **주요 환경에 연결** | **AWS MSK (IAM)** · SASL/SCRAM · SSL/TLS · Confluent Schema Registry |
 | 🔌 **오프라인 동작** | 클러스터가 끊겨도 인덱싱된 건 계속 검색 |
 
-**빠릅니다** — 수백만 건에서**도** 초 단위 응답 · 검색할 때마다 Kafka를 다시 읽지 않습니다
+![빠릅니다](https://img.shields.io/badge/%EB%B9%A0%EB%A6%85%EB%8B%88%EB%8B%A4-4f46e5?style=flat-square) 수백만 건에서도 초 단위 응답 · 검색할 때마다 Kafka를 다시 읽지 않습니다
 
-**가볍습니다** — 데스크톱 앱 하나 · Server·Connector·DB 없음 · 정해둔 한도 안에서 자동 정리
+![가볍습니다](https://img.shields.io/badge/%EA%B0%80%EB%B3%8D%EC%8A%B5%EB%8B%88%EB%8B%A4-4f46e5?style=flat-square) 데스크톱 앱 하나 · Server·Connector·DB 없음 · 정해둔 한도 안에서 자동 정리
 
-**강력합니다** — 중첩 JSON·Header 조건 · AND/OR/NOT · 시계열 드릴다운 · Avro/Protobuf · **AWS MSK 등 주요 환경 연동**
+![강력합니다](https://img.shields.io/badge/%EA%B0%95%EB%A0%A5%ED%95%A9%EB%8B%88%EB%8B%A4-4f46e5?style=flat-square) 중첩 JSON·Header 조건 · AND/OR/NOT · 시계열 드릴다운 · Avro/Protobuf · AWS MSK 등 주요 환경 연동
 
-**안전합니다** — 클라우드가 아니라 **내 컴퓨터에 설치** · 메시지가 컴퓨터를 벗어나지 않음 · 비밀번호 미저장
+![안전합니다](https://img.shields.io/badge/%EC%95%88%EC%A0%84%ED%95%A9%EB%8B%88%EB%8B%A4-4f46e5?style=flat-square) 클라우드가 아니라 내 컴퓨터에 설치 · 메시지가 컴퓨터를 벗어나지 않음 · 비밀번호 미저장
 
-**클러스터에 부담이 적습니다** — 읽기 전용이라 쓰지 않고, 인덱싱·싱크 때만 읽습니다. 이후 **반복 조회는 클러스터 데이터를 요청하지 않습니다**
+![클러스터에 부담이 적습니다](https://img.shields.io/badge/%ED%81%B4%EB%9F%AC%EC%8A%A4%ED%84%B0%EC%97%90%20%EB%B6%80%EB%8B%B4%EC%9D%B4%20%EC%A0%81%EC%8A%B5%EB%8B%88%EB%8B%A4-4f46e5?style=flat-square) 읽기 전용이라 쓰지 않고, 인덱싱·싱크 때만 읽습니다. 이후 반복 조회는 클러스터 데이터를 요청하지 않습니다
 
 ---
 
@@ -81,8 +81,8 @@
 |---|---|---|
 | macOS | Apple Silicon | `.dmg` |
 | macOS | Intel | `.dmg` |
-| Windows | x64 | ⏳ 진행 중 — 출시되면 알림 받기 ↓ |
-| Linux | — | 수요를 보고 제공 예정 — [요청 남기기](https://github.com/whsoul/kaflow-search/issues) |
+| Windows | x64 | ⏳ 진행 중 — [출시되면 알림 받기](https://github.com/whsoul/kaflow-search/issues/5) |
+| Linux | — | 수요가 모이면 제공 — [의견 더하기](https://github.com/whsoul/kaflow-search/issues/6) |
 
 **[⬇ 최신 릴리스 받기](https://github.com/whsoul/kaflow-search/releases/latest)** — 설치 파일은 여기서만 받으세요.
 
@@ -253,7 +253,7 @@ Get-FileHash <파일> -Algorithm SHA256
 | **Kafka 버전** | 목표 **2.4 ~ 4.x** · **검증 완료:** Kafka 2.4.x(로컬), AWS MSK(IAM) |
 
 그 외 버전과 매니지드 서비스도 동작할 것으로 보지만 아직 검증하지 못했습니다 —
-[써보셨다면 알려주세요](https://github.com/whsoul/kaflow-search/issues). 연결 성공 여부는 버전만이
+[써보셨다면 알려주세요](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml). 연결 성공 여부는 버전만이
 아니라 브로커 설정·네트워크 정책·제공업체별 인증 구현에도 영향을 받습니다.
 
 <details>
@@ -283,22 +283,14 @@ Get-FileHash <파일> -Algorithm SHA256
 </details>
 
 <details>
-<summary><b>이 버전의 리소스 한도</b></summary>
+<summary><b>리소스 한도</b></summary>
 
-내 컴퓨터의 안정성을 해치지 않는 선에서 정한 값이며, 앞으로 조정될 수 있습니다.
+디스크, 규모, 인덱스 보관·정리 방식에 각각 한도가 있습니다. 내 컴퓨터의 안정성을 해치지 않는
+선에서 정한 값입니다. 지금 적용되는 값은 앱의 **설정** 화면에 나오며, 앱은 거기 표시된 값을
+그대로 지킵니다.
 
-| | 기본값 |
-|---|---|
-| 저장 가능한 클러스터 프로필 | 2개 |
-| 동시 인덱싱 토픽 | 5개 |
-| 토픽당 인덱스 건수 | 5,000,000건 |
-| 로컬 인덱스 디스크 사용량 | 10GB (1~100GB 조정 가능) |
-| 검색당 조건 그룹 | 2그룹 × 조건 3개 |
-| 토픽당 어절 필드 | 1개 |
-
-한도를 넘으면 토픽에 지정한 정책에 따라 가치가 낮은 인덱스부터 정리됩니다. 인덱싱 시간과 디스크
-사용량은 메시지 수·크기·파티션 수·인덱싱 필드 수·디스크 성능에 따라 달라지며, 일정한 성능을
-보장하지 않습니다.
+인덱싱 시간과 디스크 사용량은 메시지 수·크기·파티션 수·인덱싱 필드 수·디스크 성능에 따라
+달라지며, 일정한 성능을 보장하지 않습니다.
 
 </details>
 
@@ -320,14 +312,15 @@ Get-FileHash <파일> -Algorithm SHA256
 
 ## 피드백
 
-[버그 제보](https://github.com/whsoul/kaflow-search/issues/new) ·
-[기능 제안](https://github.com/whsoul/kaflow-search/issues/new) ·
+[버그 제보](https://github.com/whsoul/kaflow-search/issues/new?template=bug_report.yml) ·
+[연결 문제](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml) ·
+[기능 제안](https://github.com/whsoul/kaflow-search/issues/new?template=feature_request.yml) ·
 [전체 이슈](https://github.com/whsoul/kaflow-search/issues)
 
-연결 문제 제보 시 함께 주시면 좋은 것: 운영체제와 Kaflow 버전 · Kafka 서비스/배포판 ·
-대략적인 Kafka 버전 · 인증 방식 · 민감정보 지운 오류 메시지 · 다른 Kafka 클라이언트로는 연결되는지.
+각 양식은 판단에 실제로 필요한 것만 묻습니다. 연결 문제라면 사용하는 서비스, Kafka 버전,
+인증 방식, 그리고 같은 컴퓨터에서 다른 Kafka 클라이언트는 연결되는지입니다.
 
-> 🔒 **비밀번호, 토큰, 개인키, 인증서, 실제 업무 메시지를 공개 이슈에 첨부하지 마세요.**
+> 🔒 **비밀번호, 토큰, 개인키, 인증서, 실제 업무 메시지를 공개 이슈에 올리지 마세요.**
 
 ## 프로젝트 후원
 

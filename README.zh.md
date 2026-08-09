@@ -34,15 +34,15 @@
 | 🔐 **连接你所在的环境** | **AWS MSK (IAM)** · SASL/SCRAM · SSL/TLS · Confluent Schema Registry |
 | 🔌 **离线可用** | 集群连不上时，已建索引的数据照样能搜 |
 
-**快** —— 数百万行几秒出结果 · 检索时不会重新读取 Kafka
+![快](https://img.shields.io/badge/%E5%BF%AB-4f46e5?style=flat-square) 数百万行几秒出结果 · 检索时不会重新读取 Kafka
 
-**轻** —— 一个桌面应用 · 无需服务端、连接器或数据库 · 在你设定的上限内自动清理
+![轻](https://img.shields.io/badge/%E8%BD%BB-4f46e5?style=flat-square) 一个桌面应用 · 无需服务端、连接器或数据库 · 在你设定的上限内自动清理
 
-**强** —— 嵌套 JSON 与 header 条件 · AND/OR/NOT · 时序下钻 · Avro/Protobuf · **可连接 AWS MSK 等托管集群**
+![强](https://img.shields.io/badge/%E5%BC%BA-4f46e5?style=flat-square) 嵌套 JSON 与 header 条件 · AND/OR/NOT · 时序下钻 · Avro/Protobuf · 可连接 AWS MSK 等托管集群
 
-**安全** —— 装在你自己的机器上，而非云服务 · 消息不会离开本机 · 从不保存密码
+![安全](https://img.shields.io/badge/%E5%AE%89%E5%85%A8-4f46e5?style=flat-square) 装在你自己的机器上，而非云服务 · 消息不会离开本机 · 从不保存密码
 
-**对集群友好** —— 只读，而且只在建索引和同步时读取。此后**反复检索都不会向集群发起任何请求**
+![对集群友好](https://img.shields.io/badge/%E5%AF%B9%E9%9B%86%E7%BE%A4%E5%8F%8B%E5%A5%BD-4f46e5?style=flat-square) 只读，而且只在建索引和同步时读取。此后反复检索都不会向集群发起任何请求
 
 ---
 
@@ -81,8 +81,8 @@
 |---|---|---|
 | macOS | Apple Silicon | `.dmg` |
 | macOS | Intel | `.dmg` |
-| Windows | x64 | ⏳ 进行中 —— 发布后接收通知 ↓ |
-| Linux | — | 视需求提供 —— [告诉我们](https://github.com/whsoul/kaflow-search/issues) |
+| Windows | x64 | ⏳ 进行中 —— [发布后接收通知](https://github.com/whsoul/kaflow-search/issues/5) |
+| Linux | — | 需求足够就会提供 —— [投上一票](https://github.com/whsoul/kaflow-search/issues/6) |
 
 **[⬇ 获取最新版本](https://github.com/whsoul/kaflow-search/releases/latest)** —— 请只从这里下载。
 
@@ -247,7 +247,7 @@ Get-FileHash <file> -Algorithm SHA256
 | **Kafka 版本** | 目标为 **2.4 – 4.x** · **已验证：** Kafka 2.4.x（本地）、AWS MSK (IAM) |
 
 其他版本和托管服务预期也能正常工作，但尚未验证 ——
-[欢迎告诉我们实际情况](https://github.com/whsoul/kaflow-search/issues)。
+[欢迎告诉我们实际情况](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml)。
 能否连接成功还取决于 broker 配置、网络策略以及各服务商特有的认证方式，不只是版本本身。
 
 <details>
@@ -277,21 +277,13 @@ Get-FileHash <file> -Algorithm SHA256
 </details>
 
 <details>
-<summary><b>本版本的资源上限</b></summary>
+<summary><b>资源上限</b></summary>
 
-这些数值是为了让应用在你的机器上保持克制而设定的，今后可能调整。
+磁盘、规模，以及索引的保留与清理方式，都各有上限。这些数值以不影响你机器的正常使用为前提设定。
+当前生效的数值显示在应用的**设置**界面里，应用严格按显示的值执行。
 
-| | 默认值 |
-|---|---|
-| 保存的集群配置 | 2 |
-| 同时建索引的 topic | 5 |
-| 单个 topic 的索引条数 | 5,000,000 |
-| 本地索引磁盘占用 | 10 GB（可在 1–100 GB 间调整） |
-| 每次检索的条件组 | 2 组 × 3 个条件 |
-| 单个 topic 的分词字段 | 1 |
-
-超过上限后，会按你为该 topic 选择的策略，优先清理价值较低的索引。建索引的耗时和磁盘占用会随
-消息条数、大小、分区数、索引字段和磁盘速度而变化，因此不承诺固定的性能表现。
+建索引的耗时和磁盘占用会随消息条数、大小、分区数、索引字段和磁盘速度而变化，因此不承诺固定的
+性能表现。
 
 </details>
 
@@ -313,14 +305,15 @@ Get-FileHash <file> -Algorithm SHA256
 
 ## 反馈
 
-[报告缺陷](https://github.com/whsoul/kaflow-search/issues/new) ·
-[提出需求](https://github.com/whsoul/kaflow-search/issues/new) ·
+[报告缺陷](https://github.com/whsoul/kaflow-search/issues/new?template=bug_report.yml) ·
+[连接问题](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml) ·
+[提出需求](https://github.com/whsoul/kaflow-search/issues/new?template=feature_request.yml) ·
 [全部 issues](https://github.com/whsoul/kaflow-search/issues)
 
-如果是连接问题，请附上：操作系统与 Kaflow 版本 · Kafka 服务或发行版 · 大致的 Kafka 版本 ·
-认证方式 · 去除机密信息后的报错内容 · 其他 Kafka 客户端能否连上。
+每个表单只问真正能定位问题的内容。如果是连接问题，那就是你使用的服务、Kafka 版本、认证方式，
+以及同一台机器上其他 Kafka 客户端能否连上。
 
-> 🔒 **切勿在公开 issue 中附上密码、令牌、私钥、证书或真实业务消息。**
+> 🔒 **切勿在公开 issue 中填写密码、令牌、私钥、证书或真实业务消息。**
 
 ## 支持本项目
 

@@ -1,0 +1,115 @@
+name: Connection or compatibility
+description: The app will not reach your cluster — or it did, on a setup not listed as verified
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Brokers tend to return the same message for several different causes, so the
+        answers below are usually what settles it. A report that it *worked* on a setup
+        we have not verified is just as welcome — say so in the last box.
+
+  - type: input
+    id: version
+    attributes:
+      label: Kaflow Search version, and your OS
+      placeholder: "0.1.0 · macOS 14.5, Apple Silicon"
+    validations:
+      required: true
+
+  - type: input
+    id: service
+    attributes:
+      label: Kafka service or distribution
+      description: AWS MSK, Confluent Cloud, Redpanda, self-hosted Apache Kafka, and so on.
+      placeholder: "AWS MSK, provisioned"
+    validations:
+      required: true
+
+  - type: input
+    id: kafka-version
+    attributes:
+      label: Kafka version
+      description: Roughly is fine.
+      placeholder: "3.6.x"
+
+  # Two dropdowns rather than one, because the connect screen has two fields and they are
+  # independent. Folded together, SASL_SSL with SCRAM would report only the SCRAM half and
+  # lose whether TLS was in play — which is usually the thing that decides the answer.
+  - type: dropdown
+    id: protocol
+    attributes:
+      label: Security protocol
+      description: The first field on the connect screen.
+      options:
+        - PLAINTEXT
+        - SSL
+        - SASL_PLAINTEXT
+        - SASL_SSL
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mechanism
+    attributes:
+      label: SASL mechanism
+      description: Leave as "Not applicable" if the protocol above is PLAINTEXT or SSL.
+      options:
+        - Not applicable
+        - PLAIN
+        - SCRAM-SHA-256
+        - SCRAM-SHA-512
+        - OAUTHBEARER
+        - AWS MSK IAM
+    validations:
+      required: true
+
+  - type: textarea
+    id: error
+    attributes:
+      label: What the app told you
+      description: The error message, with anything secret taken out.
+      render: text
+    validations:
+      required: true
+
+  - type: dropdown
+    id: other-clients
+    attributes:
+      label: Do other Kafka clients reach this cluster from the same machine?
+      description: >
+        This separates a problem in the app from one in the network or the broker
+        configuration, and it is the single most useful thing you can tell us.
+      options:
+        - "Yes — other clients connect fine"
+        - "No — nothing connects from here"
+        - "Have not tried"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        **A diagnostic report helps more than a description does.** In the app, open the
+        App Log header and press **Report** — it writes a file, and the toast offers to
+        open the folder. Drag that file onto this issue.
+
+        It is built to be safe to post: message bodies, keys and values, search terms,
+        broker addresses and credentials are never collected. Topic names do appear as
+        they are, so remove them first if yours give away more than you would like.
+
+  - type: textarea
+    id: details
+    attributes:
+      label: Anything else
+      description: Optional. If you are reporting a success, this is the place to say so.
+
+  - type: checkboxes
+    id: secrets
+    attributes:
+      label: Before you post
+      options:
+        - label: >
+            I have removed passwords, tokens, access keys, private keys, certificates and
+            broker hostnames I would rather not publish. This issue is public.
+          required: true
