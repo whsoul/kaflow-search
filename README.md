@@ -8,9 +8,12 @@
 
 <div align="center">
 
-<!-- The banner carries the wordmark and the headline, so neither is repeated below it.
-     Anything the banner says lives in its alt text for readers who do not see it. -->
+<!-- The banner carries the wordmark, so the title is not repeated as text below it. The
+     tagline is, even though the banner says much the same thing: this file is the
+     template the other languages follow, and their banner may not be in their language. -->
 <img src="assets/banner-en.png" alt="Kaflow Search — fast desktop search for Kafka messages, locally indexed rather than scanned. Works with any Kafka, Avro and Protobuf, SASL / TLS / AWS MSK IAM." width="920" />
+
+### A desktop search engine for your Kafka messages
 
 **Find one message among millions — in seconds, on your own machine.**
 
