@@ -289,22 +289,26 @@ depends on broker config, network policy and provider-specific auth, not the ver
 </details>
 
 <details>
-<summary><b>Resource limits in this version</b></summary>
+<summary><b>Resource limits</b></summary>
 
-Set so the app stays well-behaved on your machine; they may change over time.
+Kaflow works to a budget, so that indexing cannot quietly fill your disk or bog the
+machine down. There is a ceiling on how many clusters and topics it keeps, how many rows
+it indexes per topic, how much disk the index may use, and how elaborate one search can
+get.
 
-| | Default |
+**The app shows the figures that currently apply, under Settings**, and enforces exactly
+what it shows. They are not fixed at build time — they reach the app from the service and
+can be adjusted without asking you to update, so the app is the honest answer and a
+number printed here would only go stale.
+
+| | |
 |---|---|
-| Saved cluster profiles | 2 |
-| Topics indexed at once | 5 |
-| Indexed rows per topic | 5,000,000 |
-| Local index disk usage | 10 GB (adjustable 1–100 GB) |
-| Condition groups per search | 2 groups × 3 conditions |
-| Tokenized fields per topic | 1 |
+| **Disk** | The local index is capped per cluster, and you can set it lower. Budget for it as described under [Download](#download) |
+| **Scale** | A topic is indexed up to a few million rows |
+| **Past the limit** | Indexing does not stop — the least useful indexes are cleaned up first, following the policy you chose for that topic |
 
-Past the limit, the least useful indexes are cleaned up first per the policy you chose for that
-topic. Indexing time and disk use vary with message count, size, partitions, indexed fields and
-disk speed — no fixed performance is guaranteed.
+Indexing time and disk use vary with message count, size, partitions, indexed fields and
+disk speed. No fixed performance is guaranteed.
 
 </details>
 
