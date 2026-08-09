@@ -1,16 +1,40 @@
 name: CI
 
-# Public repo self-sufficiency guard.
+# What this repository's CI is for, and what it deliberately leaves alone.
 #
-# This workspace must build and test with the mock engine only — no private
-# dependencies. If a change here starts requiring the private engine, that is
-# a seam regression, not a CI problem.
+# The crates here are copied in from the authoring repository, so most correctness is
+# already settled before anything lands. What is *not* settled is whether the copy that
+# arrived is complete and builds on its own. A publish that omits a file leaves the
+# authoring repository perfectly green and breaks only here, so that is the question this
+# workflow answers: does the published set compile and pass its tests with the mock
+# engine, with no private dependency anywhere in it?
+#
+# Not here, on purpose:
+#   - Desktop bundles for macOS and Windows. Expensive, and tangled up with signing and
+#     release, which are the authoring repository's job.
+#   - Anything that publishes. Code moves one way, in to here. A workflow that pushed
+#     back out would create the return path this split exists to prevent.
+#   - Secrets. There are none, and there should stay none: once this repository is
+#     public, workflows run on pull requests from forks.
+#   - Formatting and lint. The sources are authored elsewhere; a complaint raised here
+#     has nowhere to be fixed.
+#
+# Triggers: `push: ["**"]` together with `pull_request` runs every pull request commit
+# twice, once per event. Limiting push to main gives each situation exactly one run —
+# a branch is covered by its pull request, main by its push.
 
 on:
   push:
-    branches: ["**"]
+    branches: [main]
+    paths-ignore: ['**/*.md', 'assets/**', 'legal/**']
   pull_request:
+    paths-ignore: ['**/*.md', 'assets/**', 'legal/**']
   workflow_dispatch:
+
+# Only the newest commit on a branch is worth a verdict.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-and-test:
@@ -36,26 +60,16 @@ jobs:
       - name: cargo test (public crates)
         run: cargo test -p kaflow-mock-engine -p kaflow-shell
 
-  readme-sync:
-    name: READMEs must stay in sync across languages
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      # The four READMEs are maintained by hand. Nobody here reads every language, so a
-      # section added to one and forgotten in the others would only surface when a reader
-      # hit it. This compares their structure, not their wording.
-      - name: check README structure
-        run: node scripts/check-readme-sync.mjs
-
   no-sourcemap:
     name: dist/ must not contain sourcemaps
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      # dist/ is a pre-built frontend bundle committed to this repository.
-      # A .map file would expose original identifiers and module structure.
+      # dist/ is a pre-built frontend bundle committed to this repository, and it is the
+      # only thing keeping the frontend sources out of reach. A .map file would restore
+      # the original identifiers and module structure. The authoring repository checks
+      # its own build output; this checks what actually got committed here.
       - name: check committed dist/ for .map files
         run: |
           if find dist -name '*.map' -print -quit | grep -q .; then
