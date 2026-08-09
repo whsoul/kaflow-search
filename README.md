@@ -1,22 +1,22 @@
 
+<!-- Language tabs. GitHub has no README localisation, so this is a hand-written row of
+     links; <kbd> is used because GitHub themes it for both light and dark mode. Add
+     Japanese and Chinese here once those translations land. -->
+<p align="right">
+<kbd><b>English</b></kbd> &nbsp; <a href="README.ko.md"><kbd>한국어</kbd></a>
+</p>
+
 <div align="center">
 
+<!-- The banner carries the wordmark and the headline, so neither is repeated below it.
+     Anything the banner says lives in its alt text for readers who do not see it. -->
 <img src="assets/banner-en.png" alt="Kaflow Search — fast desktop search for Kafka messages, locally indexed rather than scanned. Works with any Kafka, Avro and Protobuf, SASL / TLS / AWS MSK IAM." width="920" />
-
-# Kaflow Search
-
-### A desktop search engine for your Kafka messages
 
 **Find one message among millions — in seconds, on your own machine.**
 
 `Local indexing` · `No extra infrastructure` · `No sign-up` · `Your data stays local`
 
 **[⬇ Download](#download)** · **[Install guide](#install)** · [Issues](https://github.com/whsoul/kaflow-search/issues)
-
-<!-- Language tabs. GitHub has no README localisation, so this is a hand-written row of
-     links; <kbd> is used because GitHub themes it for both light and dark mode. Add
-     Japanese and Chinese here once those translations land. -->
-<kbd><b>English</b></kbd> &nbsp; <a href="README.ko.md"><kbd>한국어</kbd></a>
 
 </div>
 
