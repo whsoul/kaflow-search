@@ -43,6 +43,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # First, because it takes three seconds and guards against something that cannot be
+      # taken back. dist/ is a pre-built frontend bundle committed to this repository, and
+      # it is the only thing keeping the frontend sources out of reach; a .map file would
+      # restore the original identifiers and module structure. Kept in this job rather
+      # than its own because billing rounds every job up to a whole minute, and a
+      # three-second job still costs one.
+      - name: committed dist/ must not contain sourcemaps
+        run: |
+          if find dist -name '*.map' -print -quit | grep -q .; then
+            echo "::error::dist/ contains sourcemap files."
+            find dist -name '*.map'
+            exit 1
+          fi
+          echo "OK — no sourcemaps"
+
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
 
@@ -59,22 +74,3 @@ jobs:
 
       - name: cargo test (public crates)
         run: cargo test -p kaflow-mock-engine -p kaflow-shell
-
-  no-sourcemap:
-    name: dist/ must not contain sourcemaps
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      # dist/ is a pre-built frontend bundle committed to this repository, and it is the
-      # only thing keeping the frontend sources out of reach. A .map file would restore
-      # the original identifiers and module structure. The authoring repository checks
-      # its own build output; this checks what actually got committed here.
-      - name: check committed dist/ for .map files
-        run: |
-          if find dist -name '*.map' -print -quit | grep -q .; then
-            echo "::error::dist/ contains sourcemap files."
-            find dist -name '*.map'
-            exit 1
-          fi
-          echo "OK — no sourcemaps"
