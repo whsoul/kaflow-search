@@ -247,7 +247,7 @@ Get-FileHash <file> -Algorithm SHA256
 | **Kafka 版本** | 目标为 **2.4 – 4.x** · **已验证：** Kafka 2.4.x（本地）、AWS MSK (IAM) |
 
 其他版本和托管服务预期也能正常工作，但尚未验证 ——
-[欢迎告诉我们实际情况](https://github.com/whsoul/kaflow-search/issues/new?template=connection.yml)。
+[欢迎告诉我们实际情况](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml)。
 能否连接成功还取决于 broker 配置、网络策略以及各服务商特有的认证方式，不只是版本本身。
 
 <details>
@@ -305,9 +305,9 @@ Get-FileHash <file> -Algorithm SHA256
 
 ## 反馈
 
-[报告缺陷](https://github.com/whsoul/kaflow-search/issues/new?template=bug.yml) ·
-[连接问题](https://github.com/whsoul/kaflow-search/issues/new?template=connection.yml) ·
-[提出需求](https://github.com/whsoul/kaflow-search/issues/new?template=feature.yml) ·
+[报告缺陷](https://github.com/whsoul/kaflow-search/issues/new?template=bug_report.yml) ·
+[连接问题](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml) ·
+[提出需求](https://github.com/whsoul/kaflow-search/issues/new?template=feature_request.yml) ·
 [全部 issues](https://github.com/whsoul/kaflow-search/issues)
 
 每个表单只问真正能定位问题的内容。如果是连接问题，那就是你使用的服务、Kafka 版本、认证方式，

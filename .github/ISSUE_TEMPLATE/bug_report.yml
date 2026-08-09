@@ -36,6 +36,17 @@ body:
     validations:
       required: true
 
+  - type: markdown
+    attributes:
+      value: |
+        **A diagnostic report helps more than a description does.** In the app, open the
+        App Log header and press **Report** — it writes a file, and the toast offers to
+        open the folder. Drag that file onto this issue.
+
+        It is built to be safe to post: message bodies, keys and values, search terms,
+        broker addresses and credentials are never collected. Topic names do appear as
+        they are, so remove them first if yours give away more than you would like.
+
   - type: textarea
     id: details
     attributes:
