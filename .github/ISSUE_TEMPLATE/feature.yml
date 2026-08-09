@@ -21,5 +21,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        **Waiting on a Windows or Linux build?** Say so here and subscribe to your own
-        issue — you will be notified when it ships. Demand is how those get prioritised.
+        **Waiting on a Windows or Linux build?** There is a thread for each —
+        [Windows](https://github.com/whsoul/kaflow-search/issues/5) and
+        [Linux](https://github.com/whsoul/kaflow-search/issues/6). Add your vote there
+        rather than opening a new issue: one thread is one number to read, and one
+        comment reaches everyone who subscribed to it.
