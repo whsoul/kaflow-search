@@ -81,8 +81,8 @@
 |---|---|---|
 | macOS | Apple Silicon | `.dmg` |
 | macOS | Intel | `.dmg` |
-| Windows | x64 | ⏳ 作業中 — 公開されたら通知を受け取る ↓ |
-| Linux | — | ご要望を見て提供予定 — [ご意見はこちら](https://github.com/whsoul/kaflow-search/issues/new?template=feature.yml) |
+| Windows | x64 | ⏳ 作業中 — [公開されたら通知を受け取る](https://github.com/whsoul/kaflow-search/issues/5) |
+| Linux | — | ご要望が集まれば提供 — [賛同する](https://github.com/whsoul/kaflow-search/issues/6) |
 
 **[⬇ 最新リリースを入手](https://github.com/whsoul/kaflow-search/releases/latest)** — ダウンロードはここからのみお願いします。
 

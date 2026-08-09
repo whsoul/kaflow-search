@@ -81,8 +81,8 @@
 |---|---|---|
 | macOS | Apple Silicon | `.dmg` |
 | macOS | Intel | `.dmg` |
-| Windows | x64 | ⏳ 진행 중 — 출시되면 알림 받기 ↓ |
-| Linux | — | 수요를 보고 제공 예정 — [요청 남기기](https://github.com/whsoul/kaflow-search/issues/new?template=feature.yml) |
+| Windows | x64 | ⏳ 진행 중 — [출시되면 알림 받기](https://github.com/whsoul/kaflow-search/issues/5) |
+| Linux | — | 수요가 모이면 제공 — [의견 더하기](https://github.com/whsoul/kaflow-search/issues/6) |
 
 **[⬇ 최신 릴리스 받기](https://github.com/whsoul/kaflow-search/releases/latest)** — 설치 파일은 여기서만 받으세요.
 
