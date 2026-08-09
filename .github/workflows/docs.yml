@@ -1,0 +1,30 @@
+name: Docs
+
+# The READMEs are authored here rather than copied in, so this is the only place they can
+# be checked. Kept apart from ci.yml so that editing prose does not compile Rust, and
+# editing Rust does not re-read prose.
+
+on:
+  push:
+    branches: [main]
+    paths: ['README*.md', 'scripts/check-readme-sync.mjs', '.github/workflows/docs.yml']
+  pull_request:
+    paths: ['README*.md', 'scripts/check-readme-sync.mjs', '.github/workflows/docs.yml']
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  readme-sync:
+    name: READMEs must stay in sync across languages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Four languages, maintained by hand, and nobody here reads all four. A section
+      # added to one and forgotten in the others would surface only when a reader hit it.
+      # This compares their structure, not their wording.
+      - name: check README structure
+        run: node scripts/check-readme-sync.mjs
