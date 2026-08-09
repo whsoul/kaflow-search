@@ -1,10 +1,14 @@
 
+<p align="right">
+<a href="README.md"><kbd>English</kbd></a> &nbsp; <kbd><b>한국어</b></kbd>
+</p>
+
 <div align="center">
 
-<!-- Korean banner variant is not ready yet; the English one is used here for now. -->
+<!-- Korean banner variant is not ready yet; the English one is used here for now. The
+     wordmark is in the banner, so it is not repeated — but the tagline below stays,
+     because this banner is in English and a Korean reader needs it in text. -->
 <img src="assets/banner-en.png" alt="Kaflow Search — Kafka 메시지를 위한 빠른 데스크톱 검색. 훑지 않고 로컬에 색인합니다. 모든 Kafka · Avro & Protobuf · SASL / TLS / AWS MSK IAM." width="920" />
-
-# Kaflow Search
 
 ### 내 데스크톱에 설치하는 Kafka 메시지 검색엔진
 
@@ -13,8 +17,6 @@
 `로컬 인덱싱` · `별도 인프라 불필요` · `가입 없음` · `데이터는 내 컴퓨터 안에`
 
 **[⬇ 다운로드](#다운로드)** · **[설치 안내](#설치)** · [이슈](https://github.com/whsoul/kaflow-search/issues)
-
-<a href="README.md"><kbd>English</kbd></a> &nbsp; <kbd><b>한국어</b></kbd>
 
 </div>
 
