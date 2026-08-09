@@ -1,0 +1,10 @@
+# A blank issue stays available: not every report fits a form, and a form that turns
+# people away costs more than a thin report does.
+blank_issues_enabled: true
+contact_links:
+  - name: Install warning on macOS
+    url: https://github.com/whsoul/kaflow-search#install
+    about: The unidentified-developer warning is expected — the README has the steps.
+  - name: What the app sends, and what it does not
+    url: https://github.com/whsoul/kaflow-search/blob/main/legal/PRIVACY.md
+    about: Privacy policy, including how long anything is kept.

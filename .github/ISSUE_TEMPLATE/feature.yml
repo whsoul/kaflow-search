@@ -1,0 +1,25 @@
+name: Feature request
+description: Something you want the app to do — including a platform it does not ship on yet
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What would you like to be able to do
+      placeholder: "Search across several topics at once and see them on one timeline."
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: What are you doing today instead
+      description: >
+        The workaround tells us more than the request does — it shows what the feature is
+        actually for. Optional, but it carries weight.
+
+  - type: markdown
+    attributes:
+      value: |
+        **Waiting on a Windows or Linux build?** Say so here and subscribe to your own
+        issue — you will be notified when it ships. Demand is how those get prioritised.

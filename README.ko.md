@@ -82,7 +82,7 @@
 | macOS | Apple Silicon | `.dmg` |
 | macOS | Intel | `.dmg` |
 | Windows | x64 | ⏳ 진행 중 — 출시되면 알림 받기 ↓ |
-| Linux | — | 수요를 보고 제공 예정 — [요청 남기기](https://github.com/whsoul/kaflow-search/issues) |
+| Linux | — | 수요를 보고 제공 예정 — [요청 남기기](https://github.com/whsoul/kaflow-search/issues/new?template=feature.yml) |
 
 **[⬇ 최신 릴리스 받기](https://github.com/whsoul/kaflow-search/releases/latest)** — 설치 파일은 여기서만 받으세요.
 
@@ -253,7 +253,7 @@ Get-FileHash <파일> -Algorithm SHA256
 | **Kafka 버전** | 목표 **2.4 ~ 4.x** · **검증 완료:** Kafka 2.4.x(로컬), AWS MSK(IAM) |
 
 그 외 버전과 매니지드 서비스도 동작할 것으로 보지만 아직 검증하지 못했습니다 —
-[써보셨다면 알려주세요](https://github.com/whsoul/kaflow-search/issues). 연결 성공 여부는 버전만이
+[써보셨다면 알려주세요](https://github.com/whsoul/kaflow-search/issues/new?template=connection.yml). 연결 성공 여부는 버전만이
 아니라 브로커 설정·네트워크 정책·제공업체별 인증 구현에도 영향을 받습니다.
 
 <details>
@@ -312,14 +312,15 @@ Get-FileHash <파일> -Algorithm SHA256
 
 ## 피드백
 
-[버그 제보](https://github.com/whsoul/kaflow-search/issues/new) ·
-[기능 제안](https://github.com/whsoul/kaflow-search/issues/new) ·
+[버그 제보](https://github.com/whsoul/kaflow-search/issues/new?template=bug.yml) ·
+[연결 문제](https://github.com/whsoul/kaflow-search/issues/new?template=connection.yml) ·
+[기능 제안](https://github.com/whsoul/kaflow-search/issues/new?template=feature.yml) ·
 [전체 이슈](https://github.com/whsoul/kaflow-search/issues)
 
-연결 문제 제보 시 함께 주시면 좋은 것: 운영체제와 Kaflow 버전 · Kafka 서비스/배포판 ·
-대략적인 Kafka 버전 · 인증 방식 · 민감정보 지운 오류 메시지 · 다른 Kafka 클라이언트로는 연결되는지.
+각 양식은 판단에 실제로 필요한 것만 묻습니다. 연결 문제라면 사용하는 서비스, Kafka 버전,
+인증 방식, 그리고 같은 컴퓨터에서 다른 Kafka 클라이언트는 연결되는지입니다.
 
-> 🔒 **비밀번호, 토큰, 개인키, 인증서, 실제 업무 메시지를 공개 이슈에 첨부하지 마세요.**
+> 🔒 **비밀번호, 토큰, 개인키, 인증서, 실제 업무 메시지를 공개 이슈에 올리지 마세요.**
 
 ## 프로젝트 후원
 

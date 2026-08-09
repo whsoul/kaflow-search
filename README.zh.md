@@ -82,7 +82,7 @@
 | macOS | Apple Silicon | `.dmg` |
 | macOS | Intel | `.dmg` |
 | Windows | x64 | ⏳ 进行中 —— 发布后接收通知 ↓ |
-| Linux | — | 视需求提供 —— [告诉我们](https://github.com/whsoul/kaflow-search/issues) |
+| Linux | — | 视需求提供 —— [告诉我们](https://github.com/whsoul/kaflow-search/issues/new?template=feature.yml) |
 
 **[⬇ 获取最新版本](https://github.com/whsoul/kaflow-search/releases/latest)** —— 请只从这里下载。
 
@@ -247,7 +247,7 @@ Get-FileHash <file> -Algorithm SHA256
 | **Kafka 版本** | 目标为 **2.4 – 4.x** · **已验证：** Kafka 2.4.x（本地）、AWS MSK (IAM) |
 
 其他版本和托管服务预期也能正常工作，但尚未验证 ——
-[欢迎告诉我们实际情况](https://github.com/whsoul/kaflow-search/issues)。
+[欢迎告诉我们实际情况](https://github.com/whsoul/kaflow-search/issues/new?template=connection.yml)。
 能否连接成功还取决于 broker 配置、网络策略以及各服务商特有的认证方式，不只是版本本身。
 
 <details>
@@ -305,14 +305,15 @@ Get-FileHash <file> -Algorithm SHA256
 
 ## 反馈
 
-[报告缺陷](https://github.com/whsoul/kaflow-search/issues/new) ·
-[提出需求](https://github.com/whsoul/kaflow-search/issues/new) ·
+[报告缺陷](https://github.com/whsoul/kaflow-search/issues/new?template=bug.yml) ·
+[连接问题](https://github.com/whsoul/kaflow-search/issues/new?template=connection.yml) ·
+[提出需求](https://github.com/whsoul/kaflow-search/issues/new?template=feature.yml) ·
 [全部 issues](https://github.com/whsoul/kaflow-search/issues)
 
-如果是连接问题，请附上：操作系统与 Kaflow 版本 · Kafka 服务或发行版 · 大致的 Kafka 版本 ·
-认证方式 · 去除机密信息后的报错内容 · 其他 Kafka 客户端能否连上。
+每个表单只问真正能定位问题的内容。如果是连接问题，那就是你使用的服务、Kafka 版本、认证方式，
+以及同一台机器上其他 Kafka 客户端能否连上。
 
-> 🔒 **切勿在公开 issue 中附上密码、令牌、私钥、证书或真实业务消息。**
+> 🔒 **切勿在公开 issue 中填写密码、令牌、私钥、证书或真实业务消息。**
 
 ## 支持本项目
 
