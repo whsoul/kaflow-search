@@ -1,7 +1,7 @@
 
 <div align="center">
 
-<img src="assets/social-preview-en.png" alt="Kaflow Search — fast desktop search for Kafka messages, locally indexed rather than scanned. Works with any Kafka, Avro and Protobuf, SASL / TLS / AWS MSK IAM." width="920" />
+<img src="assets/banner-en.png" alt="Kaflow Search — fast desktop search for Kafka messages, locally indexed rather than scanned. Works with any Kafka, Avro and Protobuf, SASL / TLS / AWS MSK IAM." width="920" />
 
 # Kaflow Search
 
