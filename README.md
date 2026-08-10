@@ -374,6 +374,6 @@ belong to their respective owners.
 [Issues](https://github.com/whsoul/kaflow-search/issues) ·
 [Privacy](legal/PRIVACY.md)
 
-Copyright © 2026 [PLACEHOLDER: LEGAL_NAME], operating as "Kaflow Search".
+Copyright © 2026 Whsoul Tools. Kaflow Search is a product of Whsoul Tools.
 
 </div>

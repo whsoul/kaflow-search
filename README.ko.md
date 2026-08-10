@@ -365,6 +365,6 @@ proprietary 소프트웨어이며, EULA에 따라 현재 **개인용·조직 내
 [이슈](https://github.com/whsoul/kaflow-search/issues) ·
 [개인정보](legal/PRIVACY.ko.md)
 
-Copyright © 2026 [PLACEHOLDER: LEGAL_NAME], operating as "Kaflow Search".
+Copyright © 2026 Whsoul Tools. Kaflow Search is a product of Whsoul Tools.
 
 </div>
