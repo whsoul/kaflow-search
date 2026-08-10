@@ -315,7 +315,6 @@ Get-FileHash <file> -Algorithm SHA256
 
 [バグを報告](https://github.com/whsoul/kaflow-search/issues/new?template=bug_report.yml) ·
 [接続の問題](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml) ·
-[機能を要望](https://github.com/whsoul/kaflow-search/issues/new?template=feature_request.yml) ·
 [すべての Issue](https://github.com/whsoul/kaflow-search/issues)
 
 各フォームは、判断に本当に必要なことだけを尋ねます。接続の問題であれば、お使いのサービス、
