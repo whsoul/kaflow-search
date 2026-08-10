@@ -2,6 +2,12 @@
 # people away costs more than a thin report does.
 blank_issues_enabled: true
 contact_links:
+  - name: Waiting on a Windows build
+    url: https://github.com/whsoul/kaflow-search/issues/5
+    about: One thread for the platform — add your vote there rather than opening another.
+  - name: Waiting on a Linux build
+    url: https://github.com/whsoul/kaflow-search/issues/6
+    about: One thread for the platform — add your vote there rather than opening another.
   - name: Install warning on macOS
     url: https://github.com/whsoul/kaflow-search#install
     about: The unidentified-developer warning is expected — the README has the steps.
