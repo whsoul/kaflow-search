@@ -320,7 +320,6 @@ disk speed. No fixed performance is guaranteed.
 
 [Report a bug](https://github.com/whsoul/kaflow-search/issues/new?template=bug_report.yml) ·
 [Connection problem](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml) ·
-[Request a feature](https://github.com/whsoul/kaflow-search/issues/new?template=feature_request.yml) ·
 [All issues](https://github.com/whsoul/kaflow-search/issues)
 
 Each form asks only for what turns out to settle the question. For connection problems
