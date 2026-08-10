@@ -307,7 +307,6 @@ Get-FileHash <file> -Algorithm SHA256
 
 [报告缺陷](https://github.com/whsoul/kaflow-search/issues/new?template=bug_report.yml) ·
 [连接问题](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml) ·
-[提出需求](https://github.com/whsoul/kaflow-search/issues/new?template=feature_request.yml) ·
 [全部 issues](https://github.com/whsoul/kaflow-search/issues)
 
 每个表单只问真正能定位问题的内容。如果是连接问题，那就是你使用的服务、Kafka 版本、认证方式，

@@ -314,7 +314,6 @@ Get-FileHash <파일> -Algorithm SHA256
 
 [버그 제보](https://github.com/whsoul/kaflow-search/issues/new?template=bug_report.yml) ·
 [연결 문제](https://github.com/whsoul/kaflow-search/issues/new?template=connection_report.yml) ·
-[기능 제안](https://github.com/whsoul/kaflow-search/issues/new?template=feature_request.yml) ·
 [전체 이슈](https://github.com/whsoul/kaflow-search/issues)
 
 각 양식은 판단에 실제로 필요한 것만 묻습니다. 연결 문제라면 사용하는 서비스, Kafka 버전,
