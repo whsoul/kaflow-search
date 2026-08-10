@@ -371,6 +371,6 @@ ASF と提携しておらず、ASF による推奨・後援も受けていませ
 [Issue](https://github.com/whsoul/kaflow-search/issues) ·
 [プライバシー](legal/PRIVACY.md)
 
-Copyright © 2026 [PLACEHOLDER: LEGAL_NAME], operating as "Kaflow Search".
+Copyright © 2026 Whsoul Tools. Kaflow Search is a product of Whsoul Tools.
 
 </div>
