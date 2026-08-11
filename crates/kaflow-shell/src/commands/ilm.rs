@@ -1,4 +1,4 @@
-//! ILM Tauri 어댑터 — `Arc<dyn KafkaToolEngine>` 경유.
+//! Cleanup commands. Each one hands straight to the engine.
 
 use kaflow_api_traits::KafkaToolEngine;
 use std::sync::Arc;

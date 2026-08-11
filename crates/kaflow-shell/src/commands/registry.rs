@@ -1,4 +1,4 @@
-//! Schema Registry 리소스 Tauri 어댑터 — `Arc<dyn KafkaToolEngine>` 경유.
+//! Schema registry commands. Each one hands straight to the engine.
 
 use kaflow_api_traits::KafkaToolEngine;
 use kaflow_api_types::{

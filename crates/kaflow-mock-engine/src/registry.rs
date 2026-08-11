@@ -1,11 +1,8 @@
 //! `RegistryApi` mock impl.
 //!
-//! **CRUD(list/save/delete)는 실제로 동작한다** — `MockStore` 의 in-memory 상태(세션 한정).
-//! 등록하면 목록에 남고 삭제하면 사라진다. (실 엔진은 `~/.kaflow/schema_registries.json` 영속.)
-//!
-//! 반면 **연결 테스트·스키마 조회(test/subjects/fetch/index)는 네트워크(HTTP)** 라 mock 은 stub.
-//! mock 의 존재 이유가 "네트워크/인프라 없이 로컬 fixture 로 UX 재현" 이므로 여기까지가 경계다.
-//! (실제 Avro/Protobuf 디코딩·registry 참조 해석은 private engine 자산 — `library_split_design.md`.)
+//! Adding, listing and removing registries works properly — only until the process ends,
+//! but properly. Anything that would reach a registry over the network does not, which is
+//! where an engine that needs no network necessarily stops.
 
 use async_trait::async_trait;
 use kaflow_api_traits::engine::RegistryApi;
@@ -37,7 +34,7 @@ impl RegistryApi for MockEngine {
         _url: &str,
         _basic_auth: Option<&str>,
     ) -> Result<RegistryTestResult, EngineError> {
-        // 연결 테스트는 실제 HTTP 호출 — mock 은 네트워크를 쓰지 않으므로 안내만.
+        // Testing a connection means making one. Say so rather than pretending.
         Ok(RegistryTestResult {
             ok: false,
             message:
@@ -81,8 +78,8 @@ impl RegistryApi for MockEngine {
 
 #[cfg(test)]
 mod tests {
-    // async trait 래퍼는 store CRUD 를 그대로 위임하므로, tokio 없이 store 를 직접 검사한다
-    // (기존 mock 테스트와 동일한 동기 방식 — crate 의 인프라 의존 0 유지).
+    // The store is tested directly: the trait methods only hand over to it, and reaching
+    // for an async runtime to check that would give this crate the dependency it avoids.
     use crate::data::MockStore;
     use kaflow_api_types::RegistryResource;
 
@@ -104,9 +101,9 @@ mod tests {
         store.save_registry(res("b", "local"));
         let list = store.list_registries();
         assert_eq!(list.len(), 2);
-        assert_eq!(list[0].name, "local"); // name 오름차순 (local < staging)
+        assert_eq!(list[0].name, "local"); // ordered by name
 
-        // 같은 id upsert → 개수 불변, 값 갱신
+        // Saving under an existing id replaces rather than adds.
         store.save_registry(res("a", "prod"));
         let list = store.list_registries();
         assert_eq!(list.len(), 2);

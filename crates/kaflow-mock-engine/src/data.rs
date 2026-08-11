@@ -1,15 +1,11 @@
-//! 로컬 json fixture 기반 in-memory 데이터 소스 (mock-engine 의 "fake" 코어).
+//! The fixture this engine reads, held in memory.
 //!
-//! 옛 sample mode(RocksDB 차용)의 public 후계 — Kafka 클러스터 / RocksDB 없이
-//! **로컬 json 파일**을 source 로 동일한 인덱싱/조회 UX 를 재현한다.
+//! ⚠️ **This does not try to behave identically to a real engine, and should not.** It does
+//! the simplest honest thing — scanning everything — because a fake that imitates the
+//! real one gains nothing and starts lying the moment the real one changes.
 //!
-//! 설계 원칙(`.claude/CLAUDE.md` 합의):
-//! - 실 엔진(private engine-impl)과 **동작 parity 추구 금지**. fixture 위 가장 단순하고
-//!   정직한 동작(선형 스캔)까지만. 실 엔진 정확성은 engine-impl 테스트가 책임진다.
-//! - 인프라 의존 0 — `std::fs`/`std::env`/`serde_json` + 경량 `kaflow-tokenizer`(deps 0) 만
-//!   사용(tokio/tauri/rocksdb/kafka X).
-//!
-//! 필드 표기는 실 엔진 `flatten_json` 과 동일: `P.orderId` / `P.items[*].name` / `K.id`.
+//! Field paths follow the same notation a real engine produces, so what is shown here is
+//! recognisable there: `P.orderId`, `P.items[*].name`, `K.id`.
 
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 use std::sync::RwLock;
@@ -22,18 +18,18 @@ use kaflow_api_types::{
     SortOrder, TimeBucketDeliveryMode, TimeBucketRow, TimeBucketsResponse, TsRange,
 };
 
-// ── 모델 ────────────────────────────────────────────────────────────────────
+// ── The data ────────────────────────────────────────────────────────────────
 
 #[derive(Debug, Clone)]
 pub struct MockMessage {
     pub partition: u32,
     pub offset: u64,
     pub ts_millis: u64,
-    /// 디코드된 key 텍스트 (raw). tombstone/없음 = None.
+    /// The message key, if it has one.
     pub key: Option<String>,
-    /// value 의 pretty json 문자열 (본문 표시용).
+    /// The message body, formatted for reading.
     pub value_json: String,
-    /// flatten 된 `K.*`/`P.*` path → leaf value 목록 (인덱스 entry 의 출처).
+    /// Its fields, flattened to paths and values — what searching looks at.
     pub fields: Vec<(String, String)>,
 }
 
@@ -45,24 +41,22 @@ pub struct MockTopic {
     pub value_deserializer: String,
     pub key_fields: Vec<String>,
     pub payload_fields: Vec<String>,
-    /// (partition asc, offset asc) 정렬.
+    /// Ordered by partition, then offset.
     pub messages: Vec<MockMessage>,
 }
 
 #[derive(Debug, Default)]
 pub struct MockStore {
     pub topics: Vec<MockTopic>,
-    /// 런타임 어절(tokenize) 상태 — topic → 어절 대상 필드명 집합. mutation API
-    /// (`set_indexed_fields` / `set_tokenize_fields`)로 갱신, 검색이 라이브로 읽는다.
-    /// 옛 sample mode 와 달리 데모용 in-memory 상태(RwLock, &self 메서드라 내부 가변).
+    /// Which fields are split into words, per topic. This one **is** mutable — choosing
+    /// it and seeing searching change is the thing worth demonstrating.
     tokenized: RwLock<HashMap<String, BTreeSet<String>>>,
-    /// 런타임 Schema Registry 리소스 목록 — id → 리소스. `RegistryApi` CRUD 가 갱신.
-    /// **세션 동안만 유지**(재기동 시 사라짐). 실 엔진은 `~/.kaflow/schema_registries.json` 영속.
-    /// 연결 테스트/스키마 조회는 네트워크라 mock 은 stub — 등록/목록/삭제만 실제로 동작한다.
+    /// Registries added while running. **Kept only until the process ends** — adding,
+    /// listing and removing behave properly, while anything needing the network does not.
     registries: RwLock<Vec<RegistryResource>>,
 }
 
-// ── fixture 직렬화 포맷 ───────────────────────────────────────────────────────
+// ── The file format ─────────────────────────────────────────────────────────
 
 #[derive(serde::Deserialize)]
 struct FxRoot {
@@ -101,11 +95,12 @@ fn default_deser() -> String {
     "json".to_string()
 }
 
-// ── 로딩 ────────────────────────────────────────────────────────────────────
+// ── Loading ─────────────────────────────────────────────────────────────────
 
 impl MockStore {
-    /// 환경변수 `KAFLOW_MOCK_FIXTURES`(파일 경로) 가 있으면 그 파일을, 없으면 번들된
-    /// `fixtures/default.json` 을 읽어 적재한다. 파싱 실패 시 빈 store(데모 없음).
+    /// Loads the fixture named by `KAFLOW_MOCK_FIXTURES`, or the bundled one. A file that
+    /// will not parse leaves the store empty rather than failing to start — an empty demo
+    /// is easier to diagnose than one that never opens.
     pub fn load() -> Self {
         let raw = load_fixture_text();
         match serde_json::from_str::<FxRoot>(&raw) {
@@ -127,15 +122,15 @@ impl MockStore {
         self.topics.iter().find(|t| t.name == name)
     }
 
-    // ── Schema Registry 리소스 CRUD (in-memory, 세션 한정) ──────────────────
-    /// 등록된 리소스 목록 (name 오름차순 — 실 엔진과 동일 정렬).
+    // ── Registries, held only while running ─────────────────────────────────
+    /// Registries by name, ordered as a real engine orders them.
     pub fn list_registries(&self) -> Vec<RegistryResource> {
         let mut v = self.registries.read().unwrap().clone();
         v.sort_by(|a, b| a.name.to_lowercase().cmp(&b.name.to_lowercase()));
         v
     }
 
-    /// id 기준 upsert.
+    /// Adds or replaces one, matched by id.
     pub fn save_registry(&self, resource: RegistryResource) {
         let mut guard = self.registries.write().unwrap();
         if let Some(existing) = guard.iter_mut().find(|r| r.id == resource.id) {
@@ -145,12 +140,12 @@ impl MockStore {
         }
     }
 
-    /// id 기준 삭제.
+    /// Removes one.
     pub fn delete_registry(&self, id: &str) {
         self.registries.write().unwrap().retain(|r| r.id != id);
     }
 
-    /// `filter` = None → 전체, Some → 그 이름들만(존재하는 것).
+    /// All topics, or only those named that exist.
     pub fn topics_for(&self, filter: Option<&[String]>) -> Vec<&MockTopic> {
         match filter {
             None => self.topics.iter().collect(),
@@ -158,7 +153,7 @@ impl MockStore {
         }
     }
 
-    /// 어절 대상 필드 교체(빈 목록 = 해제). `set_indexed_fields`/`set_tokenize_fields` 가 호출.
+    /// Replaces which fields are split into words; an empty list turns it off.
     pub fn set_tokenized(&self, topic: &str, fields: Vec<String>) {
         let mut g = self.tokenized.write().unwrap();
         let set: BTreeSet<String> = fields.into_iter().collect();
@@ -169,7 +164,7 @@ impl MockStore {
         }
     }
 
-    /// 토픽의 현재 어절 대상 필드 집합 (없으면 빈 set).
+    /// Which fields are currently split into words.
     pub fn tokenized_for(&self, topic: &str) -> BTreeSet<String> {
         self.tokenized
             .read()
@@ -190,9 +185,9 @@ fn load_fixture_text() -> String {
 }
 
 fn build_topic(fx: FxTopic) -> MockTopic {
-    // partition 별 auto-offset 카운터 (offset 미지정 시).
+    // Offsets are made up where the fixture leaves them out.
     let mut next_off: BTreeMap<u32, u64> = BTreeMap::new();
-    // ts 미지정 시 합성용 base (2024-01-01) + 메시지마다 1분 증가.
+    // So are timestamps, a minute apart, so time-based views have something to show.
     let base_ts: u64 = 1_704_067_200_000;
     let mut messages: Vec<MockMessage> = Vec::with_capacity(fx.messages.len());
 
@@ -252,7 +247,7 @@ fn build_topic(fx: FxTopic) -> MockTopic {
     }
 }
 
-/// 객체 key 면 compact json, 스칼라면 그 값 텍스트.
+/// An object becomes compact JSON; anything else becomes its own text.
 fn scalar_or_compact(v: &serde_json::Value) -> String {
     match v {
         serde_json::Value::String(s) => s.clone(),
@@ -275,7 +270,8 @@ fn unique_paths(messages: &[MockMessage], prefix: &str) -> Vec<String> {
     seen
 }
 
-/// 실 엔진 `message_parse::flatten_json` 과 동일 규칙(배열 = `prefix[*]`).
+/// Flattens to paths, with arrays written as `prefix[*]` — the same notation a real
+/// engine produces.
 pub fn flatten_json(prefix: &str, value: &serde_json::Value, out: &mut Vec<(String, String)>) {
     match value {
         serde_json::Value::Object(map) => {
@@ -296,7 +292,7 @@ pub fn flatten_json(prefix: &str, value: &serde_json::Value, out: &mut Vec<(Stri
     }
 }
 
-// ── 매칭 술어 ─────────────────────────────────────────────────────────────────
+// ── Matching ────────────────────────────────────────────────────────────────
 
 fn ts_ok(m: &MockMessage, ts: Option<&TsRange>) -> bool {
     match ts {
@@ -322,9 +318,11 @@ fn field_selected(path: &str, fields: Option<&[String]>) -> bool {
     }
 }
 
-/// 값 매칭. `tokenized=true` 면 값을 **어절**(공백 분해 + 무사전 CJK 글자 분해)로 보고 단어
-/// 단위로 매칭한다(문장 중간 단어 검색 = 어절 데모). 단어 prefix 매칭 = 실 엔진 "단어 앞부분".
-/// 공통 [`kaflow_tokenizer::WhitespaceTokenizer`] 를 써서 일/중도 분절된다(실엔진은 charabia).
+/// Matches one value. When the field is split into words, a word in the middle of a
+/// sentence is findable; otherwise only the value as a whole is.
+///
+/// The shared tokenizer is used rather than a private rule, so that what matches here
+/// matches for the same reasons it would elsewhere.
 fn value_matches(val: &str, query: &str, mode: &SearchMode, tokenized: bool) -> bool {
     let hit = |s: &str| match mode {
         SearchMode::Exact => s == query,
@@ -336,10 +334,10 @@ fn value_matches(val: &str, query: &str, mode: &SearchMode, tokenized: bool) -> 
     let val_toks = WhitespaceTokenizer.tokenize(val);
     let q_toks = WhitespaceTokenizer.tokenize(query);
     if q_toks.len() <= 1 {
-        // 단일 토큰 질의(한/영 어절, 단일 CJK 글자) — query 통째로 어절 prefix/exact 매칭.
+        // One term: match it against each word.
         val_toks.iter().any(|w| hit(w))
     } else {
-        // 다토큰 질의(공백 없는 CJK 다글자 등) — 모든 질의 토큰이 어떤 val 토큰과 매칭.
+        // Several: every one of them has to find a word of its own.
         q_toks.iter().all(|qt| {
             val_toks.iter().any(|w| match mode {
                 SearchMode::Exact => w == qt,
@@ -349,7 +347,7 @@ fn value_matches(val: &str, query: &str, mode: &SearchMode, tokenized: bool) -> 
     }
 }
 
-// ── multi (QueryNode) 평가 ────────────────────────────────────────────────────
+// ── Boolean queries ─────────────────────────────────────────────────────────
 
 fn field_match(path: &str, field: &Option<String>) -> bool {
     match field {
@@ -395,7 +393,7 @@ fn eval_node(m: &MockMessage, node: &QueryNode, tok: &BTreeSet<String>) -> bool 
     }
 }
 
-// ── loc / 정렬 ────────────────────────────────────────────────────────────────
+// ── Positions and ordering ──────────────────────────────────────────────────
 
 pub(crate) fn sort_locs(v: &mut [LocItem], sort: &SortOrder) {
     match sort {
@@ -453,10 +451,10 @@ fn to_hex(bytes: &[u8]) -> String {
     s
 }
 
-// ── 조회 API (MockTopic 위 thin 어댑터의 공유 코어) ───────────────────────────
+// ── Querying ────────────────────────────────────────────────────────────────
 
 impl MockTopic {
-    /// browse — 전체 메시지(쿼리 없음), ts/pos 필터 + 정렬 + limit.
+    /// Every message, narrowed by time and position only.
     pub fn browse_locs(
         &self,
         ts: Option<&TsRange>,
@@ -478,8 +476,8 @@ impl MockTopic {
         (v, total)
     }
 
-    /// keyword — 어떤 (선택된) 필드 값이 query 와 매치하면 hit. matched_field = 첫 매치 필드.
-    /// 반환: (locs, hit_fields union, total).
+    /// Messages where any of the chosen fields matches. The first field to match is the
+    /// one reported.
     #[allow(clippy::too_many_arguments)]
     pub fn keyword_locs(
         &self,
@@ -507,7 +505,7 @@ impl MockTopic {
                 if !hit_fields.contains(path) {
                     hit_fields.push(path.clone());
                 }
-                // 어절 필드면 매치된 단어를 인덱스키 term 으로(본문 전체 대신 깔끔하게).
+                // Report the word that matched, not the sentence it sat in.
                 let term: String = if tok.contains(path) {
                     value
                         .split_whitespace()
@@ -531,7 +529,8 @@ impl MockTopic {
         (locs, hit_fields, total)
     }
 
-    /// multi — QueryNode 트리 평가. matched_field 는 표시용으로 비움(트리 결과라 단일 필드 의미 약함).
+    /// Messages satisfying a boolean query. No single field is reported — a tree of
+    /// conditions has no one field to name.
     pub fn multi_locs(
         &self,
         node: &QueryNode,
@@ -555,7 +554,7 @@ impl MockTopic {
         (v, total)
     }
 
-    /// loc 목록 → MessageResult (본문 fetch). 없는 loc 은 건너뜀.
+    /// Reads the messages at those positions, skipping any that are not there.
     pub fn message_rows(&self, locs: &[LocItem]) -> Vec<MessageResult> {
         let mut index: BTreeMap<(u32, u64), &MockMessage> = BTreeMap::new();
         for m in &self.messages {
@@ -611,9 +610,9 @@ impl MockTopic {
     }
 }
 
-// ── bucket 빌더 (locs → 집계) ─────────────────────────────────────────────────
+// ── Aggregating ─────────────────────────────────────────────────────────────
 
-/// time buckets — `(partition, floor(ts/gran)*gran)` 별 count + offsets inline.
+/// Counts per time bucket, with the offsets included.
 pub fn build_time_buckets(locs: &[LocItem], gran_ms: u64) -> TimeBucketsResponse {
     let gran = gran_ms.max(1);
     // (partition, gran_start) → offsets
@@ -647,7 +646,7 @@ pub fn build_time_buckets(locs: &[LocItem], gran_ms: u64) -> TimeBucketsResponse
     }
 }
 
-/// offset buckets — partition 별 `bucket_unit(=100)` 단위 leaf + offsets inline.
+/// Counts per offset range, with the offsets included.
 pub fn build_offset_buckets(topic: &str, locs: &[LocItem]) -> OffsetBucketsResponse {
     const UNIT: u64 = 100;
     // partition → (bucket_from → offsets)
@@ -705,7 +704,7 @@ pub fn build_offset_buckets(topic: &str, locs: &[LocItem]) -> OffsetBucketsRespo
     }
 }
 
-// ── ts 포맷 (epoch ms → ISO8601 UTC, chrono 없이) ─────────────────────────────
+// ── Formatting a timestamp, without a date library ──────────────────────────
 
 fn fmt_ts(ms: u64) -> String {
     let secs = (ms / 1000) as i64;
@@ -766,7 +765,7 @@ mod tests {
     fn keyword_prefix_matches_and_collects_hit_fields() {
         let s = store();
         let t = &s.topics[0];
-        // 첫 메시지의 첫 필드 값을 prefix 로 검색하면 최소 1건 매치.
+        // Searching for the start of a known value must find at least that message.
         let (path, val) = t.messages[0].fields[0].clone();
         let prefix: String = val.chars().take(2).collect();
         let (locs, hits, total) = t.keyword_locs(
@@ -786,10 +785,10 @@ mod tests {
 
     #[test]
     fn tokenized_field_matches_mid_sentence_word() {
-        // 어절 미적용: 문장 중간 단어는 prefix(앞부분)로 안 잡힘.
+        // Without word splitting, a word in the middle of a sentence is not findable.
         let s = store();
         let t = s.topic("reviews-ko").expect("reviews-ko fixture");
-        // body 의 두 번째 어절(중간 단어)을 고른다.
+        // Pick a word that is not the first.
         let body = t.messages[0]
             .fields
             .iter()

@@ -1,25 +1,17 @@
-//! 설정 항목의 **코드 고정 범위(min/max/default) 단일 출처**.
+//! The one place a setting's range lives: its minimum, maximum, and default.
 //!
-//! 설계 SSOT = `docs/settings_layers_design.md` (설정 3층 모델 + §10 최종 표).
+//! Keeping the range in a single place is the point. When the same number is written in a
+//! default, in a clamp, and again in an input field, the three drift apart and the one
+//! that is wrong is whichever nobody looked at.
 //!
-//! ## 왜 이 파일인가
-//! 값이 `ilm.rs`(기본값) / `config.rs`(clamp) / FE 입력 `max=` 세 곳에 흩어져 있으면
-//! 서로 어긋난다(실제로 FE 는 `max` 를 걸었는데 BE 는 `.max(1)` 만 하던 상태였다).
-//! **범위는 여기 하나**만 보고, BE clamp·FE 입력·설정 화면 표시가 모두 이걸 참조한다.
-//!
-//! ## 층 모델 요약
-//! - **유형1** = 코드 상수 (여기 `Bounds` 로 표현. 사용자·profile 모두 못 넘음)
-//! - **유형2** = 요금제(profile)가 정하는 값 — `limits.rs`
-//! - **유형3** = 사용자 설정 — 아래 `Bounds` 범위 **안에서** 자유. profile 이 더 좁힐 수 있음.
-//!
-//! `min`/`max` 는 **하드 범위**다. profile 은 이 안에서만 tighten 할 수 있고,
-//! settings 파일에 범위 밖 값이 있어도 **로드 시점에 clamp** 한다
-//! (debug 빌드에서 만진 값이 프로덕션에 그대로 살아남지 않게 — 입력 검증만으로는 못 막는다).
+//! `min` and `max` are hard: a settings file holding a value outside them is clamped when
+//! it is read, not merely rejected at input. Validation at the point of entry cannot
+//! protect a file that was written by something else.
 
 use crate::TOPIC_INDEX_COUNT_CAP;
 use serde::{Deserialize, Serialize};
 
-/// 한 설정 항목의 코드 고정 범위.
+/// The fixed range of one setting.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Bounds<T> {
     pub min: T,
@@ -37,8 +29,8 @@ impl Bounds<u64> {
             v
         }
     }
-    /// 하한만 우회 (debug 빌드 — cleanup/trim 테스트에 min 미만이 필요).
-    /// 상한은 **우회하지 않는다** (시스템 안정성 축).
+    /// Relaxes the lower bound only. The ceiling still applies — it is there for
+    /// stability, not preference.
     pub const fn clamp_no_floor(&self, v: u64) -> u64 {
         let v = if v == 0 { 1 } else { v };
         if v > self.max {
@@ -48,17 +40,17 @@ impl Bounds<u64> {
         }
     }
 
-    /// **파괴적 한도 전용** 정규화 — 하한 위반은 `min` 이 아니라 **`default` 로 되돌린다.**
+    /// Normalization for limits whose enforcement **deletes data**. A value below the
+    /// minimum returns to `default`, not to `min`.
     ///
-    /// 왜 비대칭인가 (2026-07-15 결정):
-    /// - 이 값의 강제 수단은 **삭제(cleanup)** 다. **작을수록 더 많이 지운다.**
-    ///   하한 위반값을 `min`(=합법적 최소)으로 붙이면 "가장 빡빡한" 방향으로 실패하는 셈이라,
-    ///   profile 부재 시 fail-open 한 원칙과 정면으로 어긋난다.
-    /// - 애초에 하한 미만은 **prod 사용자의 의사가 아니다** — UI 하한이 막고 있으므로, 파일에
-    ///   그 값이 있다는 건 debug 빌드가 썼거나 손으로 편집했다는 뜻이다. 무효값으로 보고
-    ///   **기본값으로 복귀**하는 편이 정직하다. (UI 로 고른 `min` 자체는 합법 — 그대로 존중된다.)
-    /// - 상한 초과는 그대로 clamp — 위로 벗어난 값은 조여도 안정성 천장까지고, 아래로 벗어난
-    ///   값은 조이면 **데이터가 사라진다.** 파괴 방향이 비대칭이므로 처리도 비대칭이다.
+    /// The asymmetry is deliberate. For these limits, smaller means more gets deleted, so
+    /// pinning an out-of-range value to the legal minimum would fail in the most
+    /// destructive direction available. A value below the minimum was not chosen through
+    /// the interface either — treating it as invalid and restoring the default is the
+    /// honest reading. A legitimately chosen minimum is still respected.
+    ///
+    /// Above the maximum, ordinary clamping is correct: tightening downward only reaches
+    /// a stability ceiling, while tightening upward from below would erase data.
     pub const fn sanitize_destructive(&self, v: u64) -> u64 {
         if v < self.min {
             self.default
@@ -80,7 +72,7 @@ impl Bounds<usize> {
             v
         }
     }
-    /// 하한만 우회 (debug — 테스트 편의). 상한은 유지.
+    /// Relaxes the lower bound only; the ceiling still applies.
     pub const fn clamp_no_floor(&self, v: usize) -> usize {
         let v = if v == 0 { 1 } else { v };
         if v > self.max {
@@ -93,43 +85,42 @@ impl Bounds<usize> {
 
 const GB: u64 = 1_073_741_824;
 
-// ── 유형3 (사용자 설정) ─────────────────────────────────────────────────────
+// ── Settings a user chooses ─────────────────────────────────────────────────
 
-/// 클러스터(워크스페이스)**당** 인덱스 디스크 한도.
+/// How much disk one cluster's index may occupy.
 ///
-/// - `min` = 1GB — 그 아래는 **thrash**(방금 인덱싱한 것을 size cleanup 이 즉시 삭제 →
-///   "인덱싱은 되는데 검색하면 없음"). 다운로드 페이지 권장스펙에도 같은 값을 명시한다.
-///   **debug 빌드는 이 하한을 우회**한다(`clamp_no_floor`) — cleanup 테스트에 필요.
-/// - `max` = 100GB — 시스템 안정성 천장이자 **profile 부재 시 fail-open 값**.
-///   강제 수단이 삭제(cleanup)라, 서버 장애로 한도가 조여지면 사용자 데이터가 사라진다.
-///   → profile 이 없으면 **느슨한 쪽**으로 떨어져야 한다.
-/// - `default` = 10GB — 토픽당 5M건 × ~500B ≈ 2.5GB, 인덱싱 토픽 5개 worst 12.5GB 를 방어.
+/// The minimum exists to prevent thrashing: below it, cleanup removes what was just
+/// indexed, and the topic appears to index successfully while searching finds nothing.
+///
+/// The maximum doubles as the value used when no operator profile is available. This
+/// limit is enforced by deleting, so failing toward the looser end matters — a limit that
+/// tightens because a server was unreachable would destroy a user's index.
 pub const DISK_LIMIT_BYTES: Bounds<u64> = Bounds {
     min: GB,
     max: 100 * GB,
     default: 10 * GB,
 };
 
-/// size cleanup 주기 (초).
+/// How often the size limit is enforced, in seconds.
 ///
-/// - `min` = 60 — CPU thrash 방지.
-/// - `max` = 3,600 — 두 정리 사이에 인덱싱된 만큼은 한도를 넘는다
-///   (`실제 최대 ≈ 한도 + 인덱싱속도 × 주기`). 주기를 무한정 늘리면 **디스크 한도를 우회**할 수 있다.
+/// Whatever is indexed between two runs sits above the limit until the next one, so the
+/// real peak is roughly `limit + indexing rate × interval`. That is why the interval has
+/// a ceiling of its own: a long enough interval would make the size limit meaningless.
 pub const SIZE_CLEANUP_INTERVAL_SECS: Bounds<u64> = Bounds {
     min: 60,
     max: 3_600,
     default: 600,
 };
 
-/// CountBased 정책의 **파티션당 보관 건수** 기본값 (토픽별 `max_count` 미지정 시 폴백).
-/// 상위 클램프는 총량 캡이 담당 (`effective_max_count = min(N, topic_index_count_cap ÷ 파티션수)`).
+/// Default number of messages kept per partition when a topic does not set its own.
+/// The per-topic total is what actually bounds this.
 pub const KEEP_COUNT_PER_PARTITION: Bounds<u64> = Bounds {
     min: 1,
     max: TOPIC_INDEX_COUNT_CAP,
     default: 100_000,
 };
 
-// ── 유형1 (debug 튜닝 — settings.json 미저장) ───────────────────────────────
+// ── Tuning values, not user settings (never persisted) ──────────────────────
 
 pub const INDEXING_BATCH_SIZE: Bounds<usize> = Bounds {
     min: 100,
@@ -143,9 +134,10 @@ pub const AUTO_SYNC_SLICE_SIZE: Bounds<usize> = Bounds {
     default: 50_000,
 };
 
-/// retention cleanup **안전망 스윕** 주기 (초).
-/// 실질 정리는 이벤트 기반 — FE 가 earliest offset 전진을 감지하면 즉시 트리거한다.
-/// 이 주기는 "놓친 것을 줍는" 용도라 사용자 노브로 부적합 (유형1).
+/// How often the safety-net sweep for retention cleanup runs, in seconds.
+///
+/// Cleanup normally happens as soon as a topic is seen to have dropped messages; this
+/// sweep only picks up what that missed, which is why it is not a user-facing setting.
 pub const RETENTION_CLEANUP_INTERVAL_SECS: Bounds<u64> = Bounds {
     min: 60,
     max: 86_400,
@@ -170,14 +162,16 @@ pub const FOREGROUND_ACQUIRE_WAIT_SECS: Bounds<u64> = Bounds {
     default: 30,
 };
 
-/// RocksDB 압축 — 변경 시 재연결 필요 + 기존 SST 는 그대로라 사용자 노출 부적합 (유형1, 벤치용).
+/// Compression for the local index. Changing it applies to newly written data only and
+/// takes effect on reconnect, which makes it unsuitable as a user-facing setting.
 pub const COMPRESSION_MODES: [&str; 3] = ["none", "snappy", "zstd"];
 pub const COMPRESSION_MODE_DEFAULT: &str = "snappy";
 
-// ── 유형2 (요금제 — profile 이 `fix` 로 내려줌) ─────────────────────────────
+// ── Limits an operator profile may set ──────────────────────────────────────
 //
-// `limits.rs` 의 상수들은 이 bounds 의 `default` 를 가리킨다 (숫자 중복 금지).
-// min/max = **코드 고정 하드 범위** — profile 도 이 밖으로 못 나간다 (원격 데이터 불신).
+// The constants in `limits.rs` point at these defaults rather than repeating the numbers.
+// `min` and `max` are hard: a profile cannot move a value outside them, because a profile
+// arrives over the network and is not trusted on its own.
 
 pub const CLUSTER_PROFILE_CAP_B: Bounds<usize> = Bounds {
     min: 1,
@@ -204,27 +198,28 @@ pub const SEARCH_MAX_LEAVES_PER_GROUP_B: Bounds<usize> = Bounds {
     max: 10,
     default: 3,
 };
-/// BE 안전망 — FE 빌더를 우회(JSON/AI 빌더)해도 이 leaf 총수를 넘으면 거부.
+/// A backstop: a query carrying more leaves than this is refused, whatever composed it.
 pub const QUERY_MAX_LEAVES_B: Bounds<usize> = Bounds {
     min: 1,
     max: 64,
     default: 10,
 };
-/// 토픽당 인덱스 건수. **상향 불가** — max = 조회 캡(`ORDERED_LOCS_CAP`)과 동치이며,
-/// 넘기려면 loc IPC 페이로드(≈80MB/1M) 재설계가 선행돼야 한다. profile 은 tighten 만 가능.
+/// Messages kept in one topic's index. **Cannot be raised** — the maximum is the same
+/// number the engine will return in one response, so a higher value would only store what
+/// could never be read back. A profile may tighten it.
 pub const TOPIC_INDEX_COUNT_CAP_B: Bounds<u64> = Bounds {
     min: 1,
     max: TOPIC_INDEX_COUNT_CAP,
     default: TOPIC_INDEX_COUNT_CAP,
 };
 
-// ── profile 제약 (운영자/요금제가 내려주는 값) ──────────────────────────────
+// ── What a profile may say about one limit ──────────────────────────────────
 
-/// profile 이 한 항목에 거는 제약. **좁히는 방향으로만** 유효하다.
+/// A constraint a profile places on one item. It only ever narrows.
 ///
-/// - `Fix`   — 값 고정 (사용자 노브가 없는 유형2 항목).
-/// - `Max`   — 상한만 (사용자 노브가 있는 유형3 항목 — 그 안에서 사용자가 고른다).
-/// - `Allow` — 허용 집합 (열거형 항목. 숫자가 아니라 "max" 가 성립하지 않는다.)
+/// - `Fix` — pins the value, for items a user has no say in.
+/// - `Max` — caps it, leaving the user free below that.
+/// - `Allow` — a permitted set, for items that are choices rather than numbers.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "lowercase")]
 pub enum ProfileConstraint {
@@ -233,20 +228,23 @@ pub enum ProfileConstraint {
     Allow { values: Vec<String> },
 }
 
-/// profile 봉투의 `limits` 섹션 — **항목 id 를 키로 한 열린 맵**.
+/// The `limits` section of a profile, keyed by item id.
 ///
-/// 열린 맵인 이유: 나중에 새 제약을 추가할 때 **앱 재배포 없이** 서버만 바꾸면 되게.
-/// 앱은 **아는 키만** 적용하고 모르는 키는 무시한다 (구버전 앱도 안전).
+/// It is deliberately open-ended: a new constraint can be introduced without shipping a
+/// new build. Keys that are not recognised are ignored, so an older build stays safe when
+/// it meets one.
 pub type ProfileLimits = std::collections::HashMap<String, ProfileConstraint>;
 
-/// 요금제로 결정되는 값들 (유형2) — profile 해석 결과.
+/// The limits a profile resolved to.
 ///
-/// **profile 값도 hard bounds 로 clamp 한다.** 원격 데이터라 무조건 신뢰하지 않는다 —
-/// 운영자가 실수로 토픽당 5,000만 건을 내려도 앱은 5M 에서 멈춘다.
+/// **Profile values are clamped to the hard bounds as well.** A profile is remote data
+/// and is not trusted on its own: a mistyped value stops at the ceiling instead of
+/// becoming the new one.
 ///
-/// ⚠ `rename_all = "camelCase"` 필수 — `EffectiveLimitsView` 안에 **중첩**되므로 부모의
-/// rename 이 자식에 전파되지 않는다. 빠지면 FE 가 `plan.topicIndexCountCap` 을 `undefined` 로
-///읽고 렌더 중 크래시한다 (실제 발생 — tsc 는 BE↔FE 계약 불일치를 못 잡는다).
+/// ⚠ `rename_all = "camelCase"` is required here. This type nests inside
+/// `EffectiveLimitsView`, and the parent's rename does not reach a child — without it the
+/// nested keys go out in a different shape from every other key beside them, and a
+/// consumer reads them as missing.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PlanLimits {
@@ -260,9 +258,9 @@ pub struct PlanLimits {
 }
 
 impl Default for PlanLimits {
-    /// profile 부재 시 = 출시 기본값. 유형2 는 **비파괴적**(저장/등록을 거부할 뿐 데이터를 지우지
-    /// 않는다)이라 기본값으로 fail-closed 해도 안전하다.
-    /// (파괴적 한도 — 디스크/보관 건수 — 는 반대로 fail-open. `effective_disk_limit` 참조.)
+    /// Used when no profile is available. These limits only refuse to store or register
+    /// something — they never delete — so falling back to the defaults is safe here.
+    /// Limits that enforce by deleting do the opposite; see `effective_disk_limit`.
     fn default() -> Self {
         Self {
             cluster_profile_cap: CLUSTER_PROFILE_CAP_B.default,
@@ -276,7 +274,8 @@ impl Default for PlanLimits {
     }
 }
 
-/// profile 의 항목 id (봉투 키). FE/서버와 공유하는 **문자열 계약**.
+/// Item ids used as profile keys — a string contract shared with whatever supplies the
+/// profile.
 pub mod keys {
     pub const CLUSTER_COUNT: &str = "clusterCount";
     pub const INDEXED_TOPIC_COUNT: &str = "indexedTopicCount";
@@ -285,14 +284,14 @@ pub mod keys {
     pub const SEARCH_GROUPS: &str = "searchGroups";
     pub const SEARCH_LEAVES_PER_GROUP: &str = "searchLeavesPerGroup";
     pub const QUERY_LEAVES: &str = "queryLeaves";
-    /// 유형3 — 사용자 노브의 **상한**만 내린다 (`Max`).
+    /// A user setting: a profile caps it with `Max` rather than pinning it.
     pub const DISK_BYTES: &str = "maxIndexBytesPerCluster";
 }
 
-/// profile 의 `Fix` 값을 usize bounds 로 해석. `Fix` 가 아니거나 없으면 default.
+/// Reads a `Fix` value against its bounds; anything else falls back to the default.
 ///
-/// 유형2 항목에 `Max`/`Allow` 가 오면 **무시**한다 — 사용자 노브가 없는 항목에 상한은 의미가
-/// 없고, 서버 오설정으로 앱 동작이 흔들리면 안 된다.
+/// A `Max` or `Allow` on an item the user cannot set is ignored — a cap means nothing
+/// where there is no choice to cap, and a misconfigured profile should not move behaviour.
 fn fix_usize(limits: &ProfileLimits, key: &str, bounds: Bounds<usize>) -> usize {
     match limits.get(key) {
         Some(ProfileConstraint::Fix { value }) => bounds.clamp(*value as usize),
@@ -308,7 +307,8 @@ fn fix_u64(limits: &ProfileLimits, key: &str, bounds: Bounds<u64>) -> u64 {
 }
 
 impl PlanLimits {
-    /// profile 봉투 → 유형2 실효값. 모르는 키 / 허용 안 된 type 은 무시하고, 항상 bounds clamp.
+    /// Resolves a profile into effective limits. Unknown keys and constraint types that
+    /// do not apply are ignored, and every result is clamped to its bounds.
     pub fn resolve(limits: &ProfileLimits) -> Self {
         Self {
             cluster_profile_cap: fix_usize(limits, keys::CLUSTER_COUNT, CLUSTER_PROFILE_CAP_B),
@@ -330,62 +330,59 @@ impl PlanLimits {
     }
 }
 
-/// FE 가 보는 **실효 한도** — 3층 해석 결과 한 벌.
+/// The limits actually in force, resolved once.
 ///
-/// FE 는 상수를 직접 읽지 않고 이것만 본다 (`resourceLimits.ts` / `searchLimits.ts` /
-/// `tokenizeLimits.ts` 의 하드코딩 상수를 대체). 그래야 profile 이 바뀌면 화면도 따라온다.
+/// Callers read this rather than the constants directly; otherwise a profile could change
+/// while the interface went on showing the value it was compiled with.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EffectiveLimitsView {
-    /// 유형2 (요금제) — 읽기 전용 표시 + FE 사전 차단에 사용.
+    /// Limits the profile decided; read-only, and useful for refusing early.
     pub plan: PlanLimits,
-    /// 유형3 디스크 한도 실효값 (클러스터당).
+    /// The disk limit in force for one cluster.
     pub disk_limit_bytes: u64,
-    /// FE 입력 범위 — `disk_max` 는 `min(profile.max ?? 100GB, 100GB)`.
+    /// The range an input should offer for the above.
     pub disk_min_bytes: u64,
     pub disk_max_bytes: u64,
-    /// profile 이 `fix` 로 잠갔는가 — true 면 입력 비활성 + "운영자 설정" 배지.
+    /// Whether a profile pinned the disk limit; if so, it is not the user's to change.
     pub disk_locked: bool,
-    /// debug 빌드 여부 — 하한 우회 / 유형1·2 편집 노출 게이팅에 사용.
+    /// Whether this is a debug build.
     pub debug_build: bool,
 }
 
-/// 유형1 — **읽기 전용** 시스템 한도 한 벌 (설정 화면 debug 섹션 §G).
+/// A system limit, reported for diagnosis only.
 ///
-/// 왜 값만 보여주고 편집은 막나 (노출 규칙 ②, `docs/settings_layers_design.md` §9-0):
-/// 이 상수들은 **검색 핫패스 곳곳에 박힌 `const`** 라, 화면에서 바꿔도 코드가 따라오지 않는다.
-/// 편집 필드를 내면 거짓말이 된다. 성능 실험은 BenchPanel 이 담당하고, 여기서는 **진단용 표시**만.
+/// These are shown but never made editable. They are compiled in, so an input field would
+/// promise a change that nothing acts on.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SystemLimitEntry {
-    /// 코드 상수 이름 (진단용 — 코드에서 바로 찾을 수 있게).
+    /// The constant's name, so a report can be traced back to it.
     pub name: String,
     pub value: u64,
-    /// 한 줄 설명 (왜 이 값인가).
+    /// One line on why it is what it is.
     pub note: String,
 }
 
-/// 설정 화면(debug §G)이 보여줄 유형1 한도 목록. 값의 출처는 각 crate 의 `const`.
-/// 엔진이 채워 넣는다(여기서는 형태만 정의) — api-types 는 engine-impl 의 상수를 못 본다.
+/// The list of system limits to report. The engine fills this in; only its shape is
+/// defined here, since the constants live where they are used.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct SystemLimitsView {
     pub entries: Vec<SystemLimitEntry>,
 }
 
-/// 유형3 — 디스크 한도의 실효값.
+/// The disk limit actually in force: the user's value, held inside the hard range and
+/// then inside whatever the profile allows.
 ///
-/// `effective = clamp(사용자 설정, floor, min(profile.max ?? 100GB, 100GB))`
-///
-/// - profile 이 **없으면 상한은 100GB (fail-open)**. 이 한도의 강제 수단은 **삭제(cleanup)** 라,
-///   서버 장애로 한도가 조여지면 사용자 인덱스가 지워진다. 느슨한 쪽으로 실패해야 한다.
-/// - **하한 위반값은 `min` 이 아니라 `default`(10GB) 로 복귀**한다 (`sanitize_destructive`) —
-///   같은 이유(작을수록 더 지운다 + prod 사용자 의사가 아니다).
-/// - `debug_build = true` 면 **하한만** 우회 (cleanup/trim 테스트). 상한은 유지.
+/// With no profile the ceiling stays at its maximum rather than dropping — this limit is
+/// enforced by deleting, so a server that cannot be reached must not shrink anyone's
+/// index. A value below the floor returns to the default rather than to the floor, for
+/// the reason given on `sanitize_destructive`.
 pub fn effective_disk_limit(user_value: u64, limits: &ProfileLimits, debug_build: bool) -> u64 {
     let profile_max = match limits.get(keys::DISK_BYTES) {
         Some(ProfileConstraint::Max { value }) => (*value).min(DISK_LIMIT_BYTES.max),
-        // `Fix` = 운영자가 값을 잠근 경우 (기업 배포). 사용자 설정을 무시한다.
+        // Pinned by the profile: the user's own value does not apply.
         Some(ProfileConstraint::Fix { value }) => {
             let fixed = DISK_LIMIT_BYTES.clamp(*value);
             return fixed;
@@ -401,7 +398,7 @@ pub fn effective_disk_limit(user_value: u64, limits: &ProfileLimits, debug_build
     v.min(profile_max)
 }
 
-/// 디스크 한도의 FE 입력 상한 — `min(profile.max ?? 100GB, 100GB)`.
+/// The highest disk limit an input should offer.
 pub fn disk_limit_max(limits: &ProfileLimits) -> u64 {
     match limits.get(keys::DISK_BYTES) {
         Some(ProfileConstraint::Max { value }) => (*value).min(DISK_LIMIT_BYTES.max),
@@ -410,7 +407,7 @@ pub fn disk_limit_max(limits: &ProfileLimits) -> u64 {
     }
 }
 
-/// profile 이 디스크 한도를 잠갔는가 (`fix`).
+/// Whether a profile pinned the disk limit.
 pub fn disk_limit_locked(limits: &ProfileLimits) -> bool {
     matches!(
         limits.get(keys::DISK_BYTES),
@@ -419,7 +416,7 @@ pub fn disk_limit_locked(limits: &ProfileLimits) -> bool {
 }
 
 impl EffectiveLimitsView {
-    /// 3층 해석 한 벌 — `user_disk` = settings 층의 값(= 현재 GlobalConfig 값).
+    /// Resolves everything at once. `user_disk` is the value the user has chosen.
     pub fn resolve(user_disk: u64, limits: &ProfileLimits, debug_build: bool) -> Self {
         Self {
             plan: PlanLimits::resolve(limits),
@@ -449,31 +446,32 @@ mod tests {
 
     #[test]
     fn clamp_pins_to_range() {
-        assert_eq!(DISK_LIMIT_BYTES.clamp(0), GB); // 하한
-        assert_eq!(DISK_LIMIT_BYTES.clamp(200 * GB), 100 * GB); // 상한
+        assert_eq!(DISK_LIMIT_BYTES.clamp(0), GB); // floor
+        assert_eq!(DISK_LIMIT_BYTES.clamp(200 * GB), 100 * GB); // ceiling
         assert_eq!(DISK_LIMIT_BYTES.clamp(5 * GB), 5 * GB);
         assert_eq!(SIZE_CLEANUP_INTERVAL_SECS.clamp(1), 60);
         assert_eq!(SIZE_CLEANUP_INTERVAL_SECS.clamp(86_400), 3_600);
     }
 
-    /// debug 는 하한만 우회한다 — 상한(안정성)은 여전히 막힌다.
+    /// The floor may be relaxed; the ceiling may not.
     #[test]
     fn debug_bypasses_floor_but_not_ceiling() {
         assert_eq!(
             DISK_LIMIT_BYTES.clamp_no_floor(100 * 1_048_576),
             104_857_600
-        ); // 100MB 허용
-        assert_eq!(DISK_LIMIT_BYTES.clamp_no_floor(0), 1); // 0 은 방어
-        assert_eq!(DISK_LIMIT_BYTES.clamp_no_floor(500 * GB), 100 * GB); // 상한은 유지
+        ); // allowed
+        assert_eq!(DISK_LIMIT_BYTES.clamp_no_floor(0), 1); // zero is still guarded
+        assert_eq!(DISK_LIMIT_BYTES.clamp_no_floor(500 * GB), 100 * GB); // ceiling holds
     }
 
-    /// 보관 건수의 상한은 총량 캡과 같아야 한다 (같은 축을 두 값이 다르게 말하면 안 됨).
+    /// The per-partition ceiling must agree with the per-topic total — one axis, one
+    /// number.
     #[test]
     fn keep_count_ceiling_tracks_topic_cap() {
         assert_eq!(KEEP_COUNT_PER_PARTITION.max, TOPIC_INDEX_COUNT_CAP);
     }
 
-    // ── 해석기 (3층) ────────────────────────────────────────────────────────
+    // ── Resolution ──────────────────────────────────────────────────────────
 
     fn limits_of(pairs: &[(&str, ProfileConstraint)]) -> ProfileLimits {
         pairs
@@ -482,7 +480,7 @@ mod tests {
             .collect()
     }
 
-    /// profile 부재 = 출시 기본값 (유형2 는 비파괴적이라 fail-closed 안전).
+    /// No profile means the shipped defaults, which is safe for limits that only refuse.
     #[test]
     fn no_profile_yields_launch_defaults() {
         let plan = PlanLimits::resolve(&ProfileLimits::new());
@@ -492,7 +490,7 @@ mod tests {
         assert_eq!(plan.topic_index_count_cap, TOPIC_INDEX_COUNT_CAP);
     }
 
-    /// 유료 등급이 상향 — 단, **hard bounds 안에서만**.
+    /// A profile may raise a limit, but only inside the hard bounds.
     #[test]
     fn profile_fix_raises_within_bounds() {
         let plan = PlanLimits::resolve(&limits_of(&[
@@ -506,21 +504,21 @@ mod tests {
         assert_eq!(plan.indexed_topic_cap, 20);
     }
 
-    /// **원격 데이터를 신뢰하지 않는다** — 운영자가 천장 밖 값을 내려도 앱은 천장에서 멈춘다.
+    /// Remote data is not trusted: a value beyond the ceiling stops at the ceiling.
     #[test]
     fn profile_cannot_exceed_hard_ceiling() {
         let plan = PlanLimits::resolve(&limits_of(&[
             (keys::CLUSTER_COUNT, ProfileConstraint::Fix { value: 9_999 }),
             (
                 keys::TOPIC_INDEX_COUNT,
-                ProfileConstraint::Fix { value: 50_000_000 }, // 5,000만
+                ProfileConstraint::Fix { value: 50_000_000 },
             ),
         ]));
-        assert_eq!(plan.cluster_profile_cap, CLUSTER_PROFILE_CAP_B.max); // 10
-        assert_eq!(plan.topic_index_count_cap, TOPIC_INDEX_COUNT_CAP); // 5M — 상향 불가
+        assert_eq!(plan.cluster_profile_cap, CLUSTER_PROFILE_CAP_B.max);
+        assert_eq!(plan.topic_index_count_cap, TOPIC_INDEX_COUNT_CAP); // cannot be raised
     }
 
-    /// 유형2 항목에 `Max`/`Allow` 가 오면 무시 (사용자 노브가 없는 항목엔 상한이 무의미).
+    /// A constraint that does not apply to an item is ignored.
     #[test]
     fn wrong_constraint_type_is_ignored() {
         let plan = PlanLimits::resolve(&limits_of(&[
@@ -532,50 +530,50 @@ mod tests {
                 },
             ),
         ]));
-        assert_eq!(plan.cluster_profile_cap, 2); // 기본값 유지
+        assert_eq!(plan.cluster_profile_cap, 2); // default kept
         assert_eq!(plan.indexed_topic_cap, 5);
     }
 
-    /// 모르는 키는 무시 — 구버전 앱이 새 제약을 만나도 안전.
+    /// Unknown keys are ignored, so an older build meeting a newer profile stays safe.
     #[test]
     fn unknown_keys_are_ignored() {
         let plan = PlanLimits::resolve(&limits_of(&[(
-            "aiBuilderQuota",
+            "someLimitAddedLater",
             ProfileConstraint::Fix { value: 3 },
         )]));
         assert_eq!(plan, PlanLimits::default());
     }
 
-    /// 디스크 한도: profile 부재 → **fail-open (100GB 상한)**.
-    /// 강제 수단이 삭제라, 서버 장애로 조여지면 사용자 인덱스가 지워진다.
+    /// With no profile the disk ceiling stays at its maximum — tightening it because a
+    /// server was unreachable would delete someone's index.
     #[test]
     fn disk_limit_fails_open_without_profile() {
         let none = ProfileLimits::new();
-        assert_eq!(effective_disk_limit(50 * GB, &none, false), 50 * GB); // 사용자가 올려둔 값 유지
-        assert_eq!(effective_disk_limit(200 * GB, &none, false), 100 * GB); // 안정성 천장은 clamp
+        assert_eq!(effective_disk_limit(50 * GB, &none, false), 50 * GB); // user's value kept
+        assert_eq!(effective_disk_limit(200 * GB, &none, false), 100 * GB); // ceiling clamps
     }
 
-    /// **하한 위반값은 min 이 아니라 default(10GB) 로 복귀** — 파괴적 한도라 비대칭 (2026-07-15).
-    /// min(1GB)으로 붙이면 "가장 많이 지우는" 방향으로 실패한다. 그리고 하한 미만은 애초에
-    /// prod 사용자의 의사가 아니다(UI 가 막는다) → 무효값 → 기본값 복귀.
+    /// A value below the floor returns to the default, not to the floor. Pinning it to
+    /// the floor would fail in the direction that deletes the most, and a value that low
+    /// was never chosen through the interface in the first place.
     #[test]
     fn sub_floor_persisted_value_falls_back_to_default_not_floor() {
         let none = ProfileLimits::new();
-        assert_eq!(effective_disk_limit(100 * 1_048_576, &none, false), 10 * GB); // 100MB → 10GB
+        assert_eq!(effective_disk_limit(100 * 1_048_576, &none, false), 10 * GB);
         assert_eq!(effective_disk_limit(0, &none, false), 10 * GB);
-        // 사용자가 UI 로 고른 합법적 최소(1GB)는 그대로 존중된다.
+        // A legitimately chosen minimum is respected as it stands.
         assert_eq!(effective_disk_limit(GB, &none, false), GB);
     }
 
-    /// profile 이 상한을 좁히면 사용자 값이 그 안으로 clamp (다운그레이드).
+    /// A profile that lowers the ceiling pulls the user's value down with it.
     #[test]
     fn disk_limit_tightened_by_profile_max() {
         let free = limits_of(&[(keys::DISK_BYTES, ProfileConstraint::Max { value: 10 * GB })]);
         assert_eq!(effective_disk_limit(50 * GB, &free, false), 10 * GB);
-        assert_eq!(effective_disk_limit(3 * GB, &free, false), 3 * GB); // 그 아래는 사용자 자유
+        assert_eq!(effective_disk_limit(3 * GB, &free, false), 3 * GB); // free below that
     }
 
-    /// profile `Fix` = 운영자 잠금 (기업 배포) — 사용자 설정을 무시한다.
+    /// A pinned value overrides whatever the user chose.
     #[test]
     fn disk_limit_locked_by_profile_fix() {
         let locked = limits_of(&[(keys::DISK_BYTES, ProfileConstraint::Fix { value: 5 * GB })]);
@@ -583,16 +581,16 @@ mod tests {
         assert_eq!(effective_disk_limit(1 * GB, &locked, false), 5 * GB);
     }
 
-    /// **FE 계약 고정** — `EffectiveLimitsView` 는 FE 가 그대로 읽는 JSON 이다.
-    /// 중첩된 `PlanLimits` 에 `rename_all` 을 빠뜨려 snake_case 로 내려갔고, FE 가
-    /// `plan.topicIndexCountCap` 을 undefined 로 읽어 **설정 드로어가 렌더 중 크래시**했다
-    /// (2026-07-15). tsc 는 BE↔FE 계약 불일치를 못 잡으므로 **키 이름을 여기서 고정**한다.
+    /// Pins the JSON key names. This type is read as-is by callers, and a nested struct
+    /// that loses its rename goes out in a different shape from the keys beside it —
+    /// which a consumer sees as missing values rather than as an error. Nothing on the
+    /// consuming side can catch that, so it is fixed here.
     #[test]
     fn effective_limits_view_serializes_camel_case_for_fe() {
         let v = EffectiveLimitsView::resolve(10 * GB, &ProfileLimits::new(), false);
         let json = serde_json::to_value(&v).unwrap();
 
-        // 최상위
+        // Top level.
         for key in [
             "plan",
             "diskLimitBytes",
@@ -601,9 +599,12 @@ mod tests {
             "diskLocked",
             "debugBuild",
         ] {
-            assert!(json.get(key).is_some(), "최상위 키 누락/이름 불일치: {key}");
+            assert!(
+                json.get(key).is_some(),
+                "missing or renamed top-level key: {key}"
+            );
         }
-        // **중첩된 plan** — 부모의 rename 은 자식에 전파되지 않는다.
+        // The parent's rename does not reach the nested struct.
         let plan = json.get("plan").unwrap();
         for key in [
             "clusterProfileCap",
@@ -614,13 +615,16 @@ mod tests {
             "searchMaxLeavesPerGroup",
             "queryMaxLeaves",
         ] {
-            assert!(plan.get(key).is_some(), "plan 키 누락/이름 불일치: {key}");
+            assert!(
+                plan.get(key).is_some(),
+                "missing or renamed plan key: {key}"
+            );
         }
-        // snake_case 가 섞여 나가면 FE 는 undefined 를 읽는다.
+        // A stray snake_case key reads as absent on the other side.
         assert!(plan.get("cluster_profile_cap").is_none());
     }
 
-    /// debug 는 하한만 우회 — 상한(안정성)과 profile 제약은 그대로.
+    /// Only the floor is relaxed; the ceiling and the profile's cap still hold.
     #[test]
     fn debug_bypasses_floor_only() {
         let none = ProfileLimits::new();

@@ -15,7 +15,8 @@ impl FieldMgmtApi for MockEngine {
         topic: &str,
         fields: Vec<IndexedFieldInput>,
     ) -> Result<(), EngineError> {
-        // 어절 권위는 indexed_fields 의 tokenize=true (실 엔진과 동일 — tokenize_fields 흡수·클리어).
+        // The field list is what decides; the separate list is folded into it and cleared,
+        // as a real engine does.
         let tok: Vec<String> = fields
             .iter()
             .filter(|f| f.tokenize)
@@ -31,8 +32,7 @@ impl FieldMgmtApi for MockEngine {
         topic: &str,
         _fields: Vec<String>,
     ) -> Result<usize, EngineError> {
-        // mock 은 fixture 가 이미 적재됨 — 어절 상태는 set_indexed_fields 에서 반영됨.
-        // 재인덱싱 "건수" 만 보고(FE 의 "N건 재인덱싱 완료" 표시용).
+        // Nothing to rebuild — only a count, so the caller has something to report.
         Ok(self
             .store
             .topic(topic)
@@ -80,7 +80,7 @@ impl FieldMgmtApi for MockEngine {
         topic: &str,
         fields: Vec<String>,
     ) -> Result<(), EngineError> {
-        // picker 경로(인덱싱 전 어절 지정). mock 은 즉시 검색에 반영.
+        // Takes effect immediately, which is the thing worth showing.
         self.store.set_tokenized(topic, fields);
         Ok(())
     }

@@ -1,4 +1,4 @@
-//! `StorageApi` mock impl — 모든 mutation 은 no-op + dummy 카운터 반환.
+//! Storage operations that report success without changing anything.
 
 use async_trait::async_trait;
 use kaflow_api_traits::engine::StorageApi;

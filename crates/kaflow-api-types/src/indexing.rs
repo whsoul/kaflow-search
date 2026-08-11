@@ -1,4 +1,4 @@
-//! Indexing / cleanup 진행 이벤트 DTO.
+//! Progress and results of indexing and of reclaiming space.
 
 use crate::decode_failure::DecodeFailureContext;
 use crate::full_resync::FullResyncTrigger;
@@ -8,35 +8,33 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase")]
 pub struct OpenKafkaTopicResponse {
     pub topic: String,
-    /// kafka 클러스터 기준 실제 total (sum of latest - earliest per partition)
+    /// What the cluster holds.
     pub kafka_total_count: i64,
-    /// 이번 호출로 새로 인덱싱된 메시지 수
+    /// Newly indexed by this call.
     pub newly_indexed: usize,
     pub key_fields: Vec<String>,
     pub payload_fields: Vec<String>,
     pub header_fields: Vec<String>,
-    /// Retention Cleanup으로 삭제된 I-key 수
+    /// Index entries removed.
     pub cleaned_up_i: usize,
-    /// Retention Cleanup으로 삭제된 M-key 수
+    /// Message records removed.
     pub cleaned_up_m: usize,
-    /// Full resync 필요 감지 결과. 비어있으면 정상 흐름.
-    /// 비어있지 않으면 ILM 이 실행되지 않았으며, 프론트에서 사용자 승인 후
-    /// drop + 재호출하거나 무시해야 한다.
+    /// Reasons the index may no longer line up with the topic. **When this is not empty,
+    /// nothing was cleaned up** — the situation needs deciding before anything is removed,
+    /// since the wrong choice discards an index that was fine.
     #[serde(default)]
     pub full_resync_triggers: Vec<FullResyncTrigger>,
-    /// Deserialize 실패로 sync 가 partial commit 후 중단된 경우의 컨텍스트.
-    /// Some 이면 frontend 가 모달로 표시 + 사용자 결정에 따른 별도 명령 호출.
-    /// 정책: `docs/deserialize_failure_policy.md`.
+    /// Set when indexing stopped on a message it could not decode. What was indexed
+    /// before that point is kept.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub decode_failure_context: Option<DecodeFailureContext>,
-    /// `max_messages` cap 에 걸려 slice 단위로 조기 종료됐고 아직 더 인덱싱할
-    /// 데이터가 남았을 수 있음(round-robin 자동싱크가 다음 라운드에 이어감).
-    /// cap 미지정(None) 이거나 자연 종료면 항상 false.
+    /// Whether it stopped at the requested limit rather than at the end, so there may be
+    /// more to do. False when no limit was given.
     #[serde(default)]
     pub has_more: bool,
 }
 
-/// kafka-cleanup-progress 이벤트 페이로드.
+/// Progress while space is being reclaimed.
 /// phase: "scanning" | "cleaning" | "done"
 #[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -46,60 +44,62 @@ pub struct CleanupProgressEvent {
     pub phase: String,
 }
 
-// ── compact dedup 값 히스토리 (KC view) ────────────────────────────────────
+// ── History kept for a compacted topic ──────────────────────────────────────
 
-/// compact 토픽 dedup-on-write 가 (partition, key) 별로 보관한 값 히스토리.
-/// KC 레코드의 public view — `docs/compact_topic_sync_repair_policy.md` §이력 보관.
+/// What is remembered about one key of a compacted topic, where each new value replaces
+/// the last.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CompactKeyHistory {
-    /// 이 key 의 현재 최신 offset.
+    /// Where its current value sits.
     pub latest_offset: u64,
-    /// superseded 누적 횟수 (cap 무관 — 리스트가 잘려도 총량 보존).
+    /// How many times it has been replaced. Kept even when the list below is trimmed.
     pub superseded_total: u64,
-    /// 최신 레코드가 tombstone(삭제 마커)인지 — true 면 이 key 는 "삭제됨" 상태.
+    /// Whether the latest record deletes the key rather than setting it.
     #[serde(default)]
     pub latest_is_tombstone: bool,
-    /// 최근 superseded 버전 (최신순, 개수 cap + byte budget 적용된 보관분).
+    /// Recent replaced versions, newest first. Only as many as fit are kept.
     pub entries: Vec<CompactSupersededVersion>,
 }
 
-/// superseded 된 옛 버전 하나.
+/// One replaced version.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CompactSupersededVersion {
     pub offset: u64,
     pub ts_millis: u64,
-    /// 삭제 직전 값 (field, leaf value). byte budget 강등 시 None (offset/ts breadcrumb 만).
+    /// The value it held, where there was room to keep it. `None` leaves only the
+    /// position and the time.
     pub field_values: Option<Vec<(String, String)>>,
-    /// true = tombstone(삭제 마커) 자체의 breadcrumb — 값이 원래 없음 (budget 강등과 구분).
+    /// True when the record was a deletion, which has no value to begin with — this is
+    /// what tells that apart from a value that was dropped for space.
     #[serde(default)]
     pub tombstone: bool,
 }
 
-// ── compact 삭제 key 뷰 (KC 스캔) ──────────────────────────────────────────
+// ── Keys that have been deleted ─────────────────────────────────────────────
 
-/// 삭제됨(tombstone latest) key 한 건 — 간편검색 "대상 유형: 삭제됨" 리스트 row.
-/// M/I/R 에 흔적이 없는 key 라 KC 가 유일한 출처다.
+/// A key whose latest record deletes it.
+///
+/// Nothing else in the index refers to such a key — the history above is the only place
+/// it survives, which is why it is listed separately rather than searched for.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CompactDeletedKeyRow {
     pub partition: u32,
-    /// key deserializer 가 만든 key 문자열 (KC 키의 key_raw).
+    /// The key as its deserializer rendered it.
     pub key_raw: String,
-    /// tombstone(삭제 마커) 레코드의 offset (= KC latest_offset).
+    /// Where the deletion sits.
     pub tombstone_offset: u64,
-    /// 삭제 시각 — tombstone breadcrumb 의 ts. 이력 cap 으로 breadcrumb 이
-    /// 밀려났으면 None (offset 만 앎).
+    /// When it was deleted, where that is still known.
     pub deleted_ts_millis: Option<u64>,
-    /// 이 key 의 superseded 누적 횟수 (값 대체 총량 — tombstone 은 미포함).
+    /// How many times it was replaced before being deleted.
     pub superseded_total: u64,
-    /// 삭제 직전 마지막 실제 값 (보관돼 있으면) — 리스트 요약 표시용.
+    /// The last value it held, where that is still kept.
     pub last_value: Option<CompactSupersededVersion>,
 }
 
-/// 삭제 key 스캔 재개 커서 — KC 저장 순서(partition asc, key asc)의 마지막 위치.
-/// 다음 페이지는 이 위치 **다음**부터.
+/// Where a listing left off. The next page starts after this position.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CompactDeletedKeyCursor {
@@ -107,13 +107,15 @@ pub struct CompactDeletedKeyCursor {
     pub key_raw: String,
 }
 
-/// 삭제 key 스캔 한 페이지. `next_cursor = None` 이면 끝까지 봤다는 뜻.
-/// 페이지가 덜 찼는데 next_cursor 가 있으면 스캔 예산 소진(계속하려면 재호출).
+/// One page of deleted keys. `next_cursor` of `None` means the end was reached.
+///
+/// ⚠️ A short page with a cursor still set means the search ran out of budget, not that
+/// there is nothing more — ask again rather than concluding the list is complete.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CompactDeletedKeysPage {
     pub rows: Vec<CompactDeletedKeyRow>,
     pub next_cursor: Option<CompactDeletedKeyCursor>,
-    /// 이번 호출이 살펴본 KC 엔트리 수 (예산/진행 진단용).
+    /// How many entries were examined. Diagnostic only.
     pub scanned: u64,
 }

@@ -1,29 +1,28 @@
-//! 화면 내 찾기 — 우클릭 네이티브 컨텍스트 메뉴.
+//! The right-click menu for find-on-page.
 //!
-//! FE(FindBar)가 우클릭 시 클릭 지점의 scope 정보(has_scope/to_multi)와 **표시 라벨 전체**를
-//! 넘겨 호출한다 (i18n — 라벨 문자열은 FE Lingui 카탈로그가 단일 출처, 2026-07-15 계약 변경).
-//! 메뉴는 Tauri 네이티브 팝업(시스템 메뉴 모양)으로 뜨고, 항목 선택은 Builder 의
-//! `on_menu_event`(lib.rs)에서 `find_menu` 이벤트로 FE 에 전달된다. **항목 id 는 불변 계약**:
-//!   - "scope" / "all"        : 찾기 범위(영역/전체)
-//!   - "to_multi" / "to_multi_drill" : 상세검색으로 전환(검색조건 / 검색+drill조건)
-//! (디버그 빌드에서는 devtools 항목도 포함.)
+//! ⚠️ **The labels are passed in, not written here.** Translated text has one home, and it
+//! is not this side — a label built here would be the one string in the menu that never
+//! changed language.
+//!
+//! **The item ids are a fixed contract** (`scope`, `all`, `to_multi`, `to_multi_drill`):
+//! a selection is reported back by id, so renaming one silently breaks the response.
 
 use serde::Deserialize;
 use tauri::menu::{ContextMenu, Menu, MenuItem, PredefinedMenuItem};
 
-/// FE 가 현재 로케일로 번역해 전달하는 메뉴 라벨 묶음.
+/// The menu labels, already translated by the caller.
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FindMenuLabels {
-    /// "이 영역에서 찾기 (영역명)" — scope 라벨 포함 완성 문자열.
+    /// Search within the clicked area — a complete phrase, area name included.
     pub scope: String,
-    /// "화면에서 찾기"
+    /// Search the whole page.
     pub all: String,
-    /// "상세검색으로 전환 (검색 조건)"
+    /// Move to advanced search, carrying the query.
     pub to_multi: String,
-    /// "상세검색으로 전환 (검색+drill 조건)"
+    /// Move to advanced search, carrying the query and the drill.
     pub to_multi_drill: String,
-    /// "검사 (개발자 도구)" — debug 빌드에서만 사용.
+    /// Open developer tools. Debug builds only.
     pub devtools: String,
 }
 
@@ -32,7 +31,7 @@ pub fn show_find_context_menu(
     app: tauri::AppHandle,
     window: tauri::Window,
     has_scope: bool,
-    // "" = 없음 / "results" = 결과영역 검색조건 / "drill" = drill 검색+drill조건
+    // "" = none, "results" = the results area, "drill" = a drilled-into range
     to_multi: String,
     labels: FindMenuLabels,
 ) -> Result<(), String> {
@@ -45,7 +44,7 @@ pub fn show_find_context_menu(
     menu.append(&find_scope).map_err(|e| e.to_string())?;
     menu.append(&find_all).map_err(|e| e.to_string())?;
 
-    // 상세검색으로 전환 — 결과 영역(검색 후)에서만.
+    // Offered only where there are results to move across with.
     if to_multi == "results" || to_multi == "drill" {
         let (id, text) = if to_multi == "drill" {
             ("to_multi_drill", &labels.to_multi_drill)

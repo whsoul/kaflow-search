@@ -1,4 +1,4 @@
-//! Indexing API — Kafka → RocksDB 인덱싱 코어.
+//! Reading a topic into the index.
 
 use async_trait::async_trait;
 use kaflow_api_types::{
@@ -10,13 +10,15 @@ use crate::error::EngineError;
 
 #[async_trait]
 pub trait IndexingApi: Send + Sync {
-    /// 토픽 선택 시 호출. partition offset 조회 + IncrementalSync + retention cleanup.
-    /// `skip_resync_check = Some(true)` 면 full-resync 감지 skip.
-    /// `decode_failure_mode` 는 deserialize 실패 처리 모드. None → `Stop`.
-    /// `max_messages = Some(n)` 이면 이번 호출에서 최대 n 건까지만 인덱싱하고 조기
-    /// 종료(slice) — 응답 `has_more` 로 잔여 여부 전달, offset 은 자동 이어받음.
-    /// None = 무제한(전건 catch-up, 포그라운드/수동싱크 기본). tighten-only 정책 노브.
-    /// 정책 전문: `docs/deserialize_failure_policy.md`.
+    /// Opens a topic: works out where indexing stands, brings it up to date, and lets
+    /// retention remove what the cluster no longer has.
+    ///
+    /// `max_messages` stops early after that many, with `has_more` saying whether there is
+    /// more to do; the next call resumes on its own. `None` runs to the end.
+    ///
+    /// `skip_resync_check` bypasses the checks that decide whether the index still matches
+    /// the topic. ⚠️ Only for a caller that has already made that decision — skipping it
+    /// blindly is how two different topics end up in one index.
     async fn open_kafka_topic(
         &self,
         workspace: &str,
@@ -27,20 +29,25 @@ pub trait IndexingApi: Send + Sync {
         max_messages: Option<u64>,
     ) -> Result<OpenKafkaTopicResponse, EngineError>;
 
-    /// 진행 중인 인덱싱을 협력적으로 중단 (F1).
-    /// 호출 즉시 `Ok(())` 반환 — 실제 종료는 indexer 가 현재 batch 를 마무리한 뒤.
-    /// 해당 토픽이 인덱싱 중이 아니면 no-op (idempotent).
-    /// FE 는 `kafka-indexing-progress` 이벤트로 실제 종료 감지.
+    /// Asks indexing to stop.
     ///
-    /// atomic batch 보장: 진행 중이던 batch 까지는 commit 되고 멈추므로
-    /// 다음 진입 시 `IncrementalSync` 가 `max_indexed_offset` 부터 자동 이어받음.
+    /// **Must return without waiting for indexing to end** — a caller watches the progress
+    /// events for that. Stopping a topic that is not indexing is allowed and does nothing.
+    ///
+    /// ⚠️ **What is indexed when it stops has to stand on its own.** Resuming afterwards
+    /// must need no reconciliation: nothing left half-written, and nothing already read
+    /// left out of the index.
+    ///
+    /// Whether work in flight is finished or thrown away is left to the implementation —
+    /// **nothing may depend on either.**
     async fn cancel_indexing(&self, workspace: &str, topic: &str) -> Result<(), EngineError>;
 
-    /// 사용자가 "skip 1건" 결정 시 placeholder 메시지를 인라인으로 1건 영속화.
+    /// Records a placeholder for one message that would not decode, so indexing can pass
+    /// over it rather than stopping again on the same message.
     ///
-    /// 정상 메시지와 동일한 M-key + 시스템 I-key (3종) 만 가진다. raw bytes 는
-    /// 보존하지 않으며 사후 raw 가 필요하면 Kafka 에서 on-demand fetch (retention 이내).
-    /// 정책: `docs/deserialize_failure_policy.md`.
+    /// The placeholder occupies the message's position and is searchable by the reserved
+    /// fields alone. The bytes are not kept — they can still be read from the cluster for
+    /// as long as it holds them.
     async fn record_placeholder(
         &self,
         workspace: &str,
@@ -51,9 +58,10 @@ pub trait IndexingApi: Send + Sync {
         reason: String,
     ) -> Result<(), EngineError>;
 
-    /// compact 토픽 dedup 이 (partition, key) 별로 보관한 값 히스토리(KC) 조회.
-    /// `key_raw` 는 key deserializer 가 만든 문자열 (인덱싱 시점과 동일 규칙).
-    /// KC 레코드가 없으면(비 compact 토픽 / dedup 도입 전 인덱싱 / 미등장 key) `None`.
+    /// The history kept for one key of a compacted topic.
+    ///
+    /// `key_raw` must be the key as its deserializer renders it — the same form indexing
+    /// used, or nothing will match. `None` where no history is held for it.
     async fn fetch_compact_key_history(
         &self,
         workspace: &str,
@@ -62,11 +70,12 @@ pub trait IndexingApi: Send + Sync {
         key_raw: &str,
     ) -> Result<Option<CompactKeyHistory>, EngineError>;
 
-    /// 삭제됨(latest=tombstone) key 페이지 조회 — 간편검색 "대상 유형: 삭제됨" producer.
-    /// M/I/R 미기록 key 라 KC 스캔이 유일한 출처. 순서 = (partition asc, key asc).
-    /// `key_query` = key_raw 부분 문자열(contains) 필터("" = 전체 — json 구조체 key 도
-    /// 중간 값으로 검색 가능), `partitions` = 비면/None 전 파티션,
-    /// `cursor` = 직전 페이지 `next_cursor`. `limit` 은 tighten-only (라이브러리 천장 있음).
+    /// One page of the keys that have been deleted.
+    ///
+    /// These cannot be found by searching — nothing else in the index refers to them — so
+    /// this is the only way to list them. `key_query` matches anywhere within the key
+    /// rather than at its start, which is what makes a structured key searchable by a part
+    /// of it. `limit` may tighten the page size but not raise it past the engine's own.
     async fn fetch_compact_deleted_keys_page(
         &self,
         workspace: &str,

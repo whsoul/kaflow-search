@@ -1,9 +1,9 @@
-//! Storage Tauri 어댑터 — `Arc<dyn KafkaToolEngine>` 경유.
+//! Storage commands.
 
 use kaflow_api_traits::KafkaToolEngine;
 use std::sync::Arc;
 
-/// 인덱스가 저장되는 볼륨의 시스템 디스크 총량/여유 (바이트).
+/// Total and free space on the volume the index lives on.
 #[derive(serde::Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DiskSpace {
@@ -11,10 +11,10 @@ pub struct DiskSpace {
     pub free_bytes: u64,
 }
 
-/// 로컬 머신 디스크 총량/여유 조회. **엔진 trait 을 거치지 않는다** — 로컬 디스크는
-/// desktop shell 관심사라 공개 엔진 계약(`KafkaToolEngine`)에 넣지 않는다. offline 에서도 동작.
-/// 인덱스 볼륨 기준(`~/.kaflow/<workspace>`); 아직 없으면 베이스→홈 순 폴백.
-/// 경로는 `crate::app_paths` 단일 출처 (B-1 seam).
+/// Reads the local disk directly rather than through the engine: what is on this machine
+/// is a desktop concern, and this has to answer when nothing is reachable.
+///
+/// Measured at the workspace, falling back outward when it does not exist yet.
 #[tauri::command]
 pub async fn get_disk_space(workspace: String) -> Result<DiskSpace, String> {
     let base = crate::app_paths::app_data_dir()?;
@@ -24,7 +24,7 @@ pub async fn get_disk_space(workspace: String) -> Result<DiskSpace, String> {
     } else if base.exists() {
         base
     } else {
-        // 둘 다 없으면 홈 볼륨 기준 — base 의 부모가 곧 홈.
+        // With neither present, the home volume is the honest answer.
         base.parent()
             .map(std::path::Path::to_path_buf)
             .ok_or_else(|| "home directory not found".to_string())?

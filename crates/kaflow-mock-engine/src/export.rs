@@ -1,6 +1,7 @@
-//! `ExportApi` mock impl — 자기 자신의 검색/본문 fetch(trait 메서드) 를 재사용해 fixture 행을
-//! 파일로 내보낸다. **압축 미지원**(mock 은 infra-free: flate2/zstd 미의존) — 포맷 무관 무압축 기록.
-//! CI 컴파일 검증 + 데모용. 실 스트리밍/압축/취소는 engine-impl 담당.
+//! Writing results to a file, by searching itself and formatting what comes back.
+//!
+//! **Compression is not offered** — providing it would mean taking on a dependency, which
+//! this crate does not do. Files are written uncompressed whatever was asked for.
 
 use async_trait::async_trait;
 use kaflow_api_traits::engine::{ExportApi, SearchApi};
@@ -16,8 +17,8 @@ impl ExportApi for MockEngine {
         workspace: &str,
         req: ExportRequest,
     ) -> Result<ExportResult, EngineError> {
-        // loc 전량(limit=None) — 자기 SearchApi 재사용(단일 토픽). fixture 가 작아 한 번에.
-        // multi(searchQuery) → browse(빈 쿼리) → keyword. engine-impl 3모드 분기와 대응.
+        // Everything at once: the fixture is small enough that streaming would be
+        // ceremony. Which search to run follows from what was given.
         let topics = [req.topic.clone()];
         let locs = if let Some(sq) = req.search_query.clone() {
             self.multi_search_page(workspace, sq, None, None, None, usize::MAX)
@@ -48,7 +49,7 @@ impl ExportApi for MockEngine {
             .await?
             .locs
         };
-        // 본문 = M-key 재조립(RocksDB only). engine-impl 과 동일 정책(오프라인 동작).
+        // Bodies come from what is stored, so exporting works with nothing reachable.
         let bodies = self.fetch_meta_rows(workspace, &req.topic, locs).await?;
 
         let mut out = String::new();

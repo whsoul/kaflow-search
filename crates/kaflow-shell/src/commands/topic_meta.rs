@@ -1,4 +1,4 @@
-//! Topic / Cluster meta read Tauri 어댑터 — 모든 호출은 `Arc<dyn KafkaToolEngine>` 경유.
+//! Commands that read a topic or its cluster. None of them change anything.
 
 use kaflow_api_traits::KafkaToolEngine;
 use kaflow_api_types::{
@@ -53,7 +53,7 @@ pub async fn list_kafka_topics(
         .map_err(|e| e.into_string())
 }
 
-/// 클러스터 토폴로지(브로커 + 토픽 파티션 배치) — 맵 화면 정식 기능(prod 빌드 포함).
+/// The cluster's shape: its brokers, and where a topic's partitions sit.
 #[tauri::command]
 pub async fn fetch_cluster_topology(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
@@ -78,7 +78,7 @@ pub async fn get_topic_message_count(
         .map_err(|e| e.into_string())
 }
 
-/// 여러 토픽 메시지 카운트 배치 — picker 오픈 시 전 토픽 일괄 (연결/메타데이터 1회).
+/// Message counts for many topics at once, in a single request.
 #[tauri::command]
 pub async fn list_topic_message_counts(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
@@ -103,7 +103,7 @@ pub async fn get_topic_size_profile(
         .map_err(|e| e.into_string())
 }
 
-/// 어절(tokenize) 대상 필드 추천 — picker 시점(인덱싱 전) 샘플 기반.
+/// Which fields look worth splitting into words, judged from a sample.
 #[tauri::command]
 pub async fn suggest_tokenize_fields(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,

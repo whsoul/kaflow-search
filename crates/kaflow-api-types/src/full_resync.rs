@@ -1,14 +1,8 @@
-//! Full resync 트리거 DTO — `kafka-ilm::full_resync_detector::detect` 가 반환한다.
+//! Signs that a topic is no longer the one that was indexed, and that the index should be
+//! rebuilt rather than continued.
 //!
-//! `docs/index_full_resync_policy.md` 에 정의된 트리거 중 토픽 단위 (Tier 1+2):
-//! - `TopicIdChanged` — topicId 변경 (토픽 재생성 의심)
-//! - `PartitionCountChanged` — 파티션 수 변경 (주소 체계 변경)
-//! - `TopicTypeChanged` — cleanup.policy / topic_type 변경 (해석 규칙 변경)
-//! - `LatestOffsetRegression` — 현재 latest < stored latestIndexedOffsets+1 (append-only 깨짐)
-//! - `EarliestOffsetRegression` — 현재 earliest < stored earliest (재생성 대체 신호;
-//!   topicId 비교가 불가능한 구버전(<2.8) 클러스터에서만 평가됨)
-//!
-//! 프론트 노출을 전제로 camelCase 직렬화. `rename_all_fields` 로 variant 내부 필드까지 변환.
+//! Each of these means the same offsets no longer refer to the same messages, so carrying
+//! on would mix two topics together in one index.
 
 use serde::{Deserialize, Serialize};
 
@@ -19,21 +13,21 @@ use serde::{Deserialize, Serialize};
     rename_all_fields = "camelCase"
 )]
 pub enum FullResyncTrigger {
-    /// topicId 가 기존 값과 다름.
+    /// The cluster's id for the topic changed — it was recreated.
     TopicIdChanged { prev: String, curr: String },
-    /// 파티션 수가 다름.
+    /// The number of partitions changed, so messages are addressed differently.
     PartitionCountChanged { prev: usize, curr: usize },
-    /// cleanup.policy / topic_type 이 다름.
+    /// The topic is configured differently and has to be read differently.
     TopicTypeChanged { prev: String, curr: String },
-    /// 해당 파티션의 현재 broker latest 가 기존 indexed latest 보다 작음.
+    /// The cluster's latest offset went backwards, which appending alone cannot do.
     LatestOffsetRegression {
         partition: u32,
         prev_indexed_latest: i64,
         curr_latest: i64,
     },
-    /// 해당 파티션의 현재 broker earliest 가 저장된 earliest 보다 작음.
-    /// 정상 운영에서 log start offset 은 감소하지 않으므로(retention 은 전진만)
-    /// 토픽 재생성 신호. topicId 비교가 불가능할 때만 평가되는 대체 신호.
+    /// The earliest offset went backwards. Retention only ever moves it forward, so this
+    /// says the topic was recreated. Used only where the cluster is too old to report a
+    /// topic id, which is the stronger signal.
     EarliestOffsetRegression {
         partition: u32,
         prev_earliest: i64,

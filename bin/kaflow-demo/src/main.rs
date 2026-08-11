@@ -41,8 +41,7 @@ fn main() {
             _ => {}
         })
         .setup(|app| {
-            let engine: Arc<dyn KafkaToolEngine> =
-                Arc::new(kaflow_mock_engine::MockEngine::new());
+            let engine: Arc<dyn KafkaToolEngine> = Arc::new(kaflow_mock_engine::MockEngine::new());
             app.manage(engine);
             Ok(())
         })

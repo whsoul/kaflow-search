@@ -1,7 +1,5 @@
-//! Build-time feature 정보 — FE 가 UI 게이팅에 사용.
-//!
-//! `debug-api` 가 꺼진 production 빌드에서는 BenchPanel 진입 버튼 등 디버그 UI 를 숨기기 위해
-//! FE 가 앱 시작 시 본 command 를 한 번 호출해 분기한다.
+//! What this build is, so a caller can adapt to it rather than offering what is not
+//! there.
 
 use kaflow_api_traits::{EngineCapabilities, KafkaToolEngine};
 use serde::Serialize;
@@ -12,9 +10,10 @@ pub fn is_debug_build_enabled() -> bool {
     cfg!(feature = "debug-api")
 }
 
-/// 주입된 엔진이 스스로 밝히는 신원/능력. FE 는 `engineId` 로 mock 데모 빌드를 식별해
-/// "로컬 파일 데모" 배지를 띄운다 (mock = `"kaflow-mock-engine"`, 실엔진 = `"kaflow-engine-impl"`).
-/// 어떤 엔진이 링크됐는지는 바이너리가 정하므로, shell 은 shell feature 가 아니라 **엔진에게 물어본다.**
+/// What the engine says about itself.
+///
+/// Which engine is present is decided when the binary is built, so this asks the engine
+/// rather than inferring it from how this crate was compiled — the two can differ.
 #[tauri::command]
 pub fn get_engine_info(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
@@ -22,8 +21,7 @@ pub fn get_engine_info(
     Ok(engine.capabilities())
 }
 
-/// [임시] 빌드 모드 식별 라벨 — FE 타이틀에 표시해 dev/release · debug-api 여부를 한눈에.
-/// `debug_assertions` = true 면 debug 프로파일(미최적화 Rust), false 면 release(최적화).
+/// A short label for the build, so an unoptimized one is not mistaken for a slow app.
 #[tauri::command]
 pub fn build_mode_label() -> String {
     let profile = if cfg!(debug_assertions) {
@@ -39,15 +37,17 @@ pub fn build_mode_label() -> String {
     format!("{profile}{api}")
 }
 
-/// 호스트 정보 — appProfile 게이트 `clientInfo` 용 (FE 가 부팅 시 1회 조회).
-/// `deviceIdHash` = OS 머신ID 의 SHA-256 (원본은 절대 노출하지 않는다). navigator 로는 못 얻는 값이라 shell 에서 제공.
+/// About the machine this is running on.
+///
+/// ⚠️ **The original machine id must never be returned** — only a hash of it. What leaves
+/// here cannot then be turned back into an identifier for the device.
 #[derive(Serialize)]
 pub struct HostInfo {
-    /// "macos" | "windows" | "linux" | (기타 std OS 문자열)
+    /// `"macos"`, `"windows"`, `"linux"`, or whatever else the platform reports.
     pub platform: String,
     /// "x86_64" | "aarch64" | …
     pub arch: String,
-    /// 머신ID SHA-256 hex. 획득 실패 시 "" (FE 는 미제공으로 처리).
+    /// The hashed machine id, or empty where it could not be read.
     #[serde(rename = "deviceIdHash")]
     pub device_id_hash: String,
 }
@@ -61,7 +61,7 @@ pub fn get_host_info() -> HostInfo {
     }
 }
 
-/// OS 머신ID 를 읽어 SHA-256. 실패(권한/미지원)면 "" — 게이트는 이 값을 하드 게이트로 쓰지 않으므로 빈값 허용.
+/// Hashes the machine id. Empty on failure — nothing may depend on having it.
 fn device_id_hash() -> String {
     match machine_uid::get() {
         Ok(id) if !id.is_empty() => {

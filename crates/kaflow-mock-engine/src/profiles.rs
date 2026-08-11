@@ -1,4 +1,4 @@
-//! `ProfilesApi` mock impl — 빈 목록 / no-op.
+//! Saved connections: none, and none can be saved.
 
 use async_trait::async_trait;
 use kaflow_api_traits::engine::ProfilesApi;

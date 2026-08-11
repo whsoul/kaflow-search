@@ -1,25 +1,21 @@
 //! `kaflow-shell` — Tauri desktop shell (public).
 //!
-//! ## 위치
-//! public repo(`kaflow`) 로 그대로 이동할 crate. 바이너리(`src-tauri`)는 private 으로 간다.
-//! 상세 = `docs/library_split_design.md` §2.1.
+//! ## The rule this crate lives by
 //!
-//! ## 불변식
-//! **private crate 를 의존하지 않는다.** 모든 비즈니스는 `KafkaToolEngine` trait 경유
-//! (`tauri::State<Arc<dyn KafkaToolEngine>>`). 이 불변식이 깨지면 mock-only 빌드가 깨지고,
-//! 그게 곧 "public repo 가 private 없이 못 돈다" 는 뜻이다. CI 가 지킨다(`public-seam-guard.yml`).
+//! **It depends on no particular engine.** Everything goes through the `KafkaToolEngine`
+//! trait. Break that and a build with only the mock engine stops working — which is the
+//! same thing as saying this crate can no longer stand on its own.
 //!
 //! ## `all_handlers!`
-//! Tauri 는 `invoke_handler` 를 **하나만** 받는다. 그래서 repo 분리 후 private bin 이
-//! "public 92개 + 자기 debug 명령" 을 합쳐 등록해야 하는데, `generate_handler!` 는 합칠 수 없다.
-//! → 본 crate 가 목록을 매크로로 내보내고, 바이너리는 자기 것만 얹는다.
-//! 명령 목록의 단일 출처는 **이 파일뿐**이다.
+//! Tauri accepts exactly one handler, and the macro that builds one cannot be composed.
+//! So the list is exported as a macro here and a binary adds its own to it. **This file is
+//! the only place the command list lives.**
 
 pub mod app_paths;
 pub mod commands;
 pub mod tauri_emitter;
 
-/// public shell 이 소유한 92개 Tauri 명령 + 호출자가 얹는 추가 명령을 한 handler 로 합친다.
+/// Combines the commands this crate owns with any the caller adds, into one handler.
 ///
 /// ```ignore
 /// .invoke_handler(kaflow_shell::all_handlers![
@@ -27,9 +23,9 @@ pub mod tauri_emitter;
 ///     bench::bench_write,
 /// ])
 /// ```
-/// 추가 명령이 없으면 `kaflow_shell::all_handlers![]`.
+/// With nothing to add, call it with no arguments.
 ///
-/// 추가 명령에는 `#[cfg(...)]` 속성을 붙일 수 있다 (debug 명령은 feature gate 가 필요하다).
+/// An added command may carry `#[cfg(...)]`, so it can be compiled in conditionally.
 #[macro_export]
 macro_rules! all_handlers {
     ($($(#[$attr:meta])* $extra:path),* $(,)?) => {
