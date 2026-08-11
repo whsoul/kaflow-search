@@ -109,8 +109,7 @@
 > 그다음부터는 평소처럼 실행됩니다.
 >
 > *(원하시면 받으신 파일이 변조되지 않았는지 [직접 확인](#데이터와-안전성)하실 수도 있습니다. 필수는 아닙니다.)*
->
-> <sub>[후원](#프로젝트-후원)이 모이면 개발자 인증부터 진행합니다.</sub>
+
 
 <details open>
 <summary><b>macOS</b> — 시스템 설정에서 "확인 없이 열기"</summary>
@@ -326,8 +325,8 @@ Get-FileHash <파일> -Algorithm SHA256
 독립적으로 개발·운영됩니다. 후원은 자발적이며 구매·구독이나 특정 기능·일정에 대한 약속이
 아닙니다. 후원 여부와 관계없이 무료 이용 범위는 동일합니다.
 
-**가장 먼저 쓰일 곳:** macOS·Windows 코드 서명 인증서 — [설치 경고](#설치)를 없애는 데 씁니다.
-그다음은 더 많은 플랫폼·Kafka 버전 테스트, 배포 인프라, 문서화입니다.
+**향후 후원이 쓰이는 곳:** macOS·Windows 코드 서명 인증서 — [설치 경고](#설치)가 아직 남아
+있는 이유입니다. 그 밖에 더 많은 플랫폼·Kafka 버전 테스트, 배포 인프라에 씁니다.
 
 ## 이 저장소
 
@@ -364,6 +363,6 @@ proprietary 소프트웨어이며, EULA에 따라 현재 **개인용·조직 내
 [이슈](https://github.com/whsoul/kaflow-search/issues) ·
 [개인정보](legal/PRIVACY.ko.md)
 
-Copyright © 2026 [PLACEHOLDER: LEGAL_NAME], operating as "Kaflow Search".
+Copyright © 2026 Whsoul Tools. Kaflow Search is a product of Whsoul Tools.
 
 </div>
