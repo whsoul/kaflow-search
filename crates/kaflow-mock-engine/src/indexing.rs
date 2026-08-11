@@ -1,4 +1,4 @@
-//! `IndexingApi` mock impl — kafka 대신 로컬 fixture 를 "인덱싱"(이미 적재됨)한 것으로 응답.
+//! Indexing, for data that is already loaded. Nothing is read and nothing is written.
 
 use async_trait::async_trait;
 use kaflow_api_traits::engine::IndexingApi;
@@ -21,7 +21,7 @@ impl IndexingApi for MockEngine {
         _decode_failure_mode: Option<DecodeFailureMode>,
         _max_messages: Option<u64>,
     ) -> Result<OpenKafkaTopicResponse, EngineError> {
-        // fixture 는 이미 메모리에 적재돼 있으므로 그 토픽의 필드/건수를 그대로 보고한다.
+        // Report what is already there rather than pretending to have done work.
         let t = self.store.topic(topic);
         let count = t.map(|t| t.messages.len()).unwrap_or(0);
         Ok(OpenKafkaTopicResponse {
@@ -40,7 +40,7 @@ impl IndexingApi for MockEngine {
     }
 
     async fn cancel_indexing(&self, _workspace: &str, _topic: &str) -> Result<(), EngineError> {
-        // mock 은 즉시 0건 응답이라 실제 in-flight 없음 — no-op.
+        // Nothing runs long enough to stop.
         Ok(())
     }
 
@@ -53,7 +53,7 @@ impl IndexingApi for MockEngine {
         _kind: DecodeFailureKind,
         _reason: String,
     ) -> Result<(), EngineError> {
-        // mock 은 영속 stub — no-op.
+        // Nothing is persisted, so there is nothing to record.
         Ok(())
     }
 
@@ -64,7 +64,7 @@ impl IndexingApi for MockEngine {
         _partition: u32,
         _key_raw: &str,
     ) -> Result<Option<CompactKeyHistory>, EngineError> {
-        // mock fixture 는 compact dedup 이력을 갖지 않는다 — 항상 None.
+        // The fixture keeps no history of replaced values.
         Ok(None)
     }
 
@@ -77,7 +77,7 @@ impl IndexingApi for MockEngine {
         _cursor: Option<CompactDeletedKeyCursor>,
         _limit: Option<u32>,
     ) -> Result<CompactDeletedKeysPage, EngineError> {
-        // mock fixture 는 KC(삭제 key 흔적)를 갖지 않는다 — 항상 빈 페이지.
+        // Nor of deleted keys.
         Ok(CompactDeletedKeysPage {
             rows: Vec::new(),
             next_cursor: None,

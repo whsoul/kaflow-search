@@ -1,9 +1,9 @@
 # Kaflow Search Privacy Notice
 
 **Version: 1.0-beta**
-**Last Updated: [Effective Date]**
+**Last Updated: 2026-08-11**
 
-This Privacy Notice describes what information Kaflow Search (the "Software") processes, what is transmitted off your device, and what the Licensor ([Legal Name], operating under the name "Kaflow Search") receives and retains.
+This Privacy Notice describes what information Kaflow Search (the "Software") processes, what is transmitted off your device, and what the Licensor (Whsoul Tools) receives and retains.
 
 Kaflow Search is a desktop application. Its core design principle is that **your Kafka data stays on your device.**
 
@@ -33,11 +33,11 @@ When started (and periodically while running), the Software contacts the Licenso
 | `platform`, `arch` | Operating system and CPU architecture | Compatibility decisions |
 | `locale` | The UI language | Localizing service messages |
 
-In addition, the service derives a **hashed form of the request IP address** on the server side (the Software does not send it). Raw IP addresses are processed transiently to serve the request.
+The Software does not send your IP address. As with any request over the internet, the hosting provider necessarily sees the connecting IP address in order to route and answer the request; the service does not record, hash, or store it.
 
 These requests do not include Kafka message content, topic names, cluster addresses, credentials, search queries, or any content of your work.
 
-**Retention:** requests are retained as append-only service logs for service operation, security, and abuse prevention, for up to [retention period, e.g., 24 months], and are then deleted or irreversibly aggregated.
+**Retention:** the Licensor does not store these requests in a database. They appear only in the hosting platform's operational logs, which that platform keeps for a short period — days, not months — and then discards. The Licensor does not copy them anywhere else.
 
 ## 3. DIAGNOSTIC REPORTS (USER-INITIATED ONLY)
 
@@ -59,15 +59,15 @@ If features requiring additional data processing are introduced in the future (f
 
 The Licensor uses infrastructure service providers (such as hosting and content delivery) to operate the online services described above; they process data on the Licensor's behalf. Information may also be disclosed where required by law.
 
-Server infrastructure is located in [server region(s)]. If you access the services from another jurisdiction, the information in Section 2 is transferred to that location.
+The online services run on a globally distributed edge platform: each request is handled at the location nearest to you rather than in one fixed region. Where these services store data persistently, that data is held in the Asia-Pacific (APAC) region and is not replicated to other regions.
 
 ## 7. YOUR RIGHTS
 
 Depending on applicable law (including the Personal Information Protection Act of the Republic of Korea), you may have rights to request access to, correction of, or deletion of information associated with your identifiers.
 
-Because the identifiers in Section 2 are pseudonymous, you may need to provide your `appInstanceId` (visible in the application) for the Licensor to locate associated records.
+Because the Licensor does not store the requests described in Section 2, there is normally no record held against your identifiers to access, correct, or delete. These rights apply to any information the Licensor does hold — for example, a diagnostic report you chose to share, or a message you sent to the address below.
 
-Contact: [Contact Email]
+Contact: legal@whsoul-tools.com
 
 ## 8. CHILDREN
 
@@ -75,12 +75,18 @@ The Software is a professional developer tool and is not directed to children.
 
 ## 9. CHANGES TO THIS NOTICE
 
-The Licensor may update this Privacy Notice. Material changes will be indicated by updating the version and date above, and, where reasonably practicable, notified within the Software. The current version is available at [Privacy Notice URL].
+The Licensor may update this Privacy Notice. Material changes will be indicated by updating the version and date above, and, where reasonably practicable, notified within the Software. The current version is available at https://github.com/whsoul/kaflow-search/blob/main/legal/PRIVACY.md.
 
 ## 10. CONTACT
 
-Data controller: [Legal Name], operating under the name "Kaflow Search"
+Data controller: Whsoul Tools
 
-Email: [Contact Email]
+Email: legal@whsoul-tools.com
 
-Website: [Official Website]
+Website: https://whsoul-tools.com
+
+### Business information
+
+Trade name: Whsoul Tools
+
+_Kaflow Search is a product of Whsoul Tools._

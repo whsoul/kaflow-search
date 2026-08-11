@@ -1,5 +1,4 @@
-//! `SearchApi` mock impl — 로컬 fixture(`MockStore`) 위 선형 스캔으로 browse/keyword/multi
-//! 검색·buckets·본문 fetch 를 실제로 수행한다. 공유 primitive 는 `crate::data` 소유.
+//! Searching the fixture. Everything is scanned; nothing is indexed.
 
 use async_trait::async_trait;
 use kaflow_api_traits::engine::SearchApi;
@@ -14,7 +13,7 @@ use kaflow_api_types::{
 use crate::data::{build_offset_buckets, build_time_buckets, sort_locs, MockStore};
 use crate::MockEngine;
 
-// ── 공유 헬퍼 ─────────────────────────────────────────────────────────────────
+// ── Shared helpers ──────────────────────────────────────────────────────────
 
 fn ts_range_of(gte: Option<u64>, lte: Option<u64>) -> Option<TsRange> {
     if gte.is_none() && lte.is_none() {
@@ -27,7 +26,7 @@ fn ts_range_of(gte: Option<u64>, lte: Option<u64>) -> Option<TsRange> {
     }
 }
 
-/// `limit == 0` (엔진 기본 cap) → None(전체), 그 외 Some.
+/// A limit of zero means the engine decides, which here means no limit.
 fn limit_opt(limit: usize) -> Option<usize> {
     if limit == 0 {
         None
@@ -36,7 +35,7 @@ fn limit_opt(limit: usize) -> Option<usize> {
     }
 }
 
-/// sort 된 loc 목록에서 (after_ts, after_partition, after_offset) 위치 **이후**만 남김(load-more).
+/// Keeps only what comes after a given position.
 fn after_cursor(
     locs: Vec<LocItem>,
     after_ts: Option<u64>,
@@ -57,7 +56,7 @@ fn after_cursor(
     }
 }
 
-/// keyword 를 여러 토픽에 적용 후 cross-topic 병합·정렬·truncate.
+/// Runs a keyword search across topics and merges the results.
 #[allow(clippy::too_many_arguments)]
 fn keyword_all(
     store: &MockStore,
@@ -91,7 +90,7 @@ fn keyword_all(
     (all, hit_fields, total)
 }
 
-/// multi(QueryNode) 를 여러 토픽에 적용 후 병합·정렬·truncate.
+/// The same for a boolean query.
 fn multi_all(
     store: &MockStore,
     node: &QueryNode,
@@ -688,7 +687,7 @@ impl SearchApi for MockEngine {
     }
 }
 
-// ── 작은 헬퍼 (partition/offset 범위 → PosFilter, ts 병합, combined buckets) ───
+// ── Small helpers ───────────────────────────────────────────────────────────
 
 fn range_pos(partition: Option<u32>, from: Option<u64>, to: Option<u64>) -> PosFilter {
     PosFilter {
@@ -698,7 +697,7 @@ fn range_pos(partition: Option<u32>, from: Option<u64>, to: Option<u64>) -> PosF
     }
 }
 
-/// 두 ts 범위의 교집합(gte=max, lte=min).
+/// Where two time ranges overlap.
 fn merge_ts(
     base: Option<&TsRange>,
     extra_gte: Option<u64>,

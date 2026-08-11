@@ -1,4 +1,4 @@
-//! Global / Topic 설정 DTO — `ConfigApi` 의 입출력 타입.
+//! Settings, global and per topic.
 
 use serde::{Deserialize, Serialize};
 
@@ -15,7 +15,7 @@ fn default_topic_index_count_cap() -> u64 {
 pub struct GlobalConfigView {
     // ── Indexing ──────────────────────────────────────────────
     pub indexing_batch_size: usize,
-    /// 자동싱크 round-robin slice 상한 (토픽당 한 턴 최대 인덱싱 건수).
+    /// How many messages one topic may index before the next gets a turn.
     pub auto_sync_slice_size: usize,
     // ── ILM ───────────────────────────────────────────────────
     pub incremental_sync_enabled: bool,
@@ -25,17 +25,17 @@ pub struct GlobalConfigView {
     pub size_cleanup_interval_secs: u64,
     pub max_index_bytes_per_cluster: u64,
     pub default_cleanup_policies: Vec<String>,
-    /// CountBased 정책 — 파티션당 최신 N건 보존 한도.
+    /// How many messages to keep per partition, where that policy applies.
     pub default_keep_count_per_partition: u64,
-    /// 토픽당 인덱스 총 건수 상한 — 조회 캡 동치. 천장 = `TOPIC_INDEX_COUNT_CAP`(tighten-only).
-    /// FE 경고(toast/배지) 임계 + count_based effective clamp 가 사용. 테스트용 하향 가능.
+    /// Total messages one topic may keep indexed. Can be lowered but not raised past
+    /// `TOPIC_INDEX_COUNT_CAP`.
     pub topic_index_count_cap: u64,
     // ── Lock wait timeouts ────────────────────────────────────
     pub retention_cleanup_wait_timeout_secs: u64,
     pub size_cleanup_wait_timeout_secs: u64,
     pub foreground_acquire_wait_timeout_secs: u64,
     // ── RocksDB compression ───────────────────────────────────
-    /// "none" | "snappy" | "zstd". 변경 시 재연결 필요.
+    /// `"none"`, `"snappy"` or `"zstd"`. Takes effect on reconnect.
     pub compression_mode: String,
 }
 
@@ -55,7 +55,7 @@ pub struct GlobalConfigInput {
     pub max_index_bytes_per_cluster: u64,
     pub default_cleanup_policies: Vec<String>,
     pub default_keep_count_per_partition: u64,
-    /// 구 FE 페이로드 호환 — 미전송 시 천장(=기본값) 유지.
+    /// Absent in older payloads, in which case the default stands.
     #[serde(default = "default_topic_index_count_cap")]
     pub topic_index_count_cap: u64,
     // ── Lock wait timeouts ────────────────────────────────────
@@ -66,17 +66,17 @@ pub struct GlobalConfigInput {
     pub compression_mode: String,
 }
 
-/// 프론트엔드에서 사용자가 수동으로 설정할 수 있는 T-META 필드.
+/// The per-topic settings a user may change by hand.
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TopicMetaConfigInput {
-    // ── 사용자 설정 ─────────────────────────────────────────────
+    // ── Chosen by the user ──────────────────────────────────────
     pub retention_priority: Option<i32>,
     pub topic_type: Option<String>,
     pub cleanup_policy: Option<String>,
-    /// CountBased 한도 (파티션당 메시지 수). None 이면 글로벌 default_keep_count_per_partition 폴백.
+    /// Messages to keep per partition; `None` uses the global default.
     pub max_count: Option<u64>,
-    // ── Kafka 토픽 설정 (자동 갱신되지만 수동 오버라이드 가능) ──────
+    // ── Read from the cluster, but overridable ─────────────────
     pub retention_ms: Option<i64>,
     pub retention_bytes: Option<i64>,
     pub compression_type: Option<String>,
@@ -87,9 +87,10 @@ pub struct TopicMetaConfigInput {
 }
 
 impl From<GlobalConfigView> for GlobalConfigInput {
-    /// 현재 값을 그대로 다시 쓰기 위한 변환 (필드 동일).
-    /// 용도: settings.json 로드 시 "기본값 + 파일값" 을 합쳐 `write_global_config` 로 태우기 —
-    /// 그래야 **clamp 가 한 곳(write)에서만** 일어난다 (로드 전용 clamp 를 따로 두면 어긋난다).
+    /// Turns the current values back into a write request.
+    ///
+    /// Loading goes back through writing so that values are bounded in exactly one place.
+    /// A second, load-only bounding step is how the two come to disagree.
     fn from(v: GlobalConfigView) -> Self {
         Self {
             indexing_batch_size: v.indexing_batch_size,

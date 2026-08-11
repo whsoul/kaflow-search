@@ -1,4 +1,4 @@
-//! Browse Tauri 어댑터 — `SearchApi::fetch_kafka_messages_raw` 호출.
+//! Reading a topic directly, without the index.
 
 use kaflow_api_traits::KafkaToolEngine;
 use kaflow_api_types::SearchIndexResponse;

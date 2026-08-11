@@ -1,4 +1,4 @@
-//! Config Tauri 어댑터 — `Arc<dyn KafkaToolEngine>` 경유.
+//! Settings commands. Each one hands straight to the engine.
 
 use kaflow_api_traits::KafkaToolEngine;
 use kaflow_api_types::settings::{EffectiveLimitsView, ProfileLimits, SystemLimitsView};
@@ -52,8 +52,10 @@ pub async fn set_topic_cleanup_policy(
         .map_err(|e| e.into_string())
 }
 
-/// 운영자 profile 의 한도 제약 적용 — FE 가 profile 을 fetch 한 직후 호출한다.
-/// (강제는 BE 가 하므로 값이 BE 로 와야 한다. 엔진이 받은 즉시 검증·clamp 한다.)
+/// Applies an operator profile's constraints.
+///
+/// The values have to reach the engine because that is where they are enforced — a limit
+/// applied only in the interface is a suggestion.
 #[tauri::command]
 pub async fn apply_profile_limits(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
@@ -65,7 +67,7 @@ pub async fn apply_profile_limits(
         .map_err(|e| e.into_string())
 }
 
-/// 3층 해석 결과 — FE 의 하드코딩 상수(resourceLimits/searchLimits/tokenizeLimits)를 대체.
+/// The limits actually in force. Callers read these instead of carrying their own.
 #[tauri::command]
 pub async fn get_effective_limits(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
@@ -76,7 +78,7 @@ pub async fn get_effective_limits(
         .map_err(|e| e.into_string())
 }
 
-/// 유형1 시스템 한도 — 읽기 전용 진단 목록 (설정 화면 debug 섹션).
+/// System limits, for diagnosis. Read-only.
 #[tauri::command]
 pub async fn get_system_limits(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,

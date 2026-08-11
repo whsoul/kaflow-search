@@ -3,8 +3,7 @@ name = "kaflow-api-traits"
 version = "0.1.0"
 edition = "2021"
 description = "Kaflow public API traits — engine / progress / deserializer / schema source seams"
-# license 필드 없음 = proprietary/source-available (루트 LICENSE 참조).
-# Apache-2.0 오픈은 추후 결정 시 명시적으로 (library_split_design.md §6-L, 2026-07-16 개정).
+# No `license` field: see the LICENSE file at the repository root.
 
 [lib]
 path = "src/lib.rs"

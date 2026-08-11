@@ -1,9 +1,9 @@
 # KAFLOW SEARCH END USER LICENSE AGREEMENT
 
 **EULA Version: 1.0-beta**
-**Last Updated: [Effective Date]**
+**Last Updated: 2026-08-11**
 
-This End User License Agreement ("Agreement") is a legal agreement between you, whether acting as an individual or on behalf of an organization ("User"), and [Legal Name], operating under the name "Kaflow Search" ("Licensor"), concerning Kaflow Search, including its compiled application, installer files, bundled proprietary assets, updates, and accompanying documentation ("Software").
+This End User License Agreement ("Agreement") is a legal agreement between you, whether acting as an individual or on behalf of an organization ("User"), and Whsoul Tools ("Licensor"), concerning Kaflow Search, a product of Whsoul Tools, including its compiled application, installer files, bundled proprietary assets, updates, and accompanying documentation ("Software").
 
 By downloading, installing, accessing, or using the Software, you agree to be bound by this Agreement. If you do not agree to this Agreement, do not install or use the Software. If you accept this Agreement on behalf of an organization, you represent that you have the authority to bind that organization to it.
 
@@ -97,7 +97,7 @@ The Software transmits data only to:
 
 Diagnostic reports are generated and stored locally and are shared with the Licensor only if you choose to send them.
 
-Details of the limited technical information processed by the Licensor's online services (such as an application instance identifier, a hashed device identifier, application version, operating system, and locale) are described in the Kaflow Search Privacy Notice, which is incorporated into this Agreement by reference: [Privacy Notice URL].
+Details of the limited technical information processed by the Licensor's online services (such as an application instance identifier, a hashed device identifier, application version, operating system, and locale) are described in the Kaflow Search Privacy Notice, which is incorporated into this Agreement by reference: https://github.com/whsoul/kaflow-search/blob/main/legal/PRIVACY.md.
 
 ## 9. FUTURE TERMS
 
@@ -168,10 +168,16 @@ This Agreement may be provided in multiple languages. Translations are provided 
 
 ## 16. CONTACT
 
-Licensor: [Legal Name], operating under the name "Kaflow Search"
+Licensor: Whsoul Tools
 
-Email: [Contact Email]
+Email: legal@whsoul-tools.com
 
-Website: [Official Website]
+Website: https://whsoul-tools.com
 
-Copyright © 2026 [Legal Name or Brand Name]. All rights reserved.
+### Business information
+
+Trade name: Whsoul Tools
+
+_Kaflow Search is a product of Whsoul Tools._
+
+Copyright © 2026 Whsoul Tools. All rights reserved.

@@ -1,4 +1,4 @@
-//! Field 관리 Tauri 어댑터 — `Arc<dyn KafkaToolEngine>` 경유.
+//! Field selection commands.
 
 use kaflow_api_traits::KafkaToolEngine;
 use kaflow_api_types::{IndexedFieldInput, ProtoFile, RegistrySubjectSchema, TopicDeserializers};
@@ -80,7 +80,7 @@ pub async fn set_topic_deserializers(
         .map_err(|e| e.into_string())
 }
 
-/// 인덱싱 **전** 어절(tokenize) 대상 필드 지정 (picker). 한도 초과는 Err.
+/// Names fields to split into words before indexing begins. Past the limit this fails.
 #[tauri::command]
 pub async fn set_tokenize_fields(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
@@ -94,22 +94,23 @@ pub async fn set_tokenize_fields(
         .map_err(|e| e.into_string())
 }
 
-/// 사용자가 picker 에서 선택한 schema 파일 본문을 읽어 frontend 로 반환.
-/// frontend 가 DeserializerSpec.schema_text 인라인 필드를 채워 set_topic_deserializers 로 보낸다.
-/// → T-META 에 schema 본문이 인라인 저장되어 외부 파일 의존이 사라진다.
+/// Reads a schema file the user chose.
+///
+/// The text is stored with the topic rather than the path alone, so moving or deleting the
+/// file afterwards does not break a topic that was already configured.
 #[tauri::command]
 pub async fn read_schema_file(path: String) -> Result<String, String> {
     std::fs::read_to_string(&path).map_err(|e| format!("failed to read schema file: {path} → {e}"))
 }
 
-/// `.proto` 한 줄에서 `import "..."` (public/weak 포함) 경로를 추출.
+/// Pulls the path out of an `import` line, `public` and `weak` forms included.
 fn parse_proto_import(line: &str) -> Option<String> {
     let l = line.trim();
     if l.starts_with("//") {
         return None;
     }
     let rest = l.strip_prefix("import")?.trim_start();
-    // 다음이 식별자 시작이면 안 됨 (예: `importance`) — 공백/따옴표/public/weak 만 허용.
+    // Must not run straight into an identifier — `importance` is not an import.
     let rest = rest
         .strip_prefix("public")
         .or_else(|| rest.strip_prefix("weak"))
@@ -120,11 +121,12 @@ fn parse_proto_import(line: &str) -> Option<String> {
     Some(rest[start + 1..start + 1 + end].to_string())
 }
 
-/// 로컬 `.proto` 의 import 폐쇄집합을 읽어 반환 (메인 제외, well-known 제외).
+/// Reads everything a `.proto` imports, so the set is closed and no longer depends on
+/// files staying where they are.
 ///
-/// import 경로는 메인 파일의 부모 디렉터리(include root) 기준으로 해석한다 (protoc 관습).
-/// `name` 은 `import "..."` 문자열 그대로 — 디코더의 in-memory resolver 키와 일치해야 한다.
-/// `google/protobuf/*` 는 디코더의 `GoogleFileResolver` 가 자동 해석하므로 폐쇄집합에서 제외.
+/// Paths are resolved against the main file's directory, as `protoc` does, and each is
+/// kept **exactly as written in the import** — that string is how the decoder finds it
+/// again. The well-known types are left out; a decoder is expected to know those.
 #[tauri::command]
 pub async fn read_proto_closure(path: String) -> Result<Vec<ProtoFile>, String> {
     use std::collections::HashSet;
@@ -144,10 +146,10 @@ pub async fn read_proto_closure(path: String) -> Result<Vec<ProtoFile>, String> 
 
     while let Some(imp) = stack.pop() {
         if imp.starts_with("google/protobuf/") {
-            continue; // well-known: 디코더가 자동 해석
+            continue; // well-known — the decoder supplies these
         }
         if !visited.insert(imp.clone()) {
-            continue; // 다이아몬드/사이클 dedup
+            continue; // already seen — imports may form cycles
         }
         let p = root.join(&imp);
         let text = std::fs::read_to_string(&p)
@@ -160,15 +162,12 @@ pub async fn read_proto_closure(path: String) -> Result<Vec<ProtoFile>, String> 
     Ok(out)
 }
 
-/// Confluent Schema Registry 의 `{topic}-{side}` subject 최신 schema 조회.
+/// The latest schema a registry holds for one side of a topic.
 ///
-/// `side` 는 `"key"` 또는 `"value"` (기타 값이면 그대로 subject suffix 로 사용).
-/// TopicMetaConfigDrawer 의 read-only 미리보기 용도. 결정/저장 없음.
+/// `side` is `"key"` or `"value"`; anything else is used as the suffix as given.
 ///
-/// trait `RegistryApi::fetch_registry_subject_latest` 경유 (형제 명령
-/// `commands/registry.rs::fetch_registry_subject_latest` 와 동일 패턴) — 호출자는
-/// `{topic}-{side}` subject 조합만 담당하고, `RegistrySchemaView` 를 좁은
-/// `RegistrySubjectSchema`(FE 계약 유지) 로 매핑해 반환한다.
+/// For looking at only — nothing is decided or stored from it. This command differs from
+/// its sibling only in building the subject name from a topic.
 #[tauri::command]
 pub async fn fetch_registry_subject_schema(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,

@@ -1,10 +1,10 @@
-//! Export Tauri 어댑터 — `Arc<dyn KafkaToolEngine>` 경유. thin shim.
+//! Export commands. Each one hands straight to the engine.
 
 use kaflow_api_traits::KafkaToolEngine;
 use kaflow_api_types::{ExportRequest, ExportResult};
 use std::sync::Arc;
 
-/// 현재 검색(browse/keyword)의 전체결과를 파일로 스트리밍 export.
+/// Writes every result of the current search to a file.
 #[tauri::command]
 pub async fn export_search_results(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
@@ -17,7 +17,7 @@ pub async fn export_search_results(
         .map_err(|e| e.into_string())
 }
 
-/// 진행 중인 export 를 workspace 단위로 취소. 반환 = 취소된 작업 수.
+/// Cancels any export in progress, returning how many were signalled.
 #[tauri::command]
 pub async fn cancel_export(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,

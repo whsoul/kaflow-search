@@ -1,34 +1,27 @@
-//! Schema source 추상화 — Confluent / Apicurio / AWS Glue / 로컬 파일 / inline 등 plug-in.
-//!
-//! 구현체 위치 (모두 미래):
-//! - `kaflow-schema-registry` (private) — Confluent / Apicurio / AWS Glue HTTP 클라이언트
-//! - 로컬 파일 source — `.avsc` / `.proto` 디렉토리 watch
-//! - inline source — 사용자가 UI 에 paste 한 단일 schema (디버그용)
+//! Where a schema comes from — a registry, a file, or one supplied directly.
 
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-/// schema 식별자. 현재는 Confluent 의 `u32 schema id` 를 기준으로 하되,
-/// 다른 source 도 변종으로 수용한다.
+/// How a schema is named. Which form applies depends on where it came from.
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum SchemaId {
-    /// Confluent / Apicurio 등 numeric ID
+    /// A numeric id, as most registries use.
     Numeric(u32),
-    /// Subject + version 형태 (Confluent subjects API)
+    /// A subject and a version.
     Subject { subject: String, version: i32 },
-    /// 로컬 파일 / inline 식별자
+    /// A path, or a name given to something supplied directly.
     Name(String),
 }
 
-/// 가져온 schema 본체. Avro / Protobuf 등 raw 표현을 담는다.
-/// 디코더 측에서 자기 포맷에 맞는 변환을 수행한다.
+/// A schema as it was fetched, left in its own form for whoever decodes with it.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Schema {
     pub id: SchemaId,
-    /// schema 형식 (`"avro"`, `"protobuf"`, ...).
+    /// Which kind it is.
     pub kind: String,
-    /// schema raw 텍스트 / 직렬화 표현.
+    /// The schema itself, unmodified.
     pub raw: String,
 }
 
@@ -50,10 +43,10 @@ pub enum SchemaError {
     Other(String),
 }
 
-/// Schema 조회 인터페이스. 구현체 내부에서 캐시 / refresh / fallback 정책을 가진다.
+/// Fetching schemas. Whether and how they are cached is left to the implementation.
 #[async_trait]
 pub trait SchemaSource: Send + Sync {
-    /// source 식별자 — UI 에 표시되는 이름 (`"confluent"`, `"apicurio"`, `"file:./schemas"` 등).
+    /// A name for this source, to show to a user.
     fn id(&self) -> String;
 
     async fn fetch_schema(&self, id: &SchemaId) -> Result<Schema, SchemaError>;

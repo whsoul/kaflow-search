@@ -1,4 +1,4 @@
-//! `AuthApi` mock impl — 모든 인증 동작 즉시 OK.
+//! Authentication that always succeeds, since there is nothing to authenticate against.
 
 use async_trait::async_trait;
 use kaflow_api_traits::engine::AuthApi;
@@ -37,8 +37,9 @@ impl AuthApi for MockEngine {
         ])
     }
 
-    /// mock 은 사용자의 로컬 자격증명 파일을 건드리지 않는다 — 데모 빌드가 실 키를
-    /// 읽어들이면 놀랄 일이다. 빈 목록 = 화면은 "직접 입력" 경로로 폴백한다.
+    /// **Reads none of the user's credential files.** A demonstration build that helped
+    /// itself to real keys would be a surprise, and not a welcome one. The empty list
+    /// leaves the caller to ask for them directly.
     async fn list_aws_profiles(
         &self,
         _path: Option<String>,
@@ -46,7 +47,7 @@ impl AuthApi for MockEngine {
         Ok(vec![])
     }
 
-    /// mock 은 로컬 파일을 보지 않으므로 경로도 비워 둔다 (화면은 출처 표시를 감춘다).
+    /// Empty, for the same reason: no file was looked at, so naming one would be untrue.
     async fn resolve_aws_paths(&self) -> AwsPaths {
         AwsPaths::default()
     }
@@ -57,7 +58,7 @@ impl AuthApi for MockEngine {
         _profile: String,
     ) -> Result<AwsProfileCredentials, EngineError> {
         Err(EngineError::InvalidArgument(
-            "mock 엔진은 AWS 자격증명 파일을 읽지 않습니다 — 키를 직접 입력하세요".to_string(),
+            "This engine does not read AWS credential files — enter the keys directly".to_string(),
         ))
     }
 }

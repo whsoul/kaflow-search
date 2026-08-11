@@ -1,4 +1,4 @@
-//! Cluster profile Tauri 어댑터 — `Arc<dyn KafkaToolEngine>` 경유.
+//! Saved connection commands. Each one hands straight to the engine.
 
 use kaflow_api_traits::KafkaToolEngine;
 use kaflow_api_types::{ClusterProfile, StoredAuthConfig};
