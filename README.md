@@ -114,8 +114,7 @@ Nothing else to install — no runtime, no database, no service.
 > the steps below and it runs normally from then on.
 >
 > *(If you want to, you can also [check that your download wasn't tampered with](#data-and-safety). Not required.)*
->
-> <sub>If [support](#supporting-the-project) adds up, developer verification is the first thing it pays for.</sub>
+
 
 <details open>
 <summary><b>macOS</b> — System Settings → "Open Anyway"</summary>
@@ -334,9 +333,9 @@ reach the cluster from the same machine.
 Built and maintained independently. Support is voluntary — not a purchase, subscription or
 commitment to any feature or timeline. Free usage terms are the same either way.
 
-**Where it would go first:** code-signing certificates for macOS and Windows, so the
-[install warnings](#install) go away. After that — testing across more platforms and Kafka
-versions, release infrastructure, and documentation.
+**What support would go toward:** code-signing certificates for macOS and Windows — which
+is why the [install warnings](#install) are still there. Beyond that, testing across more
+platforms and Kafka versions, and release infrastructure.
 
 ## This repository
 
