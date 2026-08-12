@@ -57,7 +57,9 @@ const CHANNELS = ["web", "ios", "android", "kiosk"];
 
 const PLANS = ["free", "pro", "team", "enterprise"];
 const COUNTRIES = ["KR", "US", "JP", "DE", "GB", "FR", "SG", "AU", "CA", "IN", "BR", "MX", "ES", "IT", "NL"];
-const DOMAINS = ["example.com", "gmail.com", "naver.com", "outlook.com", "company.io", "acme.co", "startup.dev"];
+// RFC 2606 reserves these for documentation and examples, so a generated address
+// can never collide with a real mailbox.
+const DOMAINS = ["example.com", "example.org", "example.net"];
 const FIRST = ["alice", "bob", "carol", "dave", "erin", "frank", "grace", "heidi", "ivan", "judy", "mallory", "oscar", "peggy", "trent", "victor", "wendy", "minji", "jihoon", "yuna", "seojun"];
 const REFERRERS = ["google", "twitter", "friend_invite", "paid_ad", "organic", "github", "producthunt", "newsletter"];
 const DEVICES = ["web", "ios", "android"];
