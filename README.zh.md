@@ -1,6 +1,6 @@
 
 <p align="right">
-<a href="README.md"><kbd>English</kbd></a> &nbsp; <a href="README.ko.md"><kbd>한국어</kbd></a> &nbsp; <a href="README.ja.md"><kbd>日本語</kbd></a> &nbsp; <kbd><b>中文</b></kbd>
+<kbd><b>Open Beta</b></kbd> &nbsp;&nbsp;&nbsp;&nbsp; <a href="README.md"><kbd>English</kbd></a> &nbsp; <a href="README.ko.md"><kbd>한국어</kbd></a> &nbsp; <a href="README.ja.md"><kbd>日本語</kbd></a> &nbsp; <kbd><b>中文</b></kbd>
 </p>
 
 <div align="center">
@@ -288,7 +288,7 @@ Get-FileHash <file> -Algorithm SHA256
 
 ## 项目状态
 
-**版本 0.1.0 —— 首个公开发布。** 已经可以用于日常工作，但仍处于早期阶段，版本号也说明了这一点。
+**版本 0.1.0 —— 公开测试版。** 已经可以用于日常工作。
 
 **已知限制**
 

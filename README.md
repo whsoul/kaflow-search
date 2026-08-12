@@ -3,7 +3,7 @@
      links; <kbd> is used because GitHub themes it for both light and dark mode. Add
      each language's own file. -->
 <p align="right">
-<kbd><b>English</b></kbd> &nbsp; <a href="README.ko.md"><kbd>한국어</kbd></a> &nbsp; <a href="README.ja.md"><kbd>日本語</kbd></a> &nbsp; <a href="README.zh.md"><kbd>中文</kbd></a>
+<kbd><b>Open Beta</b></kbd> &nbsp;&nbsp;&nbsp;&nbsp; <kbd><b>English</b></kbd> &nbsp; <a href="README.ko.md"><kbd>한국어</kbd></a> &nbsp; <a href="README.ja.md"><kbd>日本語</kbd></a> &nbsp; <a href="README.zh.md"><kbd>中文</kbd></a>
 </p>
 
 <div align="center">
@@ -301,7 +301,7 @@ disk speed. No fixed performance is guaranteed.
 
 ## Project status
 
-**Version 0.1.0 — first public release.** Usable for daily work, but early, and the version number says so.
+**Version 0.1.0 — open beta.** Usable for daily work.
 
 **Known limitations**
 
