@@ -1,4 +1,4 @@
-//! Search Tauri 어댑터 — `Arc<dyn KafkaToolEngine>` 경유.
+//! Search commands. Each one hands straight to the engine.
 
 use kaflow_api_traits::KafkaToolEngine;
 use kaflow_api_types::{
@@ -9,7 +9,7 @@ use kaflow_api_types::{
 };
 use std::sync::Arc;
 
-/// 진행 중인 검색/buckets 를 workspace 단위로 전부 취소 (명시적 [취소] 버튼). 반환 = 취소된 작업 수.
+/// Cancels everything in flight for this workspace, returning how many were signalled.
 #[tauri::command]
 pub async fn cancel_search(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,

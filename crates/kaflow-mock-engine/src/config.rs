@@ -1,4 +1,4 @@
-//! `ConfigApi` mock impl — 기본값 view 만 반환.
+//! Settings, at their defaults.
 
 use async_trait::async_trait;
 use kaflow_api_traits::engine::ConfigApi;
@@ -30,7 +30,8 @@ fn default_view() -> GlobalConfigView {
 
 #[async_trait]
 impl ConfigApi for MockEngine {
-    /// mock 도 **같은 해석기**를 태운다 — 층 모델이 mock 에서만 다르게 보이면 데모가 거짓이 된다.
+    /// Resolved by the same code a real engine uses. A demonstration that worked out
+    /// limits differently would be showing something that does not exist.
     async fn apply_profile_limits(
         &self,
         limits: ProfileLimits,
@@ -50,7 +51,7 @@ impl ConfigApi for MockEngine {
         ))
     }
 
-    /// mock 은 엔진 내부 캡을 갖지 않는다 — 빈 목록(화면은 "표시할 항목 없음").
+    /// Empty: there are no internal limits here to report.
     async fn get_system_limits(&self) -> Result<SystemLimitsView, EngineError> {
         Ok(SystemLimitsView::default())
     }

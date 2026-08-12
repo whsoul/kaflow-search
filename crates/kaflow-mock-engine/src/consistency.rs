@@ -1,4 +1,4 @@
-//! `ConsistencyApi` mock impl — 항상 일치 / 변경 감지 없음.
+//! Consistency checks that always pass, since nothing can drift.
 
 use async_trait::async_trait;
 use kaflow_api_traits::engine::ConsistencyApi;

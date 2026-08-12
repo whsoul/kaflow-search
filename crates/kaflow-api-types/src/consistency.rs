@@ -1,4 +1,4 @@
-//! Consistency 도메인 DTO — verify_topic_consistency 응답.
+//! The result of checking an index against the topic it came from.
 
 use serde::Serialize;
 

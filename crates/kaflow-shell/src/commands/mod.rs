@@ -1,14 +1,10 @@
-//! Tauri command shim 모음 (**public shell**).
+//! The commands themselves. Each unwraps the engine and calls one method on it — there is
+//! no logic here to get wrong.
 //!
-//! 모든 비즈니스는 `KafkaToolEngine` trait impl 에 위임하고, 본 layer 는
-//! `tauri::State<Arc<dyn KafkaToolEngine>>` 를 풀어 trait method 를 호출한다.
+//! **Nothing here reaches inside an engine.** Anything that would have to is not a command
+//! and belongs with the binary that has such access.
 //!
-//! **private crate import 0건** — 이 불변식이 이 crate 가 public 일 수 있는 이유다.
-//! debug / bench 명령은 엔진 내부(`DbState`, `encode_index_key` 등)를 직접 잡으므로
-//! 여기 있을 수 없다. 바이너리(private) 쪽 `debug_commands.rs` / `bench*.rs` 에 산다.
-//!
-//! 모듈이 `pub` 인 이유: `crate::all_handlers!` 매크로가 `$crate::commands::<모듈>::<명령>`
-//! 경로로 참조하기 때문.
+//! The modules are public because the macro that gathers the commands names them by path.
 
 pub mod auth;
 pub mod browse;

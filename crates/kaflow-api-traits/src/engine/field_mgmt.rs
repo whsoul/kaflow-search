@@ -1,4 +1,10 @@
-//! Field 관리 API — 토픽 인덱스 필드 추가/제거/재인덱싱 + watch.
+//! Choosing what of a topic is indexed, and keeping that up to date.
+//!
+//! ⚠️ **Reserved fields are not the user's to manage.** A field the engine records for its
+//! own accounting — recognised by [`kaflow_api_types::is_system_field`] — must be kept out
+//! of anything offered for selection, and must not be removed by anything here or by
+//! reclaiming space. Dropping one loses the record of what the engine did, and nothing
+//! afterwards can tell that it is missing rather than absent.
 
 use async_trait::async_trait;
 use kaflow_api_types::{IndexedFieldInput, TopicDeserializers};
@@ -7,7 +13,7 @@ use crate::error::EngineError;
 
 #[async_trait]
 pub trait FieldMgmtApi: Send + Sync {
-    /// 토픽별 인덱싱 대상 필드 설정.
+    /// Sets which fields a topic indexes.
     async fn set_indexed_fields(
         &self,
         workspace: &str,
@@ -15,7 +21,8 @@ pub trait FieldMgmtApi: Send + Sync {
         fields: Vec<IndexedFieldInput>,
     ) -> Result<(), EngineError>;
 
-    /// 지정 필드를 M-key 들에서 다시 읽어 I-key 재구성. 반환값 = 새로 쓴 I-key 수.
+    /// Builds the index for fields that were not indexed before, from what is already
+    /// stored — without reading the topic again. Returns how many entries were written.
     async fn reindex_fields_from_meta(
         &self,
         workspace: &str,
@@ -23,7 +30,7 @@ pub trait FieldMgmtApi: Send + Sync {
         fields: Vec<String>,
     ) -> Result<usize, EngineError>;
 
-    /// 지정 필드의 I-key 만 일괄 삭제. 반환값 = 삭제된 I-key 수.
+    /// Removes those fields from the index. Returns how many entries went.
     async fn drop_fields_from_index(
         &self,
         workspace: &str,
@@ -31,17 +38,17 @@ pub trait FieldMgmtApi: Send + Sync {
         fields: Vec<String>,
     ) -> Result<usize, EngineError>;
 
-    /// 토픽 자체를 인덱스 / picker 에서 제거 (CF drop). 반환값 = (i_count, m_count).
+    /// Removes the topic and everything indexed for it.
     async fn remove_topic_from_index(
         &self,
         workspace: &str,
         topic: &str,
     ) -> Result<(usize, usize), EngineError>;
 
-    /// 토픽 picker 에 등록 (T-meta 생성, 인덱스 비어있어도 가능).
+    /// Starts following a topic, before anything has been indexed for it.
     async fn ensure_topic_watched(&self, workspace: &str, topic: &str) -> Result<(), EngineError>;
 
-    /// 토픽의 key/value deserializer 페어를 갱신한다. None 이면 기본 (Json × 2) 으로 되돌림.
+    /// Changes how a topic decodes; `None` returns it to JSON.
     async fn set_topic_deserializers(
         &self,
         workspace: &str,
@@ -49,8 +56,9 @@ pub trait FieldMgmtApi: Send + Sync {
         deserializers: Option<TopicDeserializers>,
     ) -> Result<(), EngineError>;
 
-    /// 인덱싱 **전** 어절(tokenize) 대상 필드 지정 (picker). indexed_fields 직교 —
-    /// 전체 필드 인덱싱을 유지하며 지정 필드만 어절. 한도 초과는 InvalidArgument.
+    /// Names fields to split into words before any field has been discovered, leaving
+    /// everything else indexed as it was. Past the limit this fails rather than truncating
+    /// the list — silently indexing fewer fields than were asked for would be worse.
     async fn set_tokenize_fields(
         &self,
         workspace: &str,
@@ -58,14 +66,14 @@ pub trait FieldMgmtApi: Send + Sync {
         fields: Vec<String>,
     ) -> Result<(), EngineError>;
 
-    /// picker 에서 토픽 unwatch — 명시적 제거. 반환값 = (i_count, m_count).
+    /// Stops following a topic, at the user's request.
     async fn unwatch_topic(
         &self,
         workspace: &str,
         topic: &str,
     ) -> Result<(usize, usize), EngineError>;
 
-    /// size cleanup 으로 자동 정리됨 마크.
+    /// Records that a topic's index was removed to reclaim space, rather than by choice.
     async fn mark_topic_auto_cleaned(
         &self,
         workspace: &str,

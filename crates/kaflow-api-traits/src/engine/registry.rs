@@ -1,6 +1,4 @@
-//! Schema Registry 리소스 API — `~/.kaflow/schema_registries.json` CRUD + 연결 테스트.
-//!
-//! deserializer 의 `*ConfluentRegistryRef` 변종이 참조하는 리소스를 관리한다.
+//! Saved schema registries — the ones deserializers refer to by id.
 
 use async_trait::async_trait;
 use kaflow_api_types::{
@@ -11,30 +9,31 @@ use crate::error::EngineError;
 
 #[async_trait]
 pub trait RegistryApi: Send + Sync {
-    /// 등록된 Schema Registry 리소스 목록.
+    /// The saved registries.
     async fn list_registry_resources(&self) -> Result<Vec<RegistryResource>, EngineError>;
 
-    /// 리소스 저장 / 갱신 (id 기준 upsert).
+    /// Saves or updates one, matched by id.
     async fn save_registry_resource(&self, resource: RegistryResource) -> Result<(), EngineError>;
 
-    /// 리소스 삭제 (id 기준).
+    /// Removes one.
     async fn delete_registry_resource(&self, id: &str) -> Result<(), EngineError>;
 
-    /// 연결 테스트 — `GET <url>/subjects`. 연결 실패는 에러가 아니라 `RegistryTestResult.ok=false`.
+    /// Tries a registry out. ⚠️ **A registry that cannot be reached is a result, not an
+    /// error** — the caller asked whether it works, and "no" is an answer.
     async fn test_registry_resource(
         &self,
         url: &str,
         basic_auth: Option<&str>,
     ) -> Result<RegistryTestResult, EngineError>;
 
-    /// 등록 화면의 스키마 브라우저 — `GET <url>/subjects` (subject 이름 목록).
+    /// The subject names a registry holds.
     async fn list_registry_subjects(
         &self,
         url: &str,
         basic_auth: Option<&str>,
     ) -> Result<Vec<String>, EngineError>;
 
-    /// 선택한 subject 의 최신 스키마 상세 — `GET <url>/subjects/{subject}/versions/latest`.
+    /// One subject's latest schema.
     async fn fetch_registry_subject_latest(
         &self,
         url: &str,
@@ -42,7 +41,7 @@ pub trait RegistryApi: Send + Sync {
         subject: &str,
     ) -> Result<RegistrySchemaView, EngineError>;
 
-    /// 전체 스키마 인덱스(한 방) — `GET <url>/schemas?latestOnly=true`. id/type + 참조 그래프용.
+    /// Every schema at once — enough to work out how they refer to one another.
     async fn list_registry_schema_index(
         &self,
         url: &str,

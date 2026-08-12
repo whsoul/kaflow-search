@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-/// Kafka 클러스터 내 단일 브로커 정보.
+/// One broker.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BrokerInfo {
@@ -11,7 +11,7 @@ pub struct BrokerInfo {
     pub is_controller: bool,
 }
 
-/// 단일 파티션의 브로커 배치 정보.
+/// Where one partition lives.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PartitionTopology {
@@ -21,7 +21,7 @@ pub struct PartitionTopology {
     pub isr_ids: Vec<i32>,
 }
 
-/// 단일 토픽의 파티션 배치 요약.
+/// How one topic's partitions are spread.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TopicTopology {
@@ -30,7 +30,7 @@ pub struct TopicTopology {
     pub partitions: Vec<PartitionTopology>,
 }
 
-/// Kafka 클러스터 토폴로지 — 브로커 목록 + 토픽별 파티션 배치.
+/// The shape of a cluster: its brokers, and where each topic's partitions sit.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ClusterTopology {
@@ -40,22 +40,24 @@ pub struct ClusterTopology {
     pub topics: Vec<TopicTopology>,
 }
 
-/// ApiVersions(API key 18) 응답의 단일 API 항목 — 브로커가 지원하는 버전 범위.
-/// `min`/`max` 둘 다 담는다 — `kafka_cluster_version_strategy.md` 의 BrokerCapabilities
-/// [min, max] 모델이 그대로 흡수할 수 있게 (진단 리포트는 주로 max 사용).
+/// One API the broker supports, and the versions of it that it accepts.
+///
+/// Both ends are kept: deciding what a cluster can do needs the range, not just the
+/// newest.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ApiVersionEntry {
     pub api_key: i16,
-    /// 알려진 API 키의 이름 (Produce/Fetch/Metadata 등). 미상이면 None.
+    /// The API's name where it is known.
     pub name: Option<String>,
     pub min_version: i16,
     pub max_version: i16,
 }
 
-/// Kafka broker 버전 정보 — ApiVersions(key 18) 기반.
-/// - `inferred_version`: marker API max 버전에서 추정한 **대략값**(fuzzy, "≈ 3.x" 식).
-/// - `api_versions`: 핵심 API 의 지원 max 버전 맵 — "특정 버전 동작 X" 추적용 **정확값**.
+/// What version a broker appears to be.
+///
+/// ⚠️ `inferred_version` is a guess for reading, not for deciding by — behaviour must be
+/// chosen from `api_versions`, which is what the broker actually said.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct KafkaVersionInfo {

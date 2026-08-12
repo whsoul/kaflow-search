@@ -1,19 +1,15 @@
-//! Export (검색결과 내보내기) DTO + 순수 직렬화 헬퍼.
+//! Writing search results out to a file.
 //!
-//! 설계: `docs/pre_launch_specs.md §2`. v1 = browse+keyword(단일 토픽) BE 스트리밍 export.
-//! - 무손실 원본 = **JSONL**(한 줄 = 한 레코드), 사람용 평면 = **CSV/TSV**.
-//! - 향후 유료 offline reader / 백업·복원의 lean 스키마 선례.
-//!   record = topic/partition/offset/ts/key/headers/payload(+matchedField).
-//!   방향 상세 = memory `project_monetization_roadmap`.
+//! JSONL keeps the record whole; CSV and TSV flatten it for reading elsewhere.
 //!
-//! ⚠️ 본 모듈 직렬화는 **인프라 의존 0 순수 함수**(api-types 규칙) — 파일 IO/압축/fetch 는
-//!    engine-impl `export.rs` 담당. 두 엔진(impl/mock)이 이 직렬화를 공유한다.
+//! The serialization here is deliberately free of any I/O so that every engine writes
+//! byte-identical files — reading and compressing belong elsewhere.
 
 use serde::{Deserialize, Serialize};
 
 use crate::{MessageResult, PosFilter, SearchMode, SearchQuery, SortOrder, TsRange};
 
-/// 출력 파일 포맷. JSONL = 무손실(구조 보존), CSV/TSV = 평면(사람/스프레드시트용).
+/// The output format. JSONL preserves structure; CSV and TSV flatten it.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum ExportFormat {
@@ -22,7 +18,7 @@ pub enum ExportFormat {
     Tsv,
 }
 
-/// 출력 압축. writer 를 한 겹 감싸는 부가 옵션.
+/// Optional compression.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum ExportCompression {
@@ -31,9 +27,10 @@ pub enum ExportCompression {
     Zstd,
 }
 
-/// 검색결과 export 요청 — 파라미터는 현재 검색과 동일 + 출력 대상.
-/// 소스 분기: `search_query=Some` → **multi(상세검색)**(ts범위/위치필터는 SearchQuery 내장).
-/// `None` + 빈 `query` → **browse**, `None` + 비어있지 않은 `query` → **keyword**.
+/// What to export: the same parameters the search used, plus where to write.
+///
+/// Which kind of search is meant follows from what is set — a boolean query if one is
+/// given, otherwise a keyword search, or everything when the query is empty.
 #[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ExportRequest {
@@ -44,27 +41,27 @@ pub struct ExportRequest {
     pub sort_order: SortOrder,
     pub ts_range: Option<TsRange>,
     pub pos_filter: Option<PosFilter>,
-    /// multi(상세검색) 소스 — 있으면 이 bool AST 로 매치 loc 페이징. browse/keyword 는 None.
+    /// Set to export the results of a boolean query.
     #[serde(default)]
     pub search_query: Option<SearchQuery>,
-    /// 저장 대상 경로 (FE save dialog 결정).
+    /// Where to write it.
     pub dest_path: String,
     pub format: ExportFormat,
     pub compression: ExportCompression,
 }
 
-/// export 완료 요약.
+/// What was written.
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ExportResult {
-    /// 실제 기록한 레코드 수.
+    /// Records written.
     pub rows: usize,
-    /// 최종 파일 크기(bytes, 압축 후).
+    /// Final file size in bytes, after compression.
     pub bytes: u64,
     pub path: String,
 }
 
-/// CSV/TSV 컬럼 순서 (헤더 + 각 행 동일).
+/// Column order, shared by the header and every row.
 const COLUMNS: &[&str] = &[
     "topic",
     "partition",
@@ -75,7 +72,7 @@ const COLUMNS: &[&str] = &[
     "payload",
 ];
 
-/// CSV/TSV 헤더 행 (JSONL 은 None). 끝에 `\n` 포함.
+/// The header row for CSV and TSV; `None` for JSONL. Ends with a newline.
 pub fn export_header_line(format: ExportFormat) -> Option<String> {
     let delim = match format {
         ExportFormat::Csv => ',',
@@ -87,7 +84,7 @@ pub fn export_header_line(format: ExportFormat) -> Option<String> {
     Some(s)
 }
 
-/// 한 레코드 → 한 줄(끝에 `\n`). JSONL=무손실 JSON, CSV/TSV=평면(headers 는 JSON 문자열 한 칸).
+/// One record as one line, ending with a newline.
 pub fn serialize_export_row(row: &MessageResult, format: ExportFormat) -> String {
     match format {
         ExportFormat::Jsonl => serialize_jsonl(row),
@@ -96,8 +93,8 @@ pub fn serialize_export_row(row: &MessageResult, format: ExportFormat) -> String
     }
 }
 
-/// ⚠️ Kafka 헤더는 중복 키 가능하나 v1 은 object 로 표현(중복 시 후자 우선).
-///    무손실이 중요해지면 array-of-pairs 로 승격(offline reader 도입 시 재검토).
+/// ⚠️ Message headers may repeat a name, but are written as an object — where a name
+/// repeats, the last one wins and the others are lost.
 fn headers_to_json(headers: &[(String, String)]) -> serde_json::Value {
     let mut map = serde_json::Map::new();
     for (k, v) in headers {
@@ -107,8 +104,8 @@ fn headers_to_json(headers: &[(String, String)]) -> serde_json::Value {
 }
 
 fn serialize_jsonl(row: &MessageResult) -> String {
-    // matchedField 는 검색 화면 주석(어느 필드에 걸렸나)이라 export(순수 데이터)엔 넣지 않는다.
-    // → keyword/multi 가 같은 rows 에 대해 byte-동일한 파일을 낸다.
+    // Which field matched is an artefact of searching, not of the message. Leaving it
+    // out is what makes two different searches over the same rows produce the same file.
     let obj = serde_json::json!({
         "topic": row.topic,
         "partition": row.partition,
@@ -146,9 +143,8 @@ fn serialize_delimited(row: &MessageResult, delim: char) -> String {
     out
 }
 
-/// CSV(delim=',')/TSV(delim='\t') 필드 escape.
-/// CSV: `"`·delim·CR·LF 포함 시 큰따옴표로 감싸고 내부 `"`→`""`.
-/// TSV: tab/CR/LF 를 공백으로 치환(엄격 quoting 규격이 없어 관습적 처리).
+/// Escapes one field. CSV quotes where it must and doubles any quote inside; TSV has no
+/// agreed quoting, so control characters are replaced with spaces instead.
 fn escape_field(s: &str, delim: char) -> String {
     if delim == '\t' {
         return s.replace(['\t', '\r', '\n'], " ");

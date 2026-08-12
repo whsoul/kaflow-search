@@ -1,7 +1,5 @@
-//! Tauri 어댑터 — `kaflow_api_traits::ProgressEmit` 를 `tauri::AppHandle.emit` 으로 구현.
-//!
-//! engine-impl 의 비즈니스 함수가 progress 이벤트를 emit 할 때, transport-agnostic 한
-//! `Arc<dyn ProgressEmit>` 를 받는다. 본 어댑터가 그 trait object 의 Tauri 측 구현체.
+//! Carries progress events out to the window. The engine reports progress without knowing
+//! this exists — that is what keeps it usable elsewhere.
 
 use kaflow_api_traits::progress::ProgressEmit;
 use tauri::Emitter;

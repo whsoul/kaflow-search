@@ -1,16 +1,13 @@
-//! `KafkaToolEngine` — public/private 경계의 핵심 trait + 도메인별 sub-trait.
+//! `KafkaToolEngine` — one trait per domain, and a supertrait that gathers them, so a
+//! caller can hold a single object and reach everything.
 //!
-//! 설계 (`docs/trait_redesign_2026_05.md`):
-//! - 도메인별 sub-trait (TopicMetaApi / StorageApi / ...) 으로 분리.
-//! - `KafkaToolEngine` 은 모든 sub-trait 을 묶는 supertrait + capability / license.
-//! - 호출자는 `&dyn KafkaToolEngine` 한 객체만 들고 다니면 모든 도메인 method 호출 가능.
-//!
-//! 설계 원칙:
-//! - 모든 메서드 시그니처는 transport-agnostic (Tauri / HTTP / WebSocket 무관).
-//! - DTO 는 `kaflow-api-types` 의 타입만 사용. 본 crate 안에 신규 데이터 타입 정의 금지.
-//! - 진행 이벤트가 필요한 메서드는 `Arc<dyn ProgressEmit>` 을 받지 않는다 — engine 인스턴스
-//!   가 보유한 emitter 로 내부 emit 한다 (state 보유 모델 결정 2).
-//! - 에러는 `EngineError`. boundary (Tauri command 어댑터) 에서만 stringify.
+//! Rules an implementation has to keep to:
+//! - **Nothing in a signature may assume how it is called.** No transport belongs here.
+//! - **Data types come from `kaflow-api-types`.** This crate defines behaviour, not shapes.
+//! - **Progress is emitted by the engine itself**, not through an argument. A method that
+//!   reports progress does so with whatever the engine was built with.
+//! - **Errors are `EngineError`.** Turning one into a string is the caller's business, at
+//!   its own boundary.
 
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
@@ -43,28 +40,24 @@ pub use search::SearchApi;
 pub use storage::StorageApi;
 pub use topic_meta::TopicMetaApi;
 
-/// Engine 이 노출하는 가용 기능 / 한도 — UI 가 이 값으로 화면을 적응시킨다.
-///
-/// 라이선스 / FeatureGate 와 연동되어 plan 별로 다른 값을 반환할 수 있다.
-/// `kaflow-feature-gate` (미래) 가 token 을 검증하면 그 entitlement 가 여기 반영된다.
+/// What this engine can do, so a caller can adapt rather than discover by failing.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EngineCapabilities {
-    /// 등록된 deserializer id 목록 (`"json"`, `"avro-confluent"`, ...).
+    /// The deserializers this engine knows, by id.
     pub supported_deserializers: Vec<String>,
-    /// Schema Registry 연동 가능 여부 (Confluent / Apicurio / AWS Glue).
+    /// Whether it can reach a schema registry.
     pub supports_schema_registry: bool,
-    /// AI 기능 (query builder / schema discovery 등) 가용 여부.
+    /// Whether it offers assisted features.
     pub supports_ai: bool,
-    /// 인덱싱 가능한 최대 메시지 수 (라이선스 한도). `None` = 무제한.
+    /// The most messages it will index. `None` means no limit of its own.
     pub max_indexed_messages: Option<u64>,
-    /// Engine 구현체 식별자 — `"mock"` / `"real"` / `"real-pro"` 등 디버그/표시용.
+    /// Which implementation this is. For showing and for diagnosis, not for branching —
+    /// behaviour should follow from the fields above, which say what is actually true.
     pub engine_id: String,
 }
 
-/// Kaflow engine 의 외부 인터페이스 — 9 도메인 sub-trait 의 aggregate.
-///
-/// `Arc<dyn KafkaToolEngine>` 형태로 Tauri / HTTP / WebSocket 어댑터에 주입.
+/// Everything an engine offers, gathered into one trait.
 #[async_trait]
 pub trait KafkaToolEngine:
     TopicMetaApi
@@ -82,11 +75,17 @@ pub trait KafkaToolEngine:
     + Send
     + Sync
 {
-    /// 현재 engine 이 지원하는 capability 목록.
+    /// What this engine can do.
     fn capabilities(&self) -> EngineCapabilities;
 
-    /// 라이선스 토큰 주입 — engine 내부 entitlement enforcement 에 사용.
-    /// 토큰 자체의 서명 검증은 외부 (`kaflow-feature-gate`) 가 수행한 뒤 호출된다.
+    /// Hands the engine a licence token, or clears it with `None`.
+    ///
+    /// ⚠️ **Nothing currently acts on this.** The default does nothing and no engine
+    /// overrides it, so calling this gates nothing — a caller must not treat it as having
+    /// done so.
+    ///
+    /// An engine that does come to act on a token has to be handed one that was already
+    /// verified: nothing here checks a signature.
     async fn set_license(&self, _token: Option<String>) -> Result<(), EngineError> {
         Ok(())
     }

@@ -1,6 +1,5 @@
-//! `TopicMetaApi` mock impl — 로컬 fixture(`MockStore`) 기반 read.
-//! 토픽 리스트 / 메타 / 메시지 수 / offset 현황 / size profile 은 fixture 에서 derive.
-//! 클러스터 토폴로지·버전 등 Kafka 클러스터 특화 정보는 하드코딩 stub.
+//! Reading topics from the fixture. Anything that describes a cluster is invented, since
+//! there is no cluster to describe.
 
 use std::collections::{BTreeSet, HashMap};
 
@@ -17,7 +16,7 @@ use kaflow_api_types::{
 use crate::data::MockTopic;
 use crate::MockEngine;
 
-/// fixture 토픽 → `TopicFieldMeta` (인덱싱 완료 상태로 표시). `tok` = 현재 어절 대상 필드.
+/// Presents a fixture topic as one that has finished indexing.
 fn topic_field_meta(t: &MockTopic, tok: &BTreeSet<String>) -> TopicFieldMeta {
     let mut earliest: HashMap<u32, i64> = HashMap::new();
     let mut latest: HashMap<u32, i64> = HashMap::new();
@@ -40,7 +39,7 @@ fn topic_field_meta(t: &MockTopic, tok: &BTreeSet<String>) -> TopicFieldMeta {
             })
             .or_insert(off);
     }
-    // kafka high watermark = max indexed offset + 1 (caught-up 표시).
+    // Nothing is ever behind here, so the cluster is always exactly one past the end.
     let kafka_latest: HashMap<u32, i64> = latest.iter().map(|(p, o)| (*p, o + 1)).collect();
     TopicFieldMeta {
         topic: t.name.clone(),
@@ -120,7 +119,7 @@ impl TopicMetaApi for MockEngine {
         _bootstrap: &str,
         topics: &[String],
     ) -> Result<ClusterTopology, EngineError> {
-        // 데모용 3-브로커 가상 클러스터. 파티션 leader 는 round-robin, replica=2(ISR=replica).
+        // An invented three-broker cluster, so the shape has something to show.
         const BROKERS: i32 = 3;
         let brokers = (1..=BROKERS)
             .map(|id| BrokerInfo {
@@ -132,7 +131,7 @@ impl TopicMetaApi for MockEngine {
             })
             .collect();
 
-        // 요청 토픽(있으면)만, 없으면 전체 fixture 토픽.
+        // Only what was asked for, or everything.
         let wanted: Vec<&MockTopic> = if topics.is_empty() {
             self.store.topics.iter().collect()
         } else {
@@ -331,7 +330,7 @@ impl TopicMetaApi for MockEngine {
             topic: topic.to_string(),
             kafka_total,
             indexed_total,
-            // mock 은 전 구간 커버 (gap 0) — 커버 범위 = 서버 범위.
+            // Nothing is ever missing here.
             processed_total: kafka_total,
             gap: 0,
             skipped: kafka_total - indexed_total,

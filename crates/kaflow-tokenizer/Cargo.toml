@@ -2,7 +2,7 @@
 name = "kaflow-tokenizer"
 version = "0.1.0"
 edition = "2021"
-description = "검색 term 토크나이저 인터페이스 + 경량 기본 구현 (의존성 0, public)"
+description = "Kaflow search term tokenizer — interface plus a lightweight default implementation, no dependencies"
 publish = false
 
 [lib]
