@@ -204,7 +204,7 @@ the profile next time.
 | **Stored locally** (`~/.kaflow/`) | Non-secret metadata only — protocol, mechanism, username, certificate paths |
 | **Writes to your cluster** | **None.** Read-only: `Metadata`, `ApiVersions`, `DescribeConfigs`, `DescribeTopicPartitions`, `Fetch`, `ListOffsets`. No `Produce`, no admin calls — it *cannot* alter topics, consumer groups or ACLs |
 | **Read load on your cluster** | Only while indexing and syncing. Searching, exploring and exporting all run off the local index, so repeating them sends nothing to the cluster (opening a message's raw payload is the exception) |
-| **Sent to Kaflow** | On startup only, for version support and announcements: random instance ID · hashed machine ID · app version · OS/arch · UI language. Nothing about your Kafka setup or messages |
+| **Sent to Kaflow** | On startup, and again every few hours while the app is open, for version support and announcements: random instance ID · hashed machine ID · app version · OS/arch · UI language. Nothing about your Kafka setup or messages |
 | **Diagnostic reports** | Generated locally, sent only if you choose to |
 
 Full detail, including retention: **[PRIVACY.md](legal/PRIVACY.md)**
@@ -343,7 +343,7 @@ Official public repository — releases, documentation, issues, roadmap.
 
 | | |
 |---|---|
-| **Source-available, not open source** | The production frontend and search engine are **not** here |
+| **Source-available, not open source** | The frontend source and the search engine implementation are **not** here |
 | **What is here** | Public API contracts · mock engine · desktop shell · a runnable demo build |
 | **Why** | Transparency and evaluation. No open-source license applies unless a file says so — see [LICENSE](LICENSE) |
 | **Contributions** | Code contributions aren't accepted. Issues and feedback very much are |
