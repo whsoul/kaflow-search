@@ -1,6 +1,7 @@
 
 <p align="right">
-<kbd><b>Open Beta</b></kbd> &nbsp;&nbsp;&nbsp;&nbsp; <a href="README.md"><kbd>English</kbd></a> &nbsp; <a href="README.ko.md"><kbd>한국어</kbd></a> &nbsp; <a href="README.ja.md"><kbd>日本語</kbd></a> &nbsp; <kbd><b>中文</b></kbd>
+<b>Open Beta</b> &nbsp;&nbsp;&nbsp;&nbsp;
+<a href="README.md"><kbd>English</kbd></a> &nbsp; <a href="README.ko.md"><kbd>한국어</kbd></a> &nbsp; <a href="README.ja.md"><kbd>日本語</kbd></a> &nbsp; <kbd><b>中文</b></kbd>
 </p>
 
 <div align="center">
