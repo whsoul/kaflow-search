@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Search millions of Kafka messages in seconds with Kaflow Search. Build a private local index, query JSON, Avro and Protobuf, and auto-sync watched topics."
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="author" content="Kaflow Search" />
+    <meta name="theme-color" content="#090b12" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kaflow Search" />
+    <meta property="og:title" content="Kaflow Search — Find Kafka messages in seconds" />
+    <meta
+      property="og:description"
+      content="Fast desktop search for millions of Kafka messages, powered by a private local index."
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Kaflow Search — Find Kafka messages in seconds" />
+    <meta
+      name="twitter:description"
+      content="Fast desktop search for millions of Kafka messages, powered by a private local index."
+    />
+    <title>Kaflow Search: Fast local search for Kafka messages</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body itemscope itemtype="https://schema.org/SoftwareApplication">
+    <meta itemprop="applicationCategory" content="DeveloperApplication" />
+    <meta itemprop="operatingSystem" content="macOS 11 or later" />
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Kaflow Search home">
+        <span class="brand-mark" aria-hidden="true">K</span>
+        <span itemprop="name">Kaflow Search</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#features">Features</a>
+        <a href="https://github.com/whsoul/kaflow-search" target="_blank" rel="noreferrer" itemprop="sameAs">GitHub</a>
+        <a class="button button-small" href="https://github.com/whsoul/kaflow-search/releases/latest">Download</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="eyebrow"><span></span> Desktop search for Kafka</div>
+        <h1>Find one message<br />among <em>millions.</em></h1>
+        <p class="hero-copy" itemprop="description">
+          Kaflow Search indexes Kafka messages on your machine, keeps watched topics in sync,
+          and gives you fast, precise search without scanning the cluster again.
+        </p>
+        <div class="hero-actions">
+          <a class="button" href="https://github.com/whsoul/kaflow-search/releases/latest">Download latest</a>
+          <a class="text-link" href="https://github.com/whsoul/kaflow-search">View on GitHub <span>↗</span></a>
+        </div>
+
+        <div class="search-demo" aria-label="Kaflow Search product preview">
+          <div class="window-bar"><i></i><i></i><i></i><span>orders.production</span></div>
+          <div class="builder-label">Detailed search builder</div>
+          <div class="search-row">
+            <span class="prompt">⌕</span>
+            <code>payload.order_id = "ORD-2048" AND status != "cancelled"</code>
+            <kbd>Search</kbd>
+          </div>
+          <div class="result-meta"><span>3 results</span><span>12 ms</span></div>
+          <div class="result-lines" aria-hidden="true">
+            <div><b></b><span></span><small></small></div>
+            <div><b></b><span></span><small></small></div>
+            <div><b></b><span></span><small></small></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="trust-line" aria-label="Key benefits">
+        <span>Local indexing</span><span>No extra infrastructure</span><span>No sign-up</span><span>Your data stays local</span>
+      </section>
+
+      <section class="features" id="features">
+        <div class="section-heading">
+          <p>Built for the message hunt</p>
+          <h2>Search Kafka like a database.</h2>
+        </div>
+        <article class="watch-feature">
+          <div class="watch-copy">
+            <span class="feature-label">Watch &amp; auto-sync</span>
+            <h3>Keep an eye on the messages that matter.</h3>
+            <p>
+              Keep selected topics synced and watch for saved keywords as new messages arrive.
+              A lightweight way to spot the signals you care about during day-to-day operations—without adding a separate monitoring stack.
+            </p>
+          </div>
+          <div class="watch-preview" aria-label="Watch workflow overview">
+            <div class="watch-step"><small>01</small><span>Select a topic</span></div>
+            <div class="watch-arrow" aria-hidden="true">↓</div>
+            <div class="watch-step"><small>02</small><span>Keep it auto-synced</span></div>
+            <div class="watch-arrow" aria-hidden="true">↓</div>
+            <div class="watch-step watch-step-accent"><small>03</small><span>Watch a keyword</span></div>
+          </div>
+        </article>
+        <div class="feature-grid">
+          <article><span>01</span><h3>Search, don't scan</h3><p>Search millions of indexed messages in seconds without repeatedly reading Kafka.</p></article>
+          <article><span>02</span><h3>Query real payloads</h3><p>Combine AND, OR and NOT across keys, headers, nested JSON fields and time ranges.</p></article>
+          <article><span>03</span><h3>Decode anything</h3><p>Work with JSON, Avro and Protobuf, including Confluent Schema Registry.</p></article>
+          <article><span>04</span><h3>Private by design</h3><p>Messages and indexes stay on your machine. Kaflow Search is read-only.</p></article>
+        </div>
+      </section>
+
+      <section class="cta">
+        <p>Stop scrolling through logs.</p>
+        <h2>Find the message that matters.</h2>
+        <a class="button button-light" href="https://github.com/whsoul/kaflow-search/releases/latest">Get Kaflow Search</a>
+      </section>
+    </main>
+
+    <footer><span>© 2026 Kaflow Search</span><span>Fast. Local. Private.</span></footer>
+  </body>
+</html>
