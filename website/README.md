@@ -14,7 +14,10 @@ Then open <http://localhost:8080>.
 
 Use `website` as the static asset directory when creating the Cloudflare project.
 
-## Before production launch
+## Production metadata
 
-Once the final domain is known, add its absolute URL as the canonical URL, Open Graph URL,
-and `sitemap.xml` location. Add a purpose-made social preview image as `og:image` too.
+The production sitemap is available at `/sitemap.xml` and is advertised in `robots.txt`.
+The canonical and Open Graph URLs are set in `index.html`. If the production domain
+changes, update all three files together.
+
+Add a purpose-made social preview image as `og:image` when one is available.
