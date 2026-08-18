@@ -33,6 +33,7 @@
 | 🔎 **Search, not scan** | Keyword or field search across millions of indexed rows, in seconds |
 | 🧩 **Compound conditions** | `AND` / `OR` / `NOT` over keys, headers and nested JSON fields |
 | 🕒 **Narrow by time** | Exact time range, or drill down from a time-series chart |
+| 👁 **Watch a keyword** | Pin one, leave it open — the chart advances on its own |
 | 🧬 **Decode payloads** | JSON · Avro · Protobuf — local schemas or Confluent Schema Registry |
 | 📤 **Export results** | JSONL / CSV / TSV, optionally gzip or zstd |
 | 🔐 **Connects where you are** | **AWS MSK (IAM)** · SASL/SCRAM · SSL/TLS · Confluent Schema Registry |
@@ -62,21 +63,13 @@
   <sub><a href="https://github.com/user-attachments/assets/aee0fc7e-2f7e-484c-bf23-de6455bf9af9">▶ Watch the full walkthrough (3 min)</a> — every step, at real speed</sub>
 </div>
 
-<!-- Screenshots still to come. Add these, then uncomment:
-       assets/screenshots/{search,search-builder,message-detail,timeseries}.png
-     Left commented so nothing renders broken.
-
 <table>
   <tr>
-    <td width="50%"><img src="assets/screenshots/search.png" alt="Search results" /><br/><sub><b>Search results</b></sub></td>
-    <td width="50%"><img src="assets/screenshots/search-builder.png" alt="Condition builder" /><br/><sub><b>Condition builder</b></sub></td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="assets/screenshots/message-detail.png" alt="Message detail" /><br/><sub><b>Message detail</b></sub></td>
-    <td width="50%"><img src="assets/screenshots/timeseries.png" alt="Time series" /><br/><sub><b>Time-series drill-down</b></sub></td>
+    <td width="33%"><img src="assets/screenshots/search.png" alt="Keyword search results, with matches highlighted" /><br/><sub><b>Search results</b></sub></td>
+    <td width="33%"><img src="assets/screenshots/search-builder.png" alt="Advanced search — AND/OR/NOT conditions over nested JSON fields, with matching results below" /><br/><sub><b>Compound conditions</b></sub></td>
+    <td width="33%"><img src="assets/screenshots/message-detail.png" alt="Message detail — decoded payload and headers" /><br/><sub><b>Message detail</b></sub></td>
   </tr>
 </table>
--->
 
 ---
 
