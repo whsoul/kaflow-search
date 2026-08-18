@@ -30,6 +30,7 @@
 | 🔎 **是检索，不是扫描** | 在数百万行索引上做关键词或字段检索，几秒出结果 |
 | 🧩 **组合条件** | 对 key、header 和嵌套 JSON 字段使用 `AND` / `OR` / `NOT` |
 | 🕒 **按时间收窄** | 指定精确时间范围，或从时序图下钻 |
+| 👁 **监视关键词** | 锁定一个关键词，开着即可 —— 图表会自动前进 |
 | 🧬 **解码 payload** | JSON · Avro · Protobuf —— 本地 schema 或 Confluent Schema Registry |
 | 📤 **导出结果** | JSONL / CSV / TSV，可选 gzip 或 zstd |
 | 🔐 **连接你所在的环境** | **AWS MSK (IAM)** · SASL/SCRAM · SSL/TLS · Confluent Schema Registry |
@@ -58,21 +59,13 @@
   <sub><a href="https://github.com/user-attachments/assets/aee0fc7e-2f7e-484c-bf23-de6455bf9af9">▶ 观看完整演示 (3 分钟)</a> —— 每个步骤，按真实速度</sub>
 </div>
 
-<!-- Screenshots still to come. Add these, then uncomment:
-       assets/screenshots/{search,search-builder,message-detail,timeseries}.png
-     Left commented so nothing renders broken.
-
 <table>
   <tr>
-    <td width="50%"><img src="assets/screenshots/search.png" alt="检索结果" /><br/><sub><b>检索结果</b></sub></td>
-    <td width="50%"><img src="assets/screenshots/search-builder.png" alt="条件构造器" /><br/><sub><b>条件构造器</b></sub></td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="assets/screenshots/message-detail.png" alt="消息详情" /><br/><sub><b>消息详情</b></sub></td>
-    <td width="50%"><img src="assets/screenshots/timeseries.png" alt="时序" /><br/><sub><b>时序下钻</b></sub></td>
+    <td width="33%"><img src="assets/screenshots/search.png" alt="关键词检索结果，匹配处高亮显示" /><br/><sub><b>检索结果</b></sub></td>
+    <td width="33%"><img src="assets/screenshots/search-builder.png" alt="高级检索 —— 对嵌套 JSON 字段的 AND/OR/NOT 条件，下方是匹配结果" /><br/><sub><b>组合条件</b></sub></td>
+    <td width="33%"><img src="assets/screenshots/message-detail.png" alt="消息详情 —— 已解码的 payload 与 header" /><br/><sub><b>消息详情</b></sub></td>
   </tr>
 </table>
--->
 
 ---
 

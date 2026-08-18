@@ -30,6 +30,7 @@
 | 🔎 **スキャンではなく検索** | 数百万行のインデックスに対して、キーワード検索もフィールド検索も数秒で |
 | 🧩 **条件の組み合わせ** | キー・ヘッダー・ネストした JSON フィールドに `AND` / `OR` / `NOT` |
 | 🕒 **時間で絞り込む** | 期間を指定、または時系列チャートからドリルダウン |
+| 👁 **キーワードを監視** | ひとつ登録して開いたままにしておくと、グラフが自動で進みます |
 | 🧬 **ペイロードのデコード** | JSON · Avro · Protobuf — ローカルスキーマまたは Confluent Schema Registry |
 | 📤 **結果のエクスポート** | JSONL / CSV / TSV、必要なら gzip・zstd |
 | 🔐 **今の環境につながる** | **AWS MSK (IAM)** · SASL/SCRAM · SSL/TLS · Confluent Schema Registry |
@@ -58,21 +59,13 @@
   <sub><a href="https://github.com/user-attachments/assets/aee0fc7e-2f7e-484c-bf23-de6455bf9af9">▶ 全体のウォークスルーを見る (3 分)</a> — すべての手順を実際の速度で</sub>
 </div>
 
-<!-- Screenshots still to come. Add these, then uncomment:
-       assets/screenshots/{search,search-builder,message-detail,timeseries}.png
-     Left commented so nothing renders broken.
-
 <table>
   <tr>
-    <td width="50%"><img src="assets/screenshots/search.png" alt="検索結果" /><br/><sub><b>検索結果</b></sub></td>
-    <td width="50%"><img src="assets/screenshots/search-builder.png" alt="条件ビルダー" /><br/><sub><b>条件ビルダー</b></sub></td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="assets/screenshots/message-detail.png" alt="メッセージ詳細" /><br/><sub><b>メッセージ詳細</b></sub></td>
-    <td width="50%"><img src="assets/screenshots/timeseries.png" alt="時系列" /><br/><sub><b>時系列ドリルダウン</b></sub></td>
+    <td width="33%"><img src="assets/screenshots/search.png" alt="キーワード検索結果。マッチ箇所をハイライト" /><br/><sub><b>検索結果</b></sub></td>
+    <td width="33%"><img src="assets/screenshots/search-builder.png" alt="詳細検索 — ネストした JSON フィールドへの AND/OR/NOT 条件と、その下にマッチした結果" /><br/><sub><b>条件の組み合わせ</b></sub></td>
+    <td width="33%"><img src="assets/screenshots/message-detail.png" alt="メッセージ詳細 — デコードされた payload とヘッダー" /><br/><sub><b>メッセージ詳細</b></sub></td>
   </tr>
 </table>
--->
 
 ---
 

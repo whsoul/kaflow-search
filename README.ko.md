@@ -30,6 +30,7 @@
 | 🔎 **스캔이 아니라 검색** | 수백만 건이어도 키워드·필드 검색이 초 단위로 |
 | 🧩 **조건 조합** | Key·Header·중첩 JSON 필드에 `AND` / `OR` / `NOT` |
 | 🕒 **시간으로 좁히기** | 정확한 기간 지정, 또는 시계열 차트에서 드릴다운 |
+| 👁 **키워드 감시** | 감시어를 걸어두면, 창을 열어둔 채로 그래프가 계속 진행 |
 | 🧬 **payload 해석** | JSON · Avro · Protobuf — 로컬 스키마 또는 Confluent Schema Registry |
 | 📤 **결과 내보내기** | JSONL / CSV / TSV, 필요 시 gzip·zstd |
 | 🔐 **주요 환경에 연결** | **AWS MSK (IAM)** · SASL/SCRAM · SSL/TLS · Confluent Schema Registry |
@@ -58,21 +59,13 @@
   <sub><a href="https://github.com/user-attachments/assets/aee0fc7e-2f7e-484c-bf23-de6455bf9af9">▶ 전체 흐름 영상 보기 (3분)</a> — 모든 단계를 실제 속도로</sub>
 </div>
 
-<!-- Screenshots still to come. Add these, then uncomment:
-       assets/screenshots/{search,search-builder,message-detail,timeseries}.png
-     Left commented so nothing renders broken.
-
 <table>
   <tr>
-    <td width="50%"><img src="assets/screenshots/search.png" alt="검색 결과" /><br/><sub><b>검색 결과</b></sub></td>
-    <td width="50%"><img src="assets/screenshots/search-builder.png" alt="조건 빌더" /><br/><sub><b>조건 빌더</b></sub></td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="assets/screenshots/message-detail.png" alt="메시지 상세" /><br/><sub><b>메시지 상세</b></sub></td>
-    <td width="50%"><img src="assets/screenshots/timeseries.png" alt="시계열" /><br/><sub><b>시계열 드릴다운</b></sub></td>
+    <td width="33%"><img src="assets/screenshots/search.png" alt="키워드 검색 결과, 매치된 부분 하이라이트" /><br/><sub><b>검색 결과</b></sub></td>
+    <td width="33%"><img src="assets/screenshots/search-builder.png" alt="상세검색 — 중첩 JSON 필드에 AND/OR/NOT 조건, 아래에 매치 결과" /><br/><sub><b>조건 조합</b></sub></td>
+    <td width="33%"><img src="assets/screenshots/message-detail.png" alt="메시지 상세 — 디코드된 payload와 헤더" /><br/><sub><b>메시지 상세</b></sub></td>
   </tr>
 </table>
--->
 
 ---
 
