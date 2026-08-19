@@ -6,3 +6,9 @@
 
 /*.css
   Cache-Control: public, max-age=3600
+
+/*.mp4
+  Cache-Control: public, max-age=604800
+
+/*.jpg
+  Cache-Control: public, max-age=604800

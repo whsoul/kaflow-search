@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Kafka 메시지를 로컬에 인덱싱해 빠르게 검색하고 조건에 맞는 트래픽을 Watch하는 데스크톱 도구입니다. 별도 ELK 구축 없이 Kafka 데이터와 Web/WAS 로그를 조사하세요."
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="author" content="Kaflow Search" />
+    <meta name="theme-color" content="#090b12" />
+    <link rel="canonical" href="https://kaflow-search.whsoul-tools.com/ko/" />
+    <link rel="alternate" hreflang="en" href="https://kaflow-search.whsoul-tools.com/" />
+    <link rel="alternate" hreflang="ko" href="https://kaflow-search.whsoul-tools.com/ko/" />
+    <link rel="alternate" hreflang="x-default" href="https://kaflow-search.whsoul-tools.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kaflow Search" />
+    <meta property="og:url" content="https://kaflow-search.whsoul-tools.com/ko/" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:title" content="Kaflow Search — Kafka 메시지 검색 및 Watch 도구" />
+    <meta
+      property="og:description"
+      content="개인 개발자와 소규모 팀을 위한 Kafka 검색 도구. ELK 없이 로컬 인덱스로 Kafka 메시지와 로그를 검색하고 조건에 맞는 트래픽을 Watch하세요."
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Kaflow Search — Kafka 메시지 검색 및 Watch 도구" />
+    <meta
+      name="twitter:description"
+      content="ELK 없이 로컬 인덱스로 Kafka 메시지와 로그를 검색하고 조건에 맞는 트래픽을 Watch하세요."
+    />
+    <title>Kafka 메시지 검색 및 모니터링 도구 | Kaflow Search</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body itemscope itemtype="https://schema.org/SoftwareApplication">
+    <meta itemprop="applicationCategory" content="DeveloperApplication" />
+    <meta itemprop="operatingSystem" content="macOS 11 or later" />
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Kaflow Search 홈">
+        <span class="brand-mark" aria-hidden="true">K</span>
+        <span itemprop="name">Kaflow Search</span>
+      </a>
+      <nav aria-label="주요 메뉴">
+        <a href="#scenarios">활용 사례</a>
+        <a href="#features">기능</a>
+        <div class="language-tabs" aria-label="언어 선택">
+          <a href="../" lang="en" hreflang="en">English</a>
+          <a href="./" lang="ko" hreflang="ko" aria-current="page">한국어</a>
+        </div>
+        <a href="https://github.com/whsoul/kaflow-search" target="_blank" rel="noreferrer" itemprop="sameAs">GitHub</a>
+        <a class="button button-small" href="https://github.com/whsoul/kaflow-search/releases/latest">다운로드</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="eyebrow"><span></span> Kafka를 위한 데스크톱 검색</div>
+        <h1>수백만 건의 Kafka 메시지를<br /><em>몇 초 안에 검색하세요.</em></h1>
+        <p class="hero-copy" itemprop="description">
+          필요한 토픽만 로컬에 인덱싱해 빠르고 상세하게 검색합니다.
+          임시 Consumer나 별도의 검색 인프라는 필요하지 않습니다.
+        </p>
+        <div class="hero-actions">
+          <a class="button" href="https://github.com/whsoul/kaflow-search/releases/latest">최신 버전 다운로드</a>
+          <a class="text-link" href="https://github.com/whsoul/kaflow-search">GitHub에서 보기 <span>↗</span></a>
+        </div>
+
+        <figure class="hero-product-shot">
+          <div class="product-shot-bar"><span><i></i> 실제 제품 화면</span><small>선택한 토픽을 로컬에 인덱싱</small></div>
+          <div class="hero-shot-stage">
+            <img
+              class="hero-quick-search"
+              src="../assets/screenshots/search-hero.webp"
+              width="1410"
+              height="625"
+              alt="로컬에 인덱싱한 Kafka 토픽에서 일치 메시지를 강조하는 Kaflow Search 빠른 검색 화면"
+              fetchpriority="high"
+              decoding="async"
+            />
+            <div class="hero-query-builder">
+              <span>상세검색 빌더</span>
+              <img
+                src="../assets/screenshots/query-builder.webp"
+                width="1235"
+                height="345"
+                alt="필드 조건과 AND 및 NOT 그룹을 조합하는 Kaflow Search 상세검색 빌더"
+                decoding="async"
+              />
+            </div>
+          </div>
+          <figcaption>빠른 검색으로 시작하거나 상세검색 빌더에서 정교한 필드 조건을 조합하세요.</figcaption>
+        </figure>
+      </section>
+
+      <section class="trust-line" aria-label="주요 장점">
+        <span>선택한 토픽만 인덱싱</span><span>제한 가능한 로컬 용량</span><span>추가 인프라 불필요</span><span>데이터는 로컬에 유지</span>
+      </section>
+
+      <section class="scenarios" id="scenarios">
+        <div class="section-heading scenarios-heading">
+          <div>
+            <p>이런 상황에서 시작해 보세요</p>
+            <h2>유용한 활용 사례.</h2>
+          </div>
+          <p class="section-intro">
+            아래 사례는 시작점일 뿐입니다. 시스템에 맞는 식별자, 필드, 키워드 또는 시간 범위로
+            필요한 Kafka 메시지를 조사할 수 있습니다.
+            <span class="audience-note">운영 데이터를 Kafka에 보관하고 있지만 완전한 ELK 스택의 비용과 운영 부담까지는 필요하지 않은 개인 개발자와 소규모 팀에 특히 유용합니다.</span>
+          </p>
+        </div>
+
+        <div class="scenario-tabs">
+          <div class="scenario-tablist" role="tablist" aria-label="Kaflow Search 활용 사례">
+            <button id="scenario-tab-1" role="tab" aria-selected="true" aria-controls="scenario-panel-1" tabindex="0"><small>01</small><span>멈춘 주문 원인 추적</span></button>
+            <button id="scenario-tab-2" role="tab" aria-selected="false" aria-controls="scenario-panel-2" tabindex="-1"><small>02</small><span>Web/WAS 로그 추적</span></button>
+            <button id="scenario-tab-3" role="tab" aria-selected="false" aria-controls="scenario-panel-3" tabindex="-1"><small>03</small><span>조건 트래픽 Watch</span></button>
+            <button id="scenario-tab-4" role="tab" aria-selected="false" aria-controls="scenario-panel-4" tabindex="-1"><small>04</small><span>Kafka 장애 중 조사</span></button>
+            <button id="scenario-tab-5" role="tab" aria-selected="false" aria-controls="scenario-panel-5" tabindex="-1"><small>05</small><span>나의 활용 사례</span></button>
+          </div>
+
+          <article class="scenario-panel" id="scenario-panel-1" role="tabpanel" aria-labelledby="scenario-tab-1">
+            <div class="scenario-copy">
+              <span class="scenario-tag">주문 조사</span>
+              <h3>결제는 끝났는데 주문은 왜 멈췄을까요?</h3>
+              <p>토픽마다 임시 Consumer를 만들지 않고 같은 주문번호를 주문, 결제, 처리 토픽에서 차례로 검색하세요.</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>재고를 기다리는 주문 확인</li>
+                <li><span>02</span>결제 승인 여부 확인</li>
+                <li><span>03</span>창고 시스템 타임아웃 발견</li>
+              </ol>
+            </div>
+            <div class="scenario-evidence">
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="../assets/demos/stuck-order-preview.jpg" aria-label="주문, 결제, 처리 토픽을 오가며 멈춘 주문의 원인을 추적하는 제품 데모">
+                  <source src="../assets/demos/stuck-order-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">실제 제품 데모 · 가상 데이터 · 28초</span>
+              </div>
+              <div class="scenario-query" aria-label="Stuck order tracing result">
+                <small>검색 키</small>
+                <code>ORD-20260812-483921</code>
+                <p><b>확인 결과</b> 결제는 성공했지만 재고 예약이 <strong>WAREHOUSE_TIMEOUT</strong>으로 실패했습니다.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-2" role="tabpanel" aria-labelledby="scenario-tab-2" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">Kafka에 저장된 Web/WAS 로그</span>
+              <h3>ELK 없이 Kafka에 쌓인 로그를 검색하세요.</h3>
+              <p>Nginx와 애플리케이션 로그가 Kafka에 수집되고 있다면 로컬에 인덱싱하고 장애 시간대를 좁힌 뒤 trace ID로 원인을 추적할 수 있습니다.</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>Nginx 10만 건에서 checkout 502 필터링</li>
+                <li><span>02</span>장애 시간대로 Drill</li>
+                <li><span>03</span>trace ID로 애플리케이션 로그 추적</li>
+              </ol>
+            </div>
+            <div class="scenario-evidence">
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="../assets/demos/log-investigation-preview.jpg" aria-label="Nginx 오류를 필터링하고 시간 범위를 Drill한 뒤 애플리케이션 로그에서 원인을 추적하는 제품 데모">
+                  <source src="../assets/demos/log-investigation-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">실제 제품 데모 · 가상 데이터 · 35초</span>
+              </div>
+              <div class="scenario-query" aria-label="Web and application log tracing result">
+                <small>상세검색</small>
+                <code>P.status = "502*" AND P.path = "/api/checkout*" AND P.method = "POST*"</code>
+                <p><b>확인 결과</b> checkout 서비스의 결제 연결 풀이 고갈됐습니다. <strong>50 / 50 사용 중</strong>, 184건 대기.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-3" role="tabpanel" aria-labelledby="scenario-tab-3" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">조건 기반 트래픽 Watch</span>
+              <h3>결제 실패가 들어오는 순간 확인하세요.</h3>
+              <p>Kaflow Search가 토픽을 동기화하는 동안 결제 운영 담당자는 가벼운 키워드 Watch를 열어둘 수 있습니다.</p>
+              <ol class="scenario-flow">
+                <li><span>01</span><code>payment_failed</code> Watch 설정</li>
+                <li><span>02</span>결제 토픽 자동 동기화</li>
+                <li><span>03</span>새 매치를 열어 원인에 대응</li>
+              </ol>
+            </div>
+            <div class="scenario-evidence">
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="../assets/demos/payment-watch-preview.jpg" aria-label="실시간 키워드 Watch에 새로운 결제 실패가 나타나는 제품 데모">
+                  <source src="../assets/demos/payment-watch-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">실제 제품 데모 · 가상 데이터 · 27초</span>
+              </div>
+              <div class="scenario-query" aria-label="Matching traffic watch result">
+                <small>Watch 키워드</small>
+                <code>payment_failed</code>
+                <p><b>새 매치</b> 주문 <strong>ORD-20260819-WATCH03</strong>이 결제 게이트웨이 3000ms 타임아웃으로 실패했습니다.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-4" role="tabpanel" aria-labelledby="scenario-tab-4" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">Kafka 장애 상황에서도 조사 지속</span>
+              <h3>Kafka가 응답하지 않아도 조사를 계속하세요.</h3>
+              <p>마지막 로컬 인덱스로 장애 직전까지 수집한 메시지를 확인하고 수동 처리가 필요한 작업을 찾을 수 있습니다.</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>연결 중단 직전 처리 흐름 확인</li>
+                <li><span>02</span>로컬 인덱스에서 검색 계속</li>
+                <li><span>03</span>수동 검토가 필요한 마지막 주문 발견</li>
+              </ol>
+            </div>
+            <div class="scenario-evidence">
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="../assets/demos/offline-incident-preview.jpg" aria-label="Kafka가 응답하지 않은 뒤에도 로컬 인덱스로 조사를 이어가는 제품 데모">
+                  <source src="../assets/demos/offline-incident-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">실제 제품 데모 · 가상 데이터 · 49초</span>
+              </div>
+              <div class="scenario-query" aria-label="Offline incident investigation result">
+                <small>로컬 인덱스 검색</small>
+                <code>PENDING</code>
+                <p><b>확인 결과</b> 결제는 승인됐지만 fulfillment가 시작되지 않았습니다. 주문은 수동 검토가 필요한 <strong>PENDING</strong> 상태입니다.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-5" role="tabpanel" aria-labelledby="scenario-tab-5" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">이 사례들 외에도</span>
+              <h3>Kafka 데이터에 다른 질문이 있나요?</h3>
+              <p>시스템에 맞는 단서를 사용하세요. Kaflow Search는 이미 가지고 있는 토픽과 필드로 동작합니다.</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>필요한 토픽을 로컬에 인덱싱</li>
+                <li><span>02</span>식별자, 필드 또는 키워드 검색</li>
+                <li><span>03</span>목록, 탐색, 시계열로 증거 좁히기</li>
+              </ol>
+            </div>
+            <div class="scenario-query" aria-label="나의 Kafka 데이터 조사">
+              <small>나의 시작점</small>
+              <code>식별자 · 필드 · 키워드 · 시간 범위</code>
+              <p><b>나의 조사</b> 네 가지 시나리오는 예시입니다. 팀에서 운영하는 Kafka 데이터에 같은 로컬 검색 흐름을 적용하세요.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="product-tour" aria-labelledby="product-tour-title">
+        <div class="product-tour-heading">
+          <div class="section-heading">
+            <p>실제 제품 화면</p>
+            <h2 id="product-tour-title">작업 흐름을 더 자세히 살펴보세요.</h2>
+          </div>
+          <p>옆으로 스크롤해 실제 인터페이스를 확인하세요.</p>
+        </div>
+        <div class="product-rail" tabindex="0" aria-label="Kaflow Search 제품 스크린샷">
+          <figure class="product-card">
+            <div class="product-card-media"><img src="../assets/screenshots/dashboard.png" width="1600" height="683" loading="lazy" decoding="async" alt="선택한 토픽, 로컬 인덱스 크기와 동기화 메시지 수를 보여주는 Kaflow Search 대시보드" /></div>
+            <figcaption><small>01 · 로컬 인덱스</small><b>토픽을 선택하고 로컬에 저장된 범위를 파악하세요.</b></figcaption>
+          </figure>
+          <figure class="product-card">
+            <div class="product-card-media"><img src="../assets/screenshots/search.png" width="1600" height="864" loading="lazy" decoding="async" alt="수백만 건의 Kafka 메시지에서 키워드 일치를 강조하는 Kaflow Search 빠른 검색" /></div>
+            <figcaption><small>02 · 빠른 검색</small><b>Kafka를 다시 스캔하지 않고 일치 메시지를 찾으세요.</b></figcaption>
+          </figure>
+          <figure class="product-card">
+            <div class="product-card-media"><img src="../assets/screenshots/search-builder.png" width="1600" height="863" loading="lazy" decoding="async" alt="payload 필드와 불리언 조건을 적용해 검색 결과를 좁힌 Kaflow Search 화면" /></div>
+            <figcaption><small>03 · 상세검색</small><b>필드와 불리언 조건을 조합해 증거를 좁히세요.</b></figcaption>
+          </figure>
+          <figure class="product-card">
+            <div class="product-card-media"><img src="../assets/screenshots/message-detail.png" width="1600" height="915" loading="lazy" decoding="async" alt="Kafka 메시지 헤더와 JSON payload 상세 창이 열린 Kaflow Search Watch 차트" /></div>
+            <figcaption><small>04 · Watch와 상세 확인</small><b>일치 트래픽을 확인하고 원본 메시지를 여세요.</b></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="features" id="features">
+        <div class="section-heading">
+          <p>Kafka 메시지 검색과 키워드 Watch</p>
+          <h2>Kafka를 데이터베이스처럼 검색하세요.</h2>
+        </div>
+        <article class="watch-feature">
+          <div class="watch-copy">
+            <span class="feature-label">Watch와 자동 동기화</span>
+            <h3>중요한 메시지를 계속 지켜보세요.</h3>
+            <p>
+              선택한 토픽을 동기화하고 새 메시지가 들어올 때 저장한 키워드를 Watch하세요.
+              별도 모니터링 스택 없이 일상 운영에서 중요한 신호를 가볍게 포착할 수 있습니다.
+            </p>
+          </div>
+          <div class="watch-preview" aria-label="Watch 작업 흐름">
+            <div class="watch-step"><small>01</small><span>토픽 선택</span></div>
+            <div class="watch-arrow" aria-hidden="true">↓</div>
+            <div class="watch-step"><small>02</small><span>자동 동기화 유지</span></div>
+            <div class="watch-arrow" aria-hidden="true">↓</div>
+            <div class="watch-step watch-step-accent"><small>03</small><span>키워드 Watch</span></div>
+          </div>
+        </article>
+        <div class="feature-grid">
+          <article><span>01</span><h3>스캔 대신 검색</h3><p>필요한 토픽만 인덱싱하고 설정 가능한 로컬 용량 안에서 수백만 건의 메시지를 검색합니다.</p></article>
+          <article><span>02</span><h3>실제 payload 검색</h3><p>키, 헤더, 중첩 JSON 필드와 시간 범위에 AND, OR, NOT 조건을 조합합니다.</p></article>
+          <article><span>03</span><h3>다양한 형식 디코딩</h3><p>Confluent Schema Registry를 포함해 JSON, Avro, Protobuf를 지원합니다.</p></article>
+          <article><span>04</span><h3>처음부터 로컬 중심</h3><p>메시지와 인덱스는 사용자의 PC에 유지되며 Kaflow Search는 읽기 전용입니다.</p></article>
+        </div>
+      </section>
+
+      <section class="cta">
+        <p>Kafka 메시지를 하나씩 넘겨보는 일을 멈추세요.</p>
+        <h2>중요한 메시지를 바로 찾으세요.</h2>
+        <a class="button button-light" href="https://github.com/whsoul/kaflow-search/releases/latest">Kaflow Search 받기</a>
+      </section>
+    </main>
+
+    <footer><span>© 2026 Kaflow Search</span><span>빠르게. 로컬에서. 안전하게.</span></footer>
+    <script src="../script.js" defer></script>
+  </body>
+</html>

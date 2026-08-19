@@ -5,27 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Search millions of Kafka messages in seconds with Kaflow Search. Build a private local index, query JSON, Avro and Protobuf, and auto-sync watched topics."
+      content="Desktop Kafka message search tool for independent developers and small teams. Investigate locally indexed data and watch matching traffic without running ELK."
     />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
     <meta name="author" content="Kaflow Search" />
     <meta name="theme-color" content="#090b12" />
     <link rel="canonical" href="https://kaflow-search.whsoul-tools.com/" />
+    <link rel="alternate" hreflang="en" href="https://kaflow-search.whsoul-tools.com/" />
+    <link rel="alternate" hreflang="ko" href="https://kaflow-search.whsoul-tools.com/ko/" />
+    <link rel="alternate" hreflang="x-default" href="https://kaflow-search.whsoul-tools.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Kaflow Search" />
     <meta property="og:url" content="https://kaflow-search.whsoul-tools.com/" />
-    <meta property="og:title" content="Kaflow Search — Find Kafka messages in seconds" />
+    <meta property="og:title" content="Kaflow Search — Kafka Message Search &amp; Keyword Watch Tool" />
     <meta
       property="og:description"
-      content="Fast desktop search for millions of Kafka messages, powered by a private local index."
+      content="Built for independent developers and small teams: search locally indexed Kafka messages, investigate Kafka-stored logs, and watch matching traffic without ELK."
     />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Kaflow Search — Find Kafka messages in seconds" />
+    <meta name="twitter:title" content="Kaflow Search — Kafka Message Search &amp; Keyword Watch Tool" />
     <meta
       name="twitter:description"
-      content="Fast desktop search for millions of Kafka messages, powered by a private local index."
+      content="Built for independent developers and small teams: search locally indexed Kafka messages, investigate Kafka-stored logs, and watch matching traffic without ELK."
     />
-    <title>Kaflow Search: Fast local search for Kafka messages</title>
+    <title>Kafka Message Search &amp; Keyword Watch Tool | Kaflow Search</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body itemscope itemtype="https://schema.org/SoftwareApplication">
@@ -37,7 +40,12 @@
         <span itemprop="name">Kaflow Search</span>
       </a>
       <nav aria-label="Primary navigation">
+        <a href="#scenarios">Scenarios</a>
         <a href="#features">Features</a>
+        <div class="language-tabs" aria-label="Language">
+          <a href="./" lang="en" hreflang="en" aria-current="page">English</a>
+          <a href="./ko/" lang="ko" hreflang="ko">한국어</a>
+        </div>
         <a href="https://github.com/whsoul/kaflow-search" target="_blank" rel="noreferrer" itemprop="sameAs">GitHub</a>
         <a class="button button-small" href="https://github.com/whsoul/kaflow-search/releases/latest">Download</a>
       </nav>
@@ -56,30 +64,214 @@
           <a class="text-link" href="https://github.com/whsoul/kaflow-search">View on GitHub <span>↗</span></a>
         </div>
 
-        <div class="search-demo" aria-label="Kaflow Search product preview">
-          <div class="window-bar"><i></i><i></i><i></i><span>orders.production</span></div>
-          <div class="builder-label">Detailed search builder</div>
-          <div class="search-row">
-            <span class="prompt">⌕</span>
-            <code>payload.order_id = "ORD-2048" AND status != "cancelled"</code>
-            <kbd>Search</kbd>
+        <figure class="hero-product-shot">
+          <div class="product-shot-bar"><span><i></i> Real product screen</span><small>Selected topics indexed locally</small></div>
+          <div class="hero-shot-stage">
+            <img
+              class="hero-quick-search"
+              src="./assets/screenshots/search-hero.webp"
+              width="1410"
+              height="625"
+              alt="Kaflow Search quick search showing highlighted matches in a locally indexed Kafka topic"
+              fetchpriority="high"
+              decoding="async"
+            />
+            <div class="hero-query-builder">
+              <span>Detailed query builder</span>
+              <img
+                src="./assets/screenshots/query-builder.webp"
+                width="1235"
+                height="345"
+                alt="Kaflow Search detailed query builder combining field filters with AND and NOT groups"
+                decoding="async"
+              />
+            </div>
           </div>
-          <div class="result-meta"><span>3 results</span><span>12 ms</span></div>
-          <div class="result-lines" aria-hidden="true">
-            <div><b></b><span></span><small></small></div>
-            <div><b></b><span></span><small></small></div>
-            <div><b></b><span></span><small></small></div>
-          </div>
-        </div>
+          <figcaption>Start with a quick search, or combine precise field conditions with the detailed query builder.</figcaption>
+        </figure>
       </section>
 
       <section class="trust-line" aria-label="Key benefits">
-        <span>Local indexing</span><span>No extra infrastructure</span><span>No sign-up</span><span>Your data stays local</span>
+        <span>Selected-topic indexing</span><span>Bounded local storage</span><span>No extra infrastructure</span><span>Your data stays local</span>
+      </section>
+
+      <section class="scenarios" id="scenarios">
+        <div class="section-heading scenarios-heading">
+          <div>
+            <p>Common starting points</p>
+            <h2>Helpful use cases.</h2>
+          </div>
+          <p class="section-intro">
+            These are a few examples, not limits. Start with any identifier, field, keyword,
+            or time range relevant to your system and investigate the Kafka messages that matter to you.
+            <span class="audience-note">Especially useful for independent developers and small teams that already keep operational data in Kafka, but do not need the cost and operational overhead of running a full ELK stack.</span>
+          </p>
+        </div>
+
+        <div class="scenario-tabs">
+          <div class="scenario-tablist" role="tablist" aria-label="Kaflow Search scenarios">
+            <button id="scenario-tab-1" role="tab" aria-selected="true" aria-controls="scenario-panel-1" tabindex="0"><small>01</small><span>Trace a stuck order</span></button>
+            <button id="scenario-tab-2" role="tab" aria-selected="false" aria-controls="scenario-panel-2" tabindex="-1"><small>02</small><span>Trace web &amp; app logs</span></button>
+            <button id="scenario-tab-3" role="tab" aria-selected="false" aria-controls="scenario-panel-3" tabindex="-1"><small>03</small><span>Watch matching traffic</span></button>
+            <button id="scenario-tab-4" role="tab" aria-selected="false" aria-controls="scenario-panel-4" tabindex="-1"><small>04</small><span>Investigate while Kafka is down</span></button>
+            <button id="scenario-tab-5" role="tab" aria-selected="false" aria-controls="scenario-panel-5" tabindex="-1"><small>05</small><span>Your use case</span></button>
+          </div>
+
+          <article class="scenario-panel" id="scenario-panel-1" role="tabpanel" aria-labelledby="scenario-tab-1">
+            <div class="scenario-copy">
+              <span class="scenario-tag">Order investigation</span>
+              <h3>A customer paid. Why is the order still stuck?</h3>
+              <p>Search the same order ID across order, payment, and processing topics—without writing a temporary consumer for each one.</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>Find the order waiting for inventory</li>
+                <li><span>02</span>Confirm that payment was authorized</li>
+                <li><span>03</span>Locate the warehouse timeout</li>
+              </ol>
+            </div>
+            <div class="scenario-evidence">
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="./assets/demos/stuck-order-preview.jpg" aria-label="Product demo tracing a stuck order across order, payment, and processing topics">
+                  <source src="./assets/demos/stuck-order-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">Real product demo · synthetic data · 28 sec</span>
+              </div>
+              <div class="scenario-query" aria-label="Stuck order tracing result">
+                <small>Search key</small>
+                <code>ORD-20260812-483921</code>
+                <p><b>Finding</b> Payment succeeded, but inventory reservation failed with <strong>WAREHOUSE_TIMEOUT</strong>.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-2" role="tabpanel" aria-labelledby="scenario-tab-2" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">Web &amp; application logs in Kafka</span>
+              <h3>Search Kafka-stored logs without running ELK.</h3>
+              <p>If Nginx and application logs are already collected in Kafka, index them locally, narrow the failure window, and follow a trace ID to the cause.</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>Filter 100K Nginx records to checkout 502s</li>
+                <li><span>02</span>Drill into the incident time window</li>
+                <li><span>03</span>Follow the trace into application logs</li>
+              </ol>
+            </div>
+            <div class="scenario-evidence">
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="./assets/demos/log-investigation-preview.jpg" aria-label="Product demo filtering Nginx errors, drilling into a time range, and tracing the cause in application logs">
+                  <source src="./assets/demos/log-investigation-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">Real product demo · synthetic data · 35 sec</span>
+              </div>
+              <div class="scenario-query" aria-label="Web and application log tracing result">
+                <small>Detailed search</small>
+                <code>P.status = "502*" AND P.path = "/api/checkout*" AND P.method = "POST*"</code>
+                <p><b>Finding</b> The checkout service exhausted its payment connection pool: <strong>50 / 50 active</strong>, 184 pending.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-3" role="tabpanel" aria-labelledby="scenario-tab-3" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">Conditional traffic watch</span>
+              <h3>Spot payment failures as they arrive.</h3>
+              <p>A payment operations specialist keeps a lightweight keyword Watch open while Kaflow Search keeps the topic in sync.</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>Watch <code>payment_failed</code></li>
+                <li><span>02</span>Keep the payment topic auto-synced</li>
+                <li><span>03</span>Open the new match and act on the cause</li>
+              </ol>
+            </div>
+            <div class="scenario-evidence">
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="./assets/demos/payment-watch-preview.jpg" aria-label="Product demo showing a new payment failure appear in a live keyword Watch">
+                  <source src="./assets/demos/payment-watch-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">Real product demo · synthetic data · 27 sec</span>
+              </div>
+              <div class="scenario-query" aria-label="Matching traffic watch result">
+                <small>Watched keyword</small>
+                <code>payment_failed</code>
+                <p><b>New match</b> Order <strong>ORD-20260819-WATCH03</strong> failed because the payment gateway timed out after 3000 ms.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-4" role="tabpanel" aria-labelledby="scenario-tab-4" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">Kafka outage continuity</span>
+              <h3>Keep investigating when Kafka is unavailable.</h3>
+              <p>Use the last local index to inspect the messages collected before the outage and identify work that still needs manual intervention.</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>Review the processing flow just before disconnect</li>
+                <li><span>02</span>Continue searching the local index</li>
+                <li><span>03</span>Find the final order needing manual review</li>
+              </ol>
+            </div>
+            <div class="scenario-evidence">
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="./assets/demos/offline-incident-preview.jpg" aria-label="Product demo continuing an investigation from the local index after Kafka becomes unavailable">
+                  <source src="./assets/demos/offline-incident-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">Real product demo · synthetic data · 49 sec</span>
+              </div>
+              <div class="scenario-query" aria-label="Offline incident investigation result">
+                <small>Local index search</small>
+                <code>PENDING</code>
+                <p><b>Finding</b> Payment was authorized, but fulfillment never started. The order remains <strong>PENDING</strong> for manual review.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-5" role="tabpanel" aria-labelledby="scenario-tab-5" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">Beyond these examples</span>
+              <h3>Have a different question hidden in Kafka?</h3>
+              <p>Bring the clues that make sense in your system. Kaflow Search works with the topics and fields you already have.</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>Index the topic locally</li>
+                <li><span>02</span>Search your identifiers, fields, or keywords</li>
+                <li><span>03</span>Use lists, exploration, and timelines to narrow the evidence</li>
+              </ol>
+            </div>
+            <div class="scenario-query" aria-label="Your own Kafka investigation">
+              <small>Your starting point</small>
+              <code>an ID · a field · a keyword · a time range</code>
+              <p><b>Your investigation</b> The four scenarios are examples. Apply the same local search workflow to the Kafka data your team operates.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="product-tour" aria-labelledby="product-tour-title">
+        <div class="product-tour-heading">
+          <div class="section-heading">
+            <p>Real product screens</p>
+            <h2 id="product-tour-title">A closer look at the workflow.</h2>
+          </div>
+          <p>Scroll sideways to explore the actual interface.</p>
+        </div>
+        <div class="product-rail" tabindex="0" aria-label="Kaflow Search product screenshots">
+          <figure class="product-card">
+            <div class="product-card-media"><img src="./assets/screenshots/dashboard.png" width="1600" height="683" loading="lazy" decoding="async" alt="Kaflow Search dashboard showing selected topics, local index size, and synchronized message counts" /></div>
+            <figcaption><small>01 · Local index</small><b>Select topics and understand what is stored locally.</b></figcaption>
+          </figure>
+          <figure class="product-card">
+            <div class="product-card-media"><img src="./assets/screenshots/search.png" width="1600" height="864" loading="lazy" decoding="async" alt="Kaflow Search quick search showing highlighted keyword matches across millions of indexed Kafka messages" /></div>
+            <figcaption><small>02 · Quick search</small><b>Find matching messages without rescanning Kafka.</b></figcaption>
+          </figure>
+          <figure class="product-card">
+            <div class="product-card-media"><img src="./assets/screenshots/search-builder.png" width="1600" height="863" loading="lazy" decoding="async" alt="Kaflow Search results narrowed by applied payload field and boolean conditions" /></div>
+            <figcaption><small>03 · Detailed queries</small><b>Combine fields and boolean conditions to narrow the evidence.</b></figcaption>
+          </figure>
+          <figure class="product-card">
+            <div class="product-card-media"><img src="./assets/screenshots/message-detail.png" width="1600" height="915" loading="lazy" decoding="async" alt="Kaflow Search Watch chart beside a Kafka message detail drawer with headers and JSON payload" /></div>
+            <figcaption><small>04 · Watch &amp; inspect</small><b>See matching activity, then open the original message.</b></figcaption>
+          </figure>
+        </div>
       </section>
 
       <section class="features" id="features">
         <div class="section-heading">
-          <p>Built for the message hunt</p>
+          <p>Kafka message search &amp; keyword watch</p>
           <h2>Search Kafka like a database.</h2>
         </div>
         <article class="watch-feature">
@@ -100,7 +292,7 @@
           </div>
         </article>
         <div class="feature-grid">
-          <article><span>01</span><h3>Search, don't scan</h3><p>Search millions of indexed messages in seconds without repeatedly reading Kafka.</p></article>
+          <article><span>01</span><h3>Search, don't scan</h3><p>Index only the topics you need and search millions of messages within a configurable local storage budget.</p></article>
           <article><span>02</span><h3>Query real payloads</h3><p>Combine AND, OR and NOT across keys, headers, nested JSON fields and time ranges.</p></article>
           <article><span>03</span><h3>Decode anything</h3><p>Work with JSON, Avro and Protobuf, including Confluent Schema Registry.</p></article>
           <article><span>04</span><h3>Private by design</h3><p>Messages and indexes stay on your machine. Kaflow Search is read-only.</p></article>
@@ -108,12 +300,13 @@
       </section>
 
       <section class="cta">
-        <p>Stop scrolling through logs.</p>
+        <p>Stop scrolling through Kafka messages one by one.</p>
         <h2>Find the message that matters.</h2>
         <a class="button button-light" href="https://github.com/whsoul/kaflow-search/releases/latest">Get Kaflow Search</a>
       </section>
     </main>
 
     <footer><span>© 2026 Kaflow Search</span><span>Fast. Local. Private.</span></footer>
+    <script src="./script.js" defer></script>
   </body>
 </html>
