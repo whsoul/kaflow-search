@@ -17,7 +17,7 @@
 
 `本地索引` · `无需额外基础设施` · `无需注册` · `数据不出本机`
 
-**[⬇ 下载](#下载)** · **[安装指南](#安装)** · [Issues](https://github.com/whsoul/kaflow-search/issues)
+**[⬇ 下载](#下载)** · **[网站](https://kaflow-search.whsoul-tools.com/)** · **[安装指南](#安装)** · [Issues](https://github.com/whsoul/kaflow-search/issues)
 
 </div>
 
@@ -354,6 +354,7 @@ Get-FileHash <file> -Algorithm SHA256
 **Kaflow Search** —— 面向 Kafka 消息的桌面搜索引擎。
 
 [下载](https://github.com/whsoul/kaflow-search/releases/latest) ·
+[网站](https://kaflow-search.whsoul-tools.com/) ·
 [Issues](https://github.com/whsoul/kaflow-search/issues) ·
 [隐私政策](legal/PRIVACY.md)
 
