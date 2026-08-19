@@ -4,7 +4,6 @@
 //! when it failed. A path built independently in two places is a contract no compiler
 //! checks: change the layout on one side and the other goes on **reporting a wrong answer
 //! without anything breaking.**
-//! - **engine(private)**: `kafka_index_store::db::{APP_DATA_DIR_NAME, app_data_dir, workspace_dir}`.
 //!
 //! ⚠️ **These names have to match what the engine uses.** They are a contract between two
 //! places that cannot see each other, so changing one alone is silent.
@@ -16,9 +15,6 @@ use std::path::PathBuf;
 
 /// The app's data directory. **Must match what the engine uses.**
 pub const APP_DATA_DIR_NAME: &str = ".kaflow";
-
-/// The name used before this one, moved from once.
-pub const LEGACY_APP_DATA_DIR_NAME: &str = ".kafka-tool-test";
 
 /// The index directory within a workspace. **Must match what the engine uses.**
 pub const ROCKSDB_DIR_NAME: &str = "rocksdb";
@@ -36,13 +32,33 @@ pub fn app_data_dir() -> Result<PathBuf, String> {
     Ok(home_dir()?.join(APP_DATA_DIR_NAME))
 }
 
-/// Where it used to be, for deciding whether to move it.
-fn legacy_app_data_dir() -> Result<PathBuf, String> {
-    Ok(home_dir()?.join(LEGACY_APP_DATA_DIR_NAME))
+/// Rejects a workspace name that would resolve outside the application data directory.
+///
+/// A workspace name reaches this crate as user input, and a workspace directory can be
+/// deleted outright. A name containing a path separator or `..` would therefore delete a
+/// directory the user never named. Validating where the path is built is the only place
+/// that holds for every caller.
+fn ensure_safe_workspace(workspace: &str) -> Result<(), String> {
+    if workspace.trim().is_empty() {
+        return Err("workspace name is empty".to_string());
+    }
+    if workspace.contains('/') || workspace.contains('\\') {
+        return Err(format!("workspace name must not contain a path separator: {workspace}"));
+    }
+    if workspace == ".." || workspace == "." {
+        return Err(format!("workspace name must not be a relative path: {workspace}"));
+    }
+    if workspace.contains(':') {
+        return Err(format!("workspace name must not contain ':': {workspace}"));
+    }
+    Ok(())
 }
 
 /// A workspace's directory. Not created.
+///
+/// The name must pass [`ensure_safe_workspace`].
 pub fn workspace_dir(workspace: &str) -> Result<PathBuf, String> {
+    ensure_safe_workspace(workspace)?;
     Ok(app_data_dir()?.join(workspace))
 }
 
@@ -56,32 +72,6 @@ pub fn reports_dir() -> Result<PathBuf, String> {
     Ok(app_data_dir()?.join("reports"))
 }
 
-/// Moves the old directory to the current one, once.
-///
-/// The whole directory is renamed, so everything inside it travels together.
-///
-/// ⚠️ **Call this before anything opens the index.** Renaming a directory out from under
-/// an open database is not something that fails cleanly.
-///
-/// Does nothing if the current directory already exists, or if the old one does not.
-/// A failure leaves the old data untouched, so it is safe to report and carry on.
-pub fn migrate_legacy_app_dir() -> Result<bool, String> {
-    let new_dir = app_data_dir()?;
-    let old_dir = legacy_app_data_dir()?;
-
-    if new_dir.exists() || !old_dir.exists() {
-        return Ok(false);
-    }
-
-    std::fs::rename(&old_dir, &new_dir).map_err(|e| {
-        format!(
-            "{} → {} migration failed: {e}",
-            old_dir.display(),
-            new_dir.display()
-        )
-    })?;
-    Ok(true)
-}
 
 #[cfg(test)]
 mod tests {

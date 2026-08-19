@@ -22,10 +22,8 @@ licensed under the Mozilla Public License 2.0. Their source code is available at
 the repository URL given for each component in the tables below, and can be
 obtained from there at no charge. Kaflow Search uses these components unmodified.
 
-**Generated, not hand-maintained.** This file is produced from the dependency
-manifests whenever they change, so it lists what the shipped build actually
-contains. If you spot a component that is missing or wrongly attributed, please
-open an issue.
+**Generated, not hand-maintained.** Run `node scripts/gen-third-party.mjs` to
+regenerate after a dependency change; `--check` verifies it is current.
 
 ---
 
