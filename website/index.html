@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Desktop Kafka message search tool with local indexing, detailed queries, and lightweight keyword monitoring for matching traffic—without ELK."
+      content="Desktop Kafka message search tool for independent developers and small teams. Investigate locally indexed data and watch matching traffic without running ELK."
     />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
     <meta name="author" content="Kaflow Search" />
@@ -17,13 +17,13 @@
     <meta property="og:title" content="Kaflow Search — Kafka Message Search &amp; Keyword Watch Tool" />
     <meta
       property="og:description"
-      content="Search millions of locally indexed Kafka messages, investigate Kafka-stored logs, and watch matching traffic without ELK."
+      content="Built for independent developers and small teams: search locally indexed Kafka messages, investigate Kafka-stored logs, and watch matching traffic without ELK."
     />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Kaflow Search — Kafka Message Search &amp; Keyword Watch Tool" />
     <meta
       name="twitter:description"
-      content="Search millions of locally indexed Kafka messages, investigate Kafka-stored logs, and watch matching traffic without ELK."
+      content="Built for independent developers and small teams: search locally indexed Kafka messages, investigate Kafka-stored logs, and watch matching traffic without ELK."
     />
     <title>Kafka Message Search &amp; Keyword Watch Tool | Kaflow Search</title>
     <link rel="stylesheet" href="./styles.css" />
@@ -87,6 +87,7 @@
           <p class="section-intro">
             These are a few examples, not limits. Start with any identifier, field, keyword,
             or time range relevant to your system and investigate the Kafka messages that matter to you.
+            <span class="audience-note">Especially useful for independent developers and small teams that already keep operational data in Kafka, but do not need the cost and operational overhead of running a full ELK stack.</span>
           </p>
         </div>
 
@@ -125,8 +126,8 @@
           <article class="scenario-panel" id="scenario-panel-2" role="tabpanel" aria-labelledby="scenario-tab-2" hidden>
             <div class="scenario-copy">
               <span class="scenario-tag">Web &amp; application logs in Kafka</span>
-              <h3>Investigate a 502 without adding ELK.</h3>
-              <p>Nginx and application logs are already in Kafka. Index them locally, narrow the failure window, and follow a trace ID to the cause.</p>
+              <h3>Search Kafka-stored logs without running ELK.</h3>
+              <p>If Nginx and application logs are already collected in Kafka, index them locally, narrow the failure window, and follow a trace ID to the cause.</p>
               <ol class="scenario-flow">
                 <li><span>01</span>Filter 100K Nginx records to checkout 502s</li>
                 <li><span>02</span>Drill into the incident time window</li>
