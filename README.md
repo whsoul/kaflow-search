@@ -181,10 +181,15 @@ the profile next time.
 
 ## Why a local index
 
+A large Kafka cluster does not mean copying the whole cluster onto your computer. You choose the
+topics that matter, and Kaflow keeps their local search indexes within a configured storage budget.
+
 | | |
 |---|---|
 | **The problem** | Kafka is a log, not a database — there's no way to look up "the message with this order ID" |
 | **What Kaflow does** | Reads each topic once, builds a local index. Every later search hits the index, not Kafka |
+| **Selective indexing** | You choose which topics to index. Kaflow does not automatically index every topic in the cluster |
+| **Bounded local storage** | A configurable storage budget and cleanup policies keep local indexes from growing without bound |
 | **Scope** | Searches what is **still in your topics** — it mirrors Kafka retention, it is not an archive |
 | **Management tools** | No overlap, no conflict. Keep yours for operating the cluster; use Kaflow to *find things* |
 
