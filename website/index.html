@@ -122,8 +122,11 @@
               </ol>
             </div>
             <div class="scenario-evidence">
-              <div class="scenario-video-placeholder" role="img" aria-label="Demo video placeholder for tracing a stuck order">
-                <span aria-hidden="true">▶</span><div><b>Order failure trace</b><small>Demo coming soon</small></div>
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="./assets/demos/stuck-order-preview.jpg" aria-label="Product demo tracing a stuck order across order, payment, and processing topics">
+                  <source src="./assets/demos/stuck-order-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">Real demo · 28 sec</span>
               </div>
               <div class="scenario-query" aria-label="Stuck order tracing result">
                 <small>Search key</small>
@@ -145,12 +148,15 @@
               </ol>
             </div>
             <div class="scenario-evidence">
-              <div class="scenario-video-placeholder" role="img" aria-label="Demo video placeholder for tracing web and application logs">
-                <span aria-hidden="true">▶</span><div><b>Web &amp; app log trace</b><small>Demo coming soon</small></div>
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="./assets/demos/log-investigation-preview.jpg" aria-label="Product demo filtering Nginx errors, drilling into a time range, and tracing the cause in application logs">
+                  <source src="./assets/demos/log-investigation-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">Real demo · 35 sec</span>
               </div>
               <div class="scenario-query" aria-label="Web and application log tracing result">
                 <small>Detailed search</small>
-                <code>P.status = "502*" AND P.path = "/api/checkout*"</code>
+                <code>P.status = "502*" AND P.path = "/api/checkout*" AND P.method = "POST*"</code>
                 <p><b>Finding</b> The checkout service exhausted its payment connection pool: <strong>50 / 50 active</strong>, 184 pending.</p>
               </div>
             </div>
@@ -168,13 +174,16 @@
               </ol>
             </div>
             <div class="scenario-evidence">
-              <div class="scenario-video-placeholder" role="img" aria-label="Demo video placeholder for watching matching traffic">
-                <span aria-hidden="true">▶</span><div><b>Matching traffic watch</b><small>Demo coming soon</small></div>
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="./assets/demos/payment-watch-preview.jpg" aria-label="Product demo showing a new payment failure appear in a live keyword Watch">
+                  <source src="./assets/demos/payment-watch-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">Real demo · 27 sec</span>
               </div>
               <div class="scenario-query" aria-label="Matching traffic watch result">
                 <small>Watched keyword</small>
                 <code>payment_failed</code>
-                <p><b>New match</b> Order <strong>ORD-20260812-484107</strong> failed because the payment gateway timed out after 3000 ms.</p>
+                <p><b>New match</b> Order <strong>ORD-20260819-WATCH03</strong> failed because the payment gateway timed out after 3000 ms.</p>
               </div>
             </div>
           </article>
@@ -191,12 +200,15 @@
               </ol>
             </div>
             <div class="scenario-evidence">
-              <div class="scenario-video-placeholder" role="img" aria-label="Demo video placeholder for investigating while Kafka is down">
-                <span aria-hidden="true">▶</span><div><b>Kafka outage investigation</b><small>Demo coming soon</small></div>
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="./assets/demos/offline-incident-preview.jpg" aria-label="Product demo continuing an investigation from the local index after Kafka becomes unavailable">
+                  <source src="./assets/demos/offline-incident-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">Real demo · 49 sec</span>
               </div>
               <div class="scenario-query" aria-label="Offline incident investigation result">
                 <small>Local index search</small>
-                <code>ORDER_MANUAL_ACTION_REQUIRED</code>
+                <code>PENDING</code>
                 <p><b>Finding</b> Payment was authorized, but fulfillment never started. The order remains <strong>PENDING</strong> for manual review.</p>
               </div>
             </div>
@@ -296,7 +308,16 @@
           const isSelected = item === tab;
           item.setAttribute('aria-selected', String(isSelected));
           item.tabIndex = isSelected ? 0 : -1;
-          document.getElementById(item.getAttribute('aria-controls')).hidden = !isSelected;
+          const panel = document.getElementById(item.getAttribute('aria-controls'));
+          panel.hidden = !isSelected;
+          const video = panel.querySelector('video');
+          if (video) {
+            if (isSelected) video.play().catch(() => {});
+            else {
+              video.pause();
+              video.currentTime = 0;
+            }
+          }
         });
         if (moveFocus) tab.focus();
       }
@@ -315,6 +336,9 @@
           }
         });
       });
+
+      const selectedScenario = scenarioTabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
+      if (selectedScenario) selectScenario(selectedScenario);
     </script>
   </body>
 </html>
