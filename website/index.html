@@ -57,21 +57,18 @@
           <a class="text-link" href="https://github.com/whsoul/kaflow-search">View on GitHub <span>↗</span></a>
         </div>
 
-        <div class="search-demo" aria-label="Kaflow Search product preview">
-          <div class="window-bar"><i></i><i></i><i></i><span>orders.production</span></div>
-          <div class="builder-label">Detailed search builder</div>
-          <div class="search-row">
-            <span class="prompt">⌕</span>
-            <code>payload.order_id = "ORD-2048" AND status != "cancelled"</code>
-            <kbd>Search</kbd>
-          </div>
-          <div class="result-meta"><span>3 results</span><span>12 ms</span></div>
-          <div class="result-lines" aria-hidden="true">
-            <div><b></b><span></span><small></small></div>
-            <div><b></b><span></span><small></small></div>
-            <div><b></b><span></span><small></small></div>
-          </div>
-        </div>
+        <figure class="hero-product-shot">
+          <div class="product-shot-bar"><span><i></i> Real product screen</span><small>3.2M messages indexed</small></div>
+          <img
+            src="./assets/screenshots/search-hero.webp"
+            width="1410"
+            height="625"
+            alt="Kaflow Search quick search showing highlighted matches in a locally indexed Kafka topic"
+            fetchpriority="high"
+            decoding="async"
+          />
+          <figcaption>Search input, filters, result count, field matches, and investigation views—captured from Kaflow Search.</figcaption>
+        </figure>
       </section>
 
       <section class="trust-line" aria-label="Key benefits">
@@ -209,6 +206,34 @@
               <p><b>Your investigation</b> The four scenarios are examples. Apply the same local search workflow to the Kafka data your team operates.</p>
             </div>
           </article>
+        </div>
+      </section>
+
+      <section class="product-tour" aria-labelledby="product-tour-title">
+        <div class="product-tour-heading">
+          <div class="section-heading">
+            <p>Real product screens</p>
+            <h2 id="product-tour-title">A closer look at the workflow.</h2>
+          </div>
+          <p>Scroll sideways to explore the actual interface.</p>
+        </div>
+        <div class="product-rail" tabindex="0" aria-label="Kaflow Search product screenshots">
+          <figure class="product-card">
+            <div class="product-card-media"><img src="./assets/screenshots/dashboard.png" width="1600" height="683" loading="lazy" decoding="async" alt="Kaflow Search dashboard showing selected topics, local index size, and synchronized message counts" /></div>
+            <figcaption><small>01 · Local index</small><b>Select topics and understand what is stored locally.</b></figcaption>
+          </figure>
+          <figure class="product-card">
+            <div class="product-card-media"><img src="./assets/screenshots/search.png" width="1600" height="864" loading="lazy" decoding="async" alt="Kaflow Search quick search showing highlighted keyword matches across millions of indexed Kafka messages" /></div>
+            <figcaption><small>02 · Quick search</small><b>Find matching messages without rescanning Kafka.</b></figcaption>
+          </figure>
+          <figure class="product-card">
+            <div class="product-card-media"><img src="./assets/screenshots/search-builder.png" width="1600" height="863" loading="lazy" decoding="async" alt="Kaflow Search advanced query builder combining payload conditions with AND and NOT" /></div>
+            <figcaption><small>03 · Detailed queries</small><b>Combine fields and boolean conditions to narrow the evidence.</b></figcaption>
+          </figure>
+          <figure class="product-card">
+            <div class="product-card-media"><img src="./assets/screenshots/message-detail.png" width="1600" height="915" loading="lazy" decoding="async" alt="Kaflow Search Watch chart beside a Kafka message detail drawer with headers and JSON payload" /></div>
+            <figcaption><small>04 · Watch &amp; inspect</small><b>See matching activity, then open the original message.</b></figcaption>
+          </figure>
         </div>
       </section>
 
