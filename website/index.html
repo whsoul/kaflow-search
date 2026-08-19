@@ -110,10 +110,15 @@
                 <li><span>03</span>Locate the warehouse timeout</li>
               </ol>
             </div>
-            <div class="scenario-query" aria-label="Stuck order tracing result">
-              <small>Search key</small>
-              <code>ORD-20260812-483921</code>
-              <p><b>Finding</b> Payment succeeded, but inventory reservation failed with <strong>WAREHOUSE_TIMEOUT</strong>.</p>
+            <div class="scenario-evidence">
+              <div class="scenario-video-placeholder" role="img" aria-label="Demo video placeholder for tracing a stuck order">
+                <span aria-hidden="true">▶</span><div><b>Demo video</b><small>Coming soon</small></div>
+              </div>
+              <div class="scenario-query" aria-label="Stuck order tracing result">
+                <small>Search key</small>
+                <code>ORD-20260812-483921</code>
+                <p><b>Finding</b> Payment succeeded, but inventory reservation failed with <strong>WAREHOUSE_TIMEOUT</strong>.</p>
+              </div>
             </div>
           </article>
 
@@ -128,10 +133,15 @@
                 <li><span>03</span>Follow the trace into application logs</li>
               </ol>
             </div>
-            <div class="scenario-query" aria-label="Web and application log tracing result">
-              <small>Detailed search</small>
-              <code>P.status = "502*" AND P.path = "/api/checkout*"</code>
-              <p><b>Finding</b> The checkout service exhausted its payment connection pool: <strong>50 / 50 active</strong>, 184 pending.</p>
+            <div class="scenario-evidence">
+              <div class="scenario-video-placeholder" role="img" aria-label="Demo video placeholder for tracing web and application logs">
+                <span aria-hidden="true">▶</span><div><b>Demo video</b><small>Coming soon</small></div>
+              </div>
+              <div class="scenario-query" aria-label="Web and application log tracing result">
+                <small>Detailed search</small>
+                <code>P.status = "502*" AND P.path = "/api/checkout*"</code>
+                <p><b>Finding</b> The checkout service exhausted its payment connection pool: <strong>50 / 50 active</strong>, 184 pending.</p>
+              </div>
             </div>
           </article>
 
@@ -146,10 +156,15 @@
                 <li><span>03</span>Open the new match and act on the cause</li>
               </ol>
             </div>
-            <div class="scenario-query" aria-label="Matching traffic watch result">
-              <small>Watched keyword</small>
-              <code>payment_failed</code>
-              <p><b>New match</b> Order <strong>ORD-20260812-484107</strong> failed because the payment gateway timed out after 3000 ms.</p>
+            <div class="scenario-evidence">
+              <div class="scenario-video-placeholder" role="img" aria-label="Demo video placeholder for watching matching traffic">
+                <span aria-hidden="true">▶</span><div><b>Demo video</b><small>Coming soon</small></div>
+              </div>
+              <div class="scenario-query" aria-label="Matching traffic watch result">
+                <small>Watched keyword</small>
+                <code>payment_failed</code>
+                <p><b>New match</b> Order <strong>ORD-20260812-484107</strong> failed because the payment gateway timed out after 3000 ms.</p>
+              </div>
             </div>
           </article>
 
@@ -164,10 +179,15 @@
                 <li><span>03</span>Find the final order needing manual review</li>
               </ol>
             </div>
-            <div class="scenario-query" aria-label="Offline incident investigation result">
-              <small>Local index search</small>
-              <code>ORDER_MANUAL_ACTION_REQUIRED</code>
-              <p><b>Finding</b> Payment was authorized, but fulfillment never started. The order remains <strong>PENDING</strong> for manual review.</p>
+            <div class="scenario-evidence">
+              <div class="scenario-video-placeholder" role="img" aria-label="Demo video placeholder for investigating while Kafka is down">
+                <span aria-hidden="true">▶</span><div><b>Demo video</b><small>Coming soon</small></div>
+              </div>
+              <div class="scenario-query" aria-label="Offline incident investigation result">
+                <small>Local index search</small>
+                <code>ORDER_MANUAL_ACTION_REQUIRED</code>
+                <p><b>Finding</b> Payment was authorized, but fulfillment never started. The order remains <strong>PENDING</strong> for manual review.</p>
+              </div>
             </div>
           </article>
 

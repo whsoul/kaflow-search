@@ -125,6 +125,17 @@ h2 { margin: 12px 0 48px; font-size: clamp(36px, 5vw, 62px); line-height: 1.05; 
 .scenario-flow li { display: flex; align-items: center; gap: 11px; color: #c7ccda; font-size: 12px; line-height: 1.45; }
 .scenario-flow li > span { flex: 0 0 auto; color: #626b81; font: 9px ui-monospace, monospace; }
 .scenario-flow code { color: var(--accent-bright); font: 11px ui-monospace, monospace; }
+.scenario-evidence { min-width: 0; display: grid; gap: 12px; }
+.scenario-video-placeholder {
+  aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center; gap: 14px;
+  border: 1px dashed rgba(180,170,255,.34); border-radius: 11px;
+  background: radial-gradient(circle at 50% 45%, rgba(139,124,255,.12), transparent 42%), rgba(8,10,18,.62);
+  color: #aeb5c8;
+}
+.scenario-video-placeholder > span { width: 38px; height: 38px; display: grid; place-items: center; padding-left: 2px; border: 1px solid rgba(180,170,255,.35); border-radius: 50%; color: var(--accent-bright); font-size: 12px; }
+.scenario-video-placeholder div { display: grid; gap: 3px; }
+.scenario-video-placeholder b { color: #d8d3ff; font-size: 12px; }
+.scenario-video-placeholder small { color: #687188; font: 9px ui-monospace, monospace; text-transform: uppercase; letter-spacing: .09em; }
 .scenario-query { padding: 20px; border: 1px solid var(--line); border-radius: 11px; background: linear-gradient(145deg, rgba(255,255,255,.035), rgba(255,255,255,.012)); }
 .scenario-query small { display: block; margin-bottom: 10px; color: #6f778b; font: 10px ui-monospace, monospace; text-transform: uppercase; letter-spacing: .09em; }
 .scenario-query code { display: block; overflow: hidden; color: #d9dcE6; font-size: 12px; line-height: 1.5; white-space: nowrap; text-overflow: ellipsis; }
