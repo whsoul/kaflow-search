@@ -111,12 +111,12 @@
       <section class="scenarios" id="scenarios">
         <div class="section-heading scenarios-heading">
           <div>
-            <p>Four real-world investigations</p>
-            <h2>See where Kafka search<br />changes the outcome.</h2>
+            <p>Common starting points</p>
+            <h2>Helpful use cases.</h2>
           </div>
           <p class="section-intro">
-            Start with an order number, an error code, or a watched keyword. Follow each
-            scenario from the first clue to an operational answer using locally indexed Kafka data.
+            These are a few examples, not limits. Start with any identifier, field, keyword,
+            or time range relevant to your system and investigate the Kafka messages that matter to you.
           </p>
         </div>
 
@@ -126,6 +126,7 @@
             <button id="scenario-tab-2" role="tab" aria-selected="false" aria-controls="scenario-panel-2" tabindex="-1"><small>02</small><span>Trace web &amp; app logs</span></button>
             <button id="scenario-tab-3" role="tab" aria-selected="false" aria-controls="scenario-panel-3" tabindex="-1"><small>03</small><span>Watch matching traffic</span></button>
             <button id="scenario-tab-4" role="tab" aria-selected="false" aria-controls="scenario-panel-4" tabindex="-1"><small>04</small><span>Investigate while Kafka is down</span></button>
+            <button id="scenario-tab-5" role="tab" aria-selected="false" aria-controls="scenario-panel-5" tabindex="-1"><small>05</small><span>Your use case</span></button>
           </div>
 
           <article class="scenario-panel" id="scenario-panel-1" role="tabpanel" aria-labelledby="scenario-tab-1">
@@ -197,6 +198,24 @@
               <small>Local index search</small>
               <code>ORDER_MANUAL_ACTION_REQUIRED</code>
               <p><b>Finding</b> Payment was authorized, but fulfillment never started. The order remains <strong>PENDING</strong> for manual review.</p>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-5" role="tabpanel" aria-labelledby="scenario-tab-5" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">Beyond these examples</span>
+              <h3>Have a different question hidden in Kafka?</h3>
+              <p>Bring the clues that make sense in your system. Kaflow Search works with the topics and fields you already have.</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>Index the topic locally</li>
+                <li><span>02</span>Search your identifiers, fields, or keywords</li>
+                <li><span>03</span>Use lists, exploration, and timelines to narrow the evidence</li>
+              </ol>
+            </div>
+            <div class="scenario-query" aria-label="Your own Kafka investigation">
+              <small>Your starting point</small>
+              <code>an ID · a field · a keyword · a time range</code>
+              <p><b>Your investigation</b> The four scenarios are examples. Apply the same local search workflow to the Kafka data your team operates.</p>
             </div>
           </article>
         </div>
