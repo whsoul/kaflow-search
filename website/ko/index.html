@@ -66,7 +66,7 @@
         </div>
 
         <figure class="hero-product-shot">
-          <div class="product-shot-bar"><span><i></i> 실제 제품 화면</span><small>320만 메시지 인덱싱</small></div>
+          <div class="product-shot-bar"><span><i></i> 실제 제품 화면</span><small>선택한 토픽을 로컬에 인덱싱</small></div>
           <div class="hero-shot-stage">
             <img
               class="hero-quick-search"
@@ -134,7 +134,7 @@
                 <video muted loop playsinline controls preload="metadata" poster="../assets/demos/stuck-order-preview.jpg" aria-label="주문, 결제, 처리 토픽을 오가며 멈춘 주문의 원인을 추적하는 제품 데모">
                   <source src="../assets/demos/stuck-order-preview.mp4" type="video/mp4" />
                 </video>
-                <span class="scenario-video-label">실제 데모 · 28초</span>
+                <span class="scenario-video-label">실제 제품 데모 · 가상 데이터 · 28초</span>
               </div>
               <div class="scenario-query" aria-label="Stuck order tracing result">
                 <small>검색 키</small>
@@ -160,7 +160,7 @@
                 <video muted loop playsinline controls preload="metadata" poster="../assets/demos/log-investigation-preview.jpg" aria-label="Nginx 오류를 필터링하고 시간 범위를 Drill한 뒤 애플리케이션 로그에서 원인을 추적하는 제품 데모">
                   <source src="../assets/demos/log-investigation-preview.mp4" type="video/mp4" />
                 </video>
-                <span class="scenario-video-label">실제 데모 · 35초</span>
+                <span class="scenario-video-label">실제 제품 데모 · 가상 데이터 · 35초</span>
               </div>
               <div class="scenario-query" aria-label="Web and application log tracing result">
                 <small>상세검색</small>
@@ -186,7 +186,7 @@
                 <video muted loop playsinline controls preload="metadata" poster="../assets/demos/payment-watch-preview.jpg" aria-label="실시간 키워드 Watch에 새로운 결제 실패가 나타나는 제품 데모">
                   <source src="../assets/demos/payment-watch-preview.mp4" type="video/mp4" />
                 </video>
-                <span class="scenario-video-label">실제 데모 · 27초</span>
+                <span class="scenario-video-label">실제 제품 데모 · 가상 데이터 · 27초</span>
               </div>
               <div class="scenario-query" aria-label="Matching traffic watch result">
                 <small>Watch 키워드</small>
@@ -212,7 +212,7 @@
                 <video muted loop playsinline controls preload="metadata" poster="../assets/demos/offline-incident-preview.jpg" aria-label="Kafka가 응답하지 않은 뒤에도 로컬 인덱스로 조사를 이어가는 제품 데모">
                   <source src="../assets/demos/offline-incident-preview.mp4" type="video/mp4" />
                 </video>
-                <span class="scenario-video-label">실제 데모 · 49초</span>
+                <span class="scenario-video-label">실제 제품 데모 · 가상 데이터 · 49초</span>
               </div>
               <div class="scenario-query" aria-label="Offline incident investigation result">
                 <small>로컬 인덱스 검색</small>
@@ -260,7 +260,7 @@
             <figcaption><small>02 · 빠른 검색</small><b>Kafka를 다시 스캔하지 않고 일치 메시지를 찾으세요.</b></figcaption>
           </figure>
           <figure class="product-card">
-            <div class="product-card-media"><img src="../assets/screenshots/search-builder.png" width="1600" height="863" loading="lazy" decoding="async" alt="payload 조건을 AND와 NOT으로 조합하는 Kaflow Search 상세검색 화면" /></div>
+            <div class="product-card-media"><img src="../assets/screenshots/search-builder.png" width="1600" height="863" loading="lazy" decoding="async" alt="payload 필드와 불리언 조건을 적용해 검색 결과를 좁힌 Kaflow Search 화면" /></div>
             <figcaption><small>03 · 상세검색</small><b>필드와 불리언 조건을 조합해 증거를 좁히세요.</b></figcaption>
           </figure>
           <figure class="product-card">
@@ -308,45 +308,6 @@
     </main>
 
     <footer><span>© 2026 Kaflow Search</span><span>빠르게. 로컬에서. 안전하게.</span></footer>
-    <script>
-      const scenarioTabs = [...document.querySelectorAll('.scenario-tablist [role="tab"]')];
-
-      function selectScenario(tab, moveFocus = false) {
-        scenarioTabs.forEach((item) => {
-          const isSelected = item === tab;
-          item.setAttribute('aria-selected', String(isSelected));
-          item.tabIndex = isSelected ? 0 : -1;
-          const panel = document.getElementById(item.getAttribute('aria-controls'));
-          panel.hidden = !isSelected;
-          const video = panel.querySelector('video');
-          if (video) {
-            if (isSelected) video.play().catch(() => {});
-            else {
-              video.pause();
-              video.currentTime = 0;
-            }
-          }
-        });
-        if (moveFocus) tab.focus();
-      }
-
-      scenarioTabs.forEach((tab, index) => {
-        tab.addEventListener('click', () => selectScenario(tab));
-        tab.addEventListener('keydown', (event) => {
-          let nextIndex;
-          if (event.key === 'ArrowRight' || event.key === 'ArrowDown') nextIndex = (index + 1) % scenarioTabs.length;
-          if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') nextIndex = (index - 1 + scenarioTabs.length) % scenarioTabs.length;
-          if (event.key === 'Home') nextIndex = 0;
-          if (event.key === 'End') nextIndex = scenarioTabs.length - 1;
-          if (nextIndex !== undefined) {
-            event.preventDefault();
-            selectScenario(scenarioTabs[nextIndex], true);
-          }
-        });
-      });
-
-      const selectedScenario = scenarioTabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
-      if (selectedScenario) selectScenario(selectedScenario);
-    </script>
+    <script src="../script.js" defer></script>
   </body>
 </html>

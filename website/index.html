@@ -65,7 +65,7 @@
         </div>
 
         <figure class="hero-product-shot">
-          <div class="product-shot-bar"><span><i></i> Real product screen</span><small>3.2M messages indexed</small></div>
+          <div class="product-shot-bar"><span><i></i> Real product screen</span><small>Selected topics indexed locally</small></div>
           <div class="hero-shot-stage">
             <img
               class="hero-quick-search"
@@ -133,7 +133,7 @@
                 <video muted loop playsinline controls preload="metadata" poster="./assets/demos/stuck-order-preview.jpg" aria-label="Product demo tracing a stuck order across order, payment, and processing topics">
                   <source src="./assets/demos/stuck-order-preview.mp4" type="video/mp4" />
                 </video>
-                <span class="scenario-video-label">Real demo · 28 sec</span>
+                <span class="scenario-video-label">Real product demo · synthetic data · 28 sec</span>
               </div>
               <div class="scenario-query" aria-label="Stuck order tracing result">
                 <small>Search key</small>
@@ -159,7 +159,7 @@
                 <video muted loop playsinline controls preload="metadata" poster="./assets/demos/log-investigation-preview.jpg" aria-label="Product demo filtering Nginx errors, drilling into a time range, and tracing the cause in application logs">
                   <source src="./assets/demos/log-investigation-preview.mp4" type="video/mp4" />
                 </video>
-                <span class="scenario-video-label">Real demo · 35 sec</span>
+                <span class="scenario-video-label">Real product demo · synthetic data · 35 sec</span>
               </div>
               <div class="scenario-query" aria-label="Web and application log tracing result">
                 <small>Detailed search</small>
@@ -185,7 +185,7 @@
                 <video muted loop playsinline controls preload="metadata" poster="./assets/demos/payment-watch-preview.jpg" aria-label="Product demo showing a new payment failure appear in a live keyword Watch">
                   <source src="./assets/demos/payment-watch-preview.mp4" type="video/mp4" />
                 </video>
-                <span class="scenario-video-label">Real demo · 27 sec</span>
+                <span class="scenario-video-label">Real product demo · synthetic data · 27 sec</span>
               </div>
               <div class="scenario-query" aria-label="Matching traffic watch result">
                 <small>Watched keyword</small>
@@ -201,7 +201,7 @@
               <h3>Keep investigating when Kafka is unavailable.</h3>
               <p>Use the last local index to inspect the messages collected before the outage and identify work that still needs manual intervention.</p>
               <ol class="scenario-flow">
-                <li><span>01</span>See publish timeouts spike before disconnect</li>
+                <li><span>01</span>Review the processing flow just before disconnect</li>
                 <li><span>02</span>Continue searching the local index</li>
                 <li><span>03</span>Find the final order needing manual review</li>
               </ol>
@@ -211,7 +211,7 @@
                 <video muted loop playsinline controls preload="metadata" poster="./assets/demos/offline-incident-preview.jpg" aria-label="Product demo continuing an investigation from the local index after Kafka becomes unavailable">
                   <source src="./assets/demos/offline-incident-preview.mp4" type="video/mp4" />
                 </video>
-                <span class="scenario-video-label">Real demo · 49 sec</span>
+                <span class="scenario-video-label">Real product demo · synthetic data · 49 sec</span>
               </div>
               <div class="scenario-query" aria-label="Offline incident investigation result">
                 <small>Local index search</small>
@@ -259,7 +259,7 @@
             <figcaption><small>02 · Quick search</small><b>Find matching messages without rescanning Kafka.</b></figcaption>
           </figure>
           <figure class="product-card">
-            <div class="product-card-media"><img src="./assets/screenshots/search-builder.png" width="1600" height="863" loading="lazy" decoding="async" alt="Kaflow Search advanced query builder combining payload conditions with AND and NOT" /></div>
+            <div class="product-card-media"><img src="./assets/screenshots/search-builder.png" width="1600" height="863" loading="lazy" decoding="async" alt="Kaflow Search results narrowed by applied payload field and boolean conditions" /></div>
             <figcaption><small>03 · Detailed queries</small><b>Combine fields and boolean conditions to narrow the evidence.</b></figcaption>
           </figure>
           <figure class="product-card">
@@ -307,45 +307,6 @@
     </main>
 
     <footer><span>© 2026 Kaflow Search</span><span>Fast. Local. Private.</span></footer>
-    <script>
-      const scenarioTabs = [...document.querySelectorAll('.scenario-tablist [role="tab"]')];
-
-      function selectScenario(tab, moveFocus = false) {
-        scenarioTabs.forEach((item) => {
-          const isSelected = item === tab;
-          item.setAttribute('aria-selected', String(isSelected));
-          item.tabIndex = isSelected ? 0 : -1;
-          const panel = document.getElementById(item.getAttribute('aria-controls'));
-          panel.hidden = !isSelected;
-          const video = panel.querySelector('video');
-          if (video) {
-            if (isSelected) video.play().catch(() => {});
-            else {
-              video.pause();
-              video.currentTime = 0;
-            }
-          }
-        });
-        if (moveFocus) tab.focus();
-      }
-
-      scenarioTabs.forEach((tab, index) => {
-        tab.addEventListener('click', () => selectScenario(tab));
-        tab.addEventListener('keydown', (event) => {
-          let nextIndex;
-          if (event.key === 'ArrowRight' || event.key === 'ArrowDown') nextIndex = (index + 1) % scenarioTabs.length;
-          if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') nextIndex = (index - 1 + scenarioTabs.length) % scenarioTabs.length;
-          if (event.key === 'Home') nextIndex = 0;
-          if (event.key === 'End') nextIndex = scenarioTabs.length - 1;
-          if (nextIndex !== undefined) {
-            event.preventDefault();
-            selectScenario(scenarioTabs[nextIndex], true);
-          }
-        });
-      });
-
-      const selectedScenario = scenarioTabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
-      if (selectedScenario) selectScenario(selectedScenario);
-    </script>
+    <script src="./script.js" defer></script>
   </body>
 </html>
