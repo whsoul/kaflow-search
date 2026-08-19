@@ -122,10 +122,10 @@
 
         <div class="scenario-tabs">
           <div class="scenario-tablist" role="tablist" aria-label="Kaflow Search scenarios">
-            <button id="scenario-tab-1" role="tab" aria-selected="true" aria-controls="scenario-panel-1" tabindex="0"><small>01</small><span>Stuck order</span></button>
-            <button id="scenario-tab-2" role="tab" aria-selected="false" aria-controls="scenario-panel-2" tabindex="-1"><small>02</small><span>Kafka log investigation</span></button>
-            <button id="scenario-tab-3" role="tab" aria-selected="false" aria-controls="scenario-panel-3" tabindex="-1"><small>03</small><span>Payment watch</span></button>
-            <button id="scenario-tab-4" role="tab" aria-selected="false" aria-controls="scenario-panel-4" tabindex="-1"><small>04</small><span>Offline incident</span></button>
+            <button id="scenario-tab-1" role="tab" aria-selected="true" aria-controls="scenario-panel-1" tabindex="0"><small>01</small><span>Trace a stuck order</span></button>
+            <button id="scenario-tab-2" role="tab" aria-selected="false" aria-controls="scenario-panel-2" tabindex="-1"><small>02</small><span>Trace web &amp; app logs</span></button>
+            <button id="scenario-tab-3" role="tab" aria-selected="false" aria-controls="scenario-panel-3" tabindex="-1"><small>03</small><span>Watch matching traffic</span></button>
+            <button id="scenario-tab-4" role="tab" aria-selected="false" aria-controls="scenario-panel-4" tabindex="-1"><small>04</small><span>Investigate while Kafka is down</span></button>
           </div>
 
           <article class="scenario-panel" id="scenario-panel-1" role="tabpanel" aria-labelledby="scenario-tab-1">
@@ -139,7 +139,7 @@
                 <li><span>03</span>Locate the warehouse timeout</li>
               </ol>
             </div>
-            <div class="scenario-query" aria-label="Stuck order investigation result">
+            <div class="scenario-query" aria-label="Stuck order tracing result">
               <small>Search key</small>
               <code>ORD-20260812-483921</code>
               <p><b>Finding</b> Payment succeeded, but inventory reservation failed with <strong>WAREHOUSE_TIMEOUT</strong>.</p>
@@ -148,7 +148,7 @@
 
           <article class="scenario-panel" id="scenario-panel-2" role="tabpanel" aria-labelledby="scenario-tab-2" hidden>
             <div class="scenario-copy">
-              <span class="scenario-tag">Kafka-only logs</span>
+              <span class="scenario-tag">Web &amp; application logs in Kafka</span>
               <h3>Investigate a 502 without adding ELK.</h3>
               <p>Nginx and application logs are already in Kafka. Index them locally, narrow the failure window, and follow a trace ID to the cause.</p>
               <ol class="scenario-flow">
@@ -157,7 +157,7 @@
                 <li><span>03</span>Follow the trace into application logs</li>
               </ol>
             </div>
-            <div class="scenario-query" aria-label="Kafka log investigation result">
+            <div class="scenario-query" aria-label="Web and application log tracing result">
               <small>Detailed search</small>
               <code>P.status = "502*" AND P.path = "/api/checkout*"</code>
               <p><b>Finding</b> The checkout service exhausted its payment connection pool: <strong>50 / 50 active</strong>, 184 pending.</p>
@@ -166,7 +166,7 @@
 
           <article class="scenario-panel" id="scenario-panel-3" role="tabpanel" aria-labelledby="scenario-tab-3" hidden>
             <div class="scenario-copy">
-              <span class="scenario-tag">Watch &amp; auto-sync</span>
+              <span class="scenario-tag">Conditional traffic watch</span>
               <h3>Spot payment failures as they arrive.</h3>
               <p>A payment operations specialist keeps a lightweight keyword Watch open while Kaflow Search keeps the topic in sync.</p>
               <ol class="scenario-flow">
@@ -175,7 +175,7 @@
                 <li><span>03</span>Open the new match and act on the cause</li>
               </ol>
             </div>
-            <div class="scenario-query" aria-label="Payment watch result">
+            <div class="scenario-query" aria-label="Matching traffic watch result">
               <small>Watched keyword</small>
               <code>payment_failed</code>
               <p><b>New match</b> Order <strong>ORD-20260812-484107</strong> failed because the payment gateway timed out after 3000 ms.</p>
@@ -184,7 +184,7 @@
 
           <article class="scenario-panel" id="scenario-panel-4" role="tabpanel" aria-labelledby="scenario-tab-4" hidden>
             <div class="scenario-copy">
-              <span class="scenario-tag">Local index continuity</span>
+              <span class="scenario-tag">Kafka outage continuity</span>
               <h3>Keep investigating when Kafka is unavailable.</h3>
               <p>Use the last local index to inspect the messages collected before the outage and identify work that still needs manual intervention.</p>
               <ol class="scenario-flow">
