@@ -37,8 +37,8 @@
         <span itemprop="name">Kaflow Search</span>
       </a>
       <nav aria-label="Primary navigation">
-        <a href="#features">Features</a>
         <a href="#scenarios">Scenarios</a>
+        <a href="#features">Features</a>
         <a href="https://github.com/whsoul/kaflow-search" target="_blank" rel="noreferrer" itemprop="sameAs">GitHub</a>
         <a class="button button-small" href="https://github.com/whsoul/kaflow-search/releases/latest">Download</a>
       </nav>
@@ -76,36 +76,6 @@
 
       <section class="trust-line" aria-label="Key benefits">
         <span>Local indexing</span><span>No extra infrastructure</span><span>No sign-up</span><span>Your data stays local</span>
-      </section>
-
-      <section class="features" id="features">
-        <div class="section-heading">
-          <p>Built for the message hunt</p>
-          <h2>Search Kafka like a database.</h2>
-        </div>
-        <article class="watch-feature">
-          <div class="watch-copy">
-            <span class="feature-label">Watch &amp; auto-sync</span>
-            <h3>Keep an eye on the messages that matter.</h3>
-            <p>
-              Keep selected topics synced and watch for saved keywords as new messages arrive.
-              A lightweight way to spot the signals you care about during day-to-day operations—without adding a separate monitoring stack.
-            </p>
-          </div>
-          <div class="watch-preview" aria-label="Watch workflow overview">
-            <div class="watch-step"><small>01</small><span>Select a topic</span></div>
-            <div class="watch-arrow" aria-hidden="true">↓</div>
-            <div class="watch-step"><small>02</small><span>Keep it auto-synced</span></div>
-            <div class="watch-arrow" aria-hidden="true">↓</div>
-            <div class="watch-step watch-step-accent"><small>03</small><span>Watch a keyword</span></div>
-          </div>
-        </article>
-        <div class="feature-grid">
-          <article><span>01</span><h3>Search, don't scan</h3><p>Search millions of indexed messages in seconds without repeatedly reading Kafka.</p></article>
-          <article><span>02</span><h3>Query real payloads</h3><p>Combine AND, OR and NOT across keys, headers, nested JSON fields and time ranges.</p></article>
-          <article><span>03</span><h3>Decode anything</h3><p>Work with JSON, Avro and Protobuf, including Confluent Schema Registry.</p></article>
-          <article><span>04</span><h3>Private by design</h3><p>Messages and indexes stay on your machine. Kaflow Search is read-only.</p></article>
-        </div>
       </section>
 
       <section class="scenarios" id="scenarios">
@@ -218,6 +188,36 @@
               <p><b>Your investigation</b> The four scenarios are examples. Apply the same local search workflow to the Kafka data your team operates.</p>
             </div>
           </article>
+        </div>
+      </section>
+
+      <section class="features" id="features">
+        <div class="section-heading">
+          <p>Built for the message hunt</p>
+          <h2>Search Kafka like a database.</h2>
+        </div>
+        <article class="watch-feature">
+          <div class="watch-copy">
+            <span class="feature-label">Watch &amp; auto-sync</span>
+            <h3>Keep an eye on the messages that matter.</h3>
+            <p>
+              Keep selected topics synced and watch for saved keywords as new messages arrive.
+              A lightweight way to spot the signals you care about during day-to-day operations—without adding a separate monitoring stack.
+            </p>
+          </div>
+          <div class="watch-preview" aria-label="Watch workflow overview">
+            <div class="watch-step"><small>01</small><span>Select a topic</span></div>
+            <div class="watch-arrow" aria-hidden="true">↓</div>
+            <div class="watch-step"><small>02</small><span>Keep it auto-synced</span></div>
+            <div class="watch-arrow" aria-hidden="true">↓</div>
+            <div class="watch-step watch-step-accent"><small>03</small><span>Watch a keyword</span></div>
+          </div>
+        </article>
+        <div class="feature-grid">
+          <article><span>01</span><h3>Search, don't scan</h3><p>Search millions of indexed messages in seconds without repeatedly reading Kafka.</p></article>
+          <article><span>02</span><h3>Query real payloads</h3><p>Combine AND, OR and NOT across keys, headers, nested JSON fields and time ranges.</p></article>
+          <article><span>03</span><h3>Decode anything</h3><p>Work with JSON, Avro and Protobuf, including Confluent Schema Registry.</p></article>
+          <article><span>04</span><h3>Private by design</h3><p>Messages and indexes stay on your machine. Kaflow Search is read-only.</p></article>
         </div>
       </section>
 

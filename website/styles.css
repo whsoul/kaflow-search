@@ -77,7 +77,7 @@ kbd { padding: 8px 10px; border: 0; border-radius: 6px; background: var(--accent
 .result-lines div:nth-child(2) span { width: 74%; }
 
 .trust-line { padding: 25px max(20px, calc((100% - 1180px)/2)); display: flex; justify-content: space-between; gap: 20px; border-block: 1px solid var(--line); color: #858da1; font-size: 12px; text-transform: uppercase; letter-spacing: .09em; }
-.features { width: min(1180px, calc(100% - 40px)); margin: auto; padding: 120px 0; }
+.features { width: min(1180px, calc(100% - 40px)); margin: auto; padding: 80px 0 120px; }
 .section-heading p, .cta p { color: var(--accent-bright); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; }
 h2 { margin: 12px 0 48px; font-size: clamp(36px, 5vw, 62px); line-height: 1.05; letter-spacing: -.05em; }
 .watch-feature {
@@ -100,7 +100,7 @@ h2 { margin: 12px 0 48px; font-size: clamp(36px, 5vw, 62px); line-height: 1.05; 
 .feature-grid article > span { color: #596076; font: 11px ui-monospace, monospace; }
 .feature-grid h3 { margin: 76px 0 12px; font-size: 20px; letter-spacing: -.025em; }
 .feature-grid p { margin: 0; color: var(--muted); line-height: 1.65; font-size: 14px; }
-.scenarios { width: min(1180px, calc(100% - 40px)); margin: auto; padding: 24px 0 120px; }
+.scenarios { width: min(1180px, calc(100% - 40px)); margin: auto; padding: 104px 0 40px; }
 .scenarios-heading { display: grid; grid-template-columns: 1fr 430px; gap: 70px; align-items: end; }
 .scenarios-heading h2 { margin-bottom: 0; }
 .section-intro { margin: 0 0 7px; color: var(--muted) !important; font-size: 15px !important; font-weight: 400 !important; line-height: 1.75; text-transform: none !important; letter-spacing: 0 !important; }
