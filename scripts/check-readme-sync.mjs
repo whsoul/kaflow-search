@@ -16,6 +16,13 @@ import { readFileSync } from "node:fs";
 
 const SOURCE = "README.md";
 const TRANSLATIONS = ["README.ko.md", "README.ja.md", "README.zh.md"];
+const EQUIVALENT_LINKS = new Map([
+  ["https://kaflow-search.whsoul-tools.com/ko/", "https://kaflow-search.whsoul-tools.com/"],
+]);
+
+function comparableLink(url) {
+  return EQUIVALENT_LINKS.get(url) || url;
+}
 
 // GitHub lowercases the heading, drops punctuation, and turns spaces into hyphens.
 // Letters and digits of any script survive, which is what makes non-English anchors work.
@@ -66,7 +73,9 @@ function parse(path) {
     // to differ per language — a label badge carries translated text, and a banner may
     // one day be drawn in each language — whereas a link goes to the same place for
     // everyone, so a missing or stray one is a mistake.
-    links: [...raw.matchAll(/(^|[^!])\[[^\]]*\]\((https?:\/\/[^)\s]+)\)/g)].map((m) => m[2]).sort(),
+    links: [...raw.matchAll(/(^|[^!])\[[^\]]*\]\((https?:\/\/[^)\s]+)\)/g)]
+      .map((m) => comparableLink(m[2]))
+      .sort(),
     images: (raw.match(/!\[[^\]]*\]\(/g) || []).length,
     anchors: [...raw.matchAll(/\]\((#[^)\s]+)\)/g)].map((m) => m[1]),
   };
