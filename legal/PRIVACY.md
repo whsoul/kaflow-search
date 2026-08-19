@@ -28,7 +28,7 @@ When started (and periodically while running), the Software contacts the Licenso
 | Field | What it is | Purpose |
 |---|---|---|
 | `appInstanceId` | A random UUID generated locally at first run. Contains no personal data. Reset when application data is deleted. | Correlating requests; rate limiting; abuse detection |
-| `deviceIdHash` | A SHA-256 hash of the operating system's machine identifier. The raw identifier never leaves your device and cannot be recovered from the hash. | Abuse detection (e.g., detecting duplicated or cloned installations) |
+| `deviceIdHash` | A SHA-256 hash of the operating system's machine identifier. The raw identifier never leaves your device. | Abuse detection (e.g., detecting duplicated or cloned installations) |
 | `appVersion` | The Software version | Update and compatibility decisions |
 | `platform`, `arch` | Operating system and CPU architecture | Compatibility decisions |
 | `locale` | The UI language | Localizing service messages |

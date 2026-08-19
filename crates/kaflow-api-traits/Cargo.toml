@@ -4,6 +4,9 @@ version = "0.1.0"
 edition = "2021"
 description = "Kaflow public API traits — engine / progress / deserializer / schema source seams"
 # No `license` field: see the LICENSE file at the repository root.
+# Not published to crates.io. The repository is source-available rather than open
+# source, so a crate leaving it would carry terms crates.io does not express.
+publish = false
 
 [lib]
 path = "src/lib.rs"
