@@ -58,7 +58,12 @@ h1 em { color: var(--accent-bright); font-style: normal; }
 .text-link span { color: var(--accent-bright); }
 
 .hero-product-shot { overflow: hidden; margin: 0; text-align: left; border: 1px solid rgba(180,170,255,.28); border-radius: 16px; background: #0d101b; box-shadow: 0 40px 100px rgba(0,0,0,.55), 0 0 80px rgba(102,79,255,.11); }
-.hero-product-shot img { width: 100%; height: auto; display: block; }
+.hero-product-shot img { display: block; }
+.hero-shot-stage { position: relative; padding-bottom: 11%; overflow: hidden; background: #090b12; }
+.hero-quick-search { width: 100%; height: auto; }
+.hero-query-builder { position: absolute; right: 2.5%; bottom: 4%; width: 71%; overflow: hidden; border: 1px solid rgba(88,199,229,.6); border-radius: 9px; background: #11141d; box-shadow: 0 18px 50px rgba(0,0,0,.72), 0 0 28px rgba(48,180,220,.12); }
+.hero-query-builder span { display: block; padding: 7px 11px; border-bottom: 1px solid rgba(88,199,229,.25); color: #91d9eb; font: 9px ui-monospace, monospace; text-transform: uppercase; letter-spacing: .1em; }
+.hero-query-builder img { width: 100%; height: auto; }
 .product-shot-bar { min-height: 42px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); color: #858da1; font: 10px ui-monospace, monospace; text-transform: uppercase; letter-spacing: .08em; }
 .product-shot-bar span { display: flex; align-items: center; gap: 8px; }
 .product-shot-bar i { width: 7px; height: 7px; border-radius: 50%; background: #65d6a4; box-shadow: 0 0 12px rgba(101,214,164,.65); }
@@ -156,6 +161,9 @@ footer { height: 110px; color: #666e82; font-size: 12px; }
   .hero { padding-top: 80px; }
   .hero-actions { margin-bottom: 50px; flex-direction: column; }
   .product-shot-bar small { display: none; }
+  .hero-shot-stage { padding-bottom: 16%; }
+  .hero-query-builder { right: 3%; bottom: 5%; width: 82%; }
+  .hero-query-builder span { padding: 5px 8px; font-size: 8px; }
   .trust-line { overflow: auto; justify-content: flex-start; white-space: nowrap; }
   .watch-feature { padding: 26px; grid-template-columns: 1fr; gap: 30px; }
   .feature-grid { grid-template-columns: 1fr; }
