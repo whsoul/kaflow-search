@@ -38,6 +38,7 @@
       </a>
       <nav aria-label="Primary navigation">
         <a href="#features">Features</a>
+        <a href="#scenarios">Scenarios</a>
         <a href="https://github.com/whsoul/kaflow-search" target="_blank" rel="noreferrer" itemprop="sameAs">GitHub</a>
         <a class="button button-small" href="https://github.com/whsoul/kaflow-search/releases/latest">Download</a>
       </nav>
@@ -107,6 +108,100 @@
         </div>
       </section>
 
+      <section class="scenarios" id="scenarios">
+        <div class="section-heading scenarios-heading">
+          <div>
+            <p>Four real-world investigations</p>
+            <h2>See where Kafka search<br />changes the outcome.</h2>
+          </div>
+          <p class="section-intro">
+            Start with an order number, an error code, or a watched keyword. Follow each
+            scenario from the first clue to an operational answer using locally indexed Kafka data.
+          </p>
+        </div>
+
+        <div class="scenario-tabs">
+          <div class="scenario-tablist" role="tablist" aria-label="Kaflow Search scenarios">
+            <button id="scenario-tab-1" role="tab" aria-selected="true" aria-controls="scenario-panel-1" tabindex="0"><small>01</small><span>Stuck order</span></button>
+            <button id="scenario-tab-2" role="tab" aria-selected="false" aria-controls="scenario-panel-2" tabindex="-1"><small>02</small><span>Kafka log investigation</span></button>
+            <button id="scenario-tab-3" role="tab" aria-selected="false" aria-controls="scenario-panel-3" tabindex="-1"><small>03</small><span>Payment watch</span></button>
+            <button id="scenario-tab-4" role="tab" aria-selected="false" aria-controls="scenario-panel-4" tabindex="-1"><small>04</small><span>Offline incident</span></button>
+          </div>
+
+          <article class="scenario-panel" id="scenario-panel-1" role="tabpanel" aria-labelledby="scenario-tab-1">
+            <div class="scenario-copy">
+              <span class="scenario-tag">Order investigation</span>
+              <h3>A customer paid. Why is the order still stuck?</h3>
+              <p>Search the same order ID across order, payment, and processing topics—without writing a temporary consumer for each one.</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>Find the order waiting for inventory</li>
+                <li><span>02</span>Confirm that payment was authorized</li>
+                <li><span>03</span>Locate the warehouse timeout</li>
+              </ol>
+            </div>
+            <div class="scenario-query" aria-label="Stuck order investigation result">
+              <small>Search key</small>
+              <code>ORD-20260812-483921</code>
+              <p><b>Finding</b> Payment succeeded, but inventory reservation failed with <strong>WAREHOUSE_TIMEOUT</strong>.</p>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-2" role="tabpanel" aria-labelledby="scenario-tab-2" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">Kafka-only logs</span>
+              <h3>Investigate a 502 without adding ELK.</h3>
+              <p>Nginx and application logs are already in Kafka. Index them locally, narrow the failure window, and follow a trace ID to the cause.</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>Filter 100K Nginx records to checkout 502s</li>
+                <li><span>02</span>Drill into the incident time window</li>
+                <li><span>03</span>Follow the trace into application logs</li>
+              </ol>
+            </div>
+            <div class="scenario-query" aria-label="Kafka log investigation result">
+              <small>Detailed search</small>
+              <code>P.status = "502*" AND P.path = "/api/checkout*"</code>
+              <p><b>Finding</b> The checkout service exhausted its payment connection pool: <strong>50 / 50 active</strong>, 184 pending.</p>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-3" role="tabpanel" aria-labelledby="scenario-tab-3" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">Watch &amp; auto-sync</span>
+              <h3>Spot payment failures as they arrive.</h3>
+              <p>A payment operations specialist keeps a lightweight keyword Watch open while Kaflow Search keeps the topic in sync.</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>Watch <code>payment_failed</code></li>
+                <li><span>02</span>Keep the payment topic auto-synced</li>
+                <li><span>03</span>Open the new match and act on the cause</li>
+              </ol>
+            </div>
+            <div class="scenario-query" aria-label="Payment watch result">
+              <small>Watched keyword</small>
+              <code>payment_failed</code>
+              <p><b>New match</b> Order <strong>ORD-20260812-484107</strong> failed because the payment gateway timed out after 3000 ms.</p>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-4" role="tabpanel" aria-labelledby="scenario-tab-4" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">Local index continuity</span>
+              <h3>Keep investigating when Kafka is unavailable.</h3>
+              <p>Use the last local index to inspect the messages collected before the outage and identify work that still needs manual intervention.</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>See publish timeouts spike before disconnect</li>
+                <li><span>02</span>Continue searching the local index</li>
+                <li><span>03</span>Find the final order needing manual review</li>
+              </ol>
+            </div>
+            <div class="scenario-query" aria-label="Offline incident investigation result">
+              <small>Local index search</small>
+              <code>ORDER_MANUAL_ACTION_REQUIRED</code>
+              <p><b>Finding</b> Payment was authorized, but fulfillment never started. The order remains <strong>PENDING</strong> for manual review.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
       <section class="cta">
         <p>Stop scrolling through logs.</p>
         <h2>Find the message that matters.</h2>
@@ -115,5 +210,33 @@
     </main>
 
     <footer><span>© 2026 Kaflow Search</span><span>Fast. Local. Private.</span></footer>
+    <script>
+      const scenarioTabs = [...document.querySelectorAll('.scenario-tablist [role="tab"]')];
+
+      function selectScenario(tab, moveFocus = false) {
+        scenarioTabs.forEach((item) => {
+          const isSelected = item === tab;
+          item.setAttribute('aria-selected', String(isSelected));
+          item.tabIndex = isSelected ? 0 : -1;
+          document.getElementById(item.getAttribute('aria-controls')).hidden = !isSelected;
+        });
+        if (moveFocus) tab.focus();
+      }
+
+      scenarioTabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => selectScenario(tab));
+        tab.addEventListener('keydown', (event) => {
+          let nextIndex;
+          if (event.key === 'ArrowRight' || event.key === 'ArrowDown') nextIndex = (index + 1) % scenarioTabs.length;
+          if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') nextIndex = (index - 1 + scenarioTabs.length) % scenarioTabs.length;
+          if (event.key === 'Home') nextIndex = 0;
+          if (event.key === 'End') nextIndex = scenarioTabs.length - 1;
+          if (nextIndex !== undefined) {
+            event.preventDefault();
+            selectScenario(scenarioTabs[nextIndex], true);
+          }
+        });
+      });
+    </script>
   </body>
 </html>
