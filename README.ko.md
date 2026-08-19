@@ -13,11 +13,11 @@
 
 ### 내 데스크톱에 설치하는 Kafka 메시지 검색엔진
 
-**수백만 건 중에서 원하는 메시지를 초 단위로 찾습니다.**
+**수백만 건 중 조건에 맞는 Kafka 메시지를 몇 초 안에 찾습니다.**
 
 `로컬 인덱싱` · `별도 인프라 불필요` · `가입 없음` · `데이터는 내 컴퓨터 안에`
 
-**[⬇ 다운로드](#다운로드)** · **[설치 안내](#설치)** · [이슈](https://github.com/whsoul/kaflow-search/issues)
+**[⬇ 다운로드](#다운로드)** · **[웹사이트](https://kaflow-search.whsoul-tools.com/ko/)** · **[설치 안내](#설치)** · [이슈](https://github.com/whsoul/kaflow-search/issues)
 
 </div>
 
@@ -359,6 +359,7 @@ proprietary 소프트웨어이며, EULA에 따라 현재 **개인용·조직 내
 **Kaflow Search** — 내 데스크톱에 설치하는 Kafka 메시지 검색엔진
 
 [다운로드](https://github.com/whsoul/kaflow-search/releases/latest) ·
+[웹사이트](https://kaflow-search.whsoul-tools.com/ko/) ·
 [이슈](https://github.com/whsoul/kaflow-search/issues) ·
 [개인정보](legal/PRIVACY.ko.md)
 

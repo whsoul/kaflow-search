@@ -16,11 +16,11 @@
 
 ### A desktop search engine for your Kafka messages
 
-**Find one message among millions — in seconds, on your own machine.**
+**Find matching Kafka messages among millions — in seconds, on your own machine.**
 
 `Local indexing` · `No extra infrastructure` · `No sign-up` · `Your data stays local`
 
-**[⬇ Download](#download)** · **[Install guide](#install)** · [Issues](https://github.com/whsoul/kaflow-search/issues)
+**[⬇ Download](#download)** · **[Website](https://kaflow-search.whsoul-tools.com/)** · **[Install guide](#install)** · [Issues](https://github.com/whsoul/kaflow-search/issues)
 
 </div>
 
@@ -368,6 +368,7 @@ belong to their respective owners.
 **Kaflow Search** — a desktop search engine for your Kafka messages.
 
 [Download](https://github.com/whsoul/kaflow-search/releases/latest) ·
+[Website](https://kaflow-search.whsoul-tools.com/) ·
 [Issues](https://github.com/whsoul/kaflow-search/issues) ·
 [Privacy](legal/PRIVACY.md)
 

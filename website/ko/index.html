@@ -55,7 +55,7 @@
     <main id="top">
       <section class="hero">
         <div class="eyebrow"><span></span> Kafka를 위한 데스크톱 검색</div>
-        <h1>수백만 건의 Kafka 메시지를<br /><em>몇 초 안에 검색하세요.</em></h1>
+        <h1>수백만 건 중 조건에 맞는<br /><em>Kafka 메시지를 몇 초 안에 찾으세요.</em></h1>
         <p class="hero-copy" itemprop="description">
           필요한 토픽만 로컬에 인덱싱해 빠르고 상세하게 검색합니다.
           임시 Consumer나 별도의 검색 인프라는 필요하지 않습니다.
@@ -93,19 +93,19 @@
       </section>
 
       <section class="trust-line" aria-label="주요 장점">
-        <span>선택한 토픽만 인덱싱</span><span>제한 가능한 로컬 용량</span><span>추가 인프라 불필요</span><span>데이터는 로컬에 유지</span>
+        <span>선택한 토픽만 인덱싱</span><span>로컬 저장 용량 설정</span><span>추가 인프라 불필요</span><span>데이터는 로컬에 유지</span>
       </section>
 
       <section class="scenarios" id="scenarios">
         <div class="section-heading scenarios-heading">
           <div>
             <p>이런 상황에서 시작해 보세요</p>
-            <h2>유용한 활용 사례.</h2>
+            <h2>이런 문제를 해결합니다.</h2>
           </div>
           <p class="section-intro">
             아래 사례는 시작점일 뿐입니다. 시스템에 맞는 식별자, 필드, 키워드 또는 시간 범위로
             필요한 Kafka 메시지를 조사할 수 있습니다.
-            <span class="audience-note">운영 데이터를 Kafka에 보관하고 있지만 완전한 ELK 스택의 비용과 운영 부담까지는 필요하지 않은 개인 개발자와 소규모 팀에 특히 유용합니다.</span>
+            <span class="audience-note">운영 데이터를 Kafka에 보관하고 있지만 ELK 스택 전체를 운영하는 비용과 부담까지는 필요하지 않은 개인 개발자와 소규모 팀에 특히 유용합니다.</span>
           </p>
         </div>
 
@@ -113,7 +113,7 @@
           <div class="scenario-tablist" role="tablist" aria-label="Kaflow Search 활용 사례">
             <button id="scenario-tab-1" role="tab" aria-selected="true" aria-controls="scenario-panel-1" tabindex="0"><small>01</small><span>멈춘 주문 원인 추적</span></button>
             <button id="scenario-tab-2" role="tab" aria-selected="false" aria-controls="scenario-panel-2" tabindex="-1"><small>02</small><span>Web/WAS 로그 추적</span></button>
-            <button id="scenario-tab-3" role="tab" aria-selected="false" aria-controls="scenario-panel-3" tabindex="-1"><small>03</small><span>조건 트래픽 Watch</span></button>
+            <button id="scenario-tab-3" role="tab" aria-selected="false" aria-controls="scenario-panel-3" tabindex="-1"><small>03</small><span>조건 일치 트래픽 Watch</span></button>
             <button id="scenario-tab-4" role="tab" aria-selected="false" aria-controls="scenario-panel-4" tabindex="-1"><small>04</small><span>Kafka 장애 중 조사</span></button>
             <button id="scenario-tab-5" role="tab" aria-selected="false" aria-controls="scenario-panel-5" tabindex="-1"><small>05</small><span>나의 활용 사례</span></button>
           </div>
@@ -136,7 +136,7 @@
                 </video>
                 <span class="scenario-video-label">실제 제품 데모 · 가상 데이터 · 28초</span>
               </div>
-              <div class="scenario-query" aria-label="Stuck order tracing result">
+              <div class="scenario-query" aria-label="멈춘 주문 추적 결과">
                 <small>검색 키</small>
                 <code>ORD-20260812-483921</code>
                 <p><b>확인 결과</b> 결제는 성공했지만 재고 예약이 <strong>WAREHOUSE_TIMEOUT</strong>으로 실패했습니다.</p>
@@ -151,7 +151,7 @@
               <p>Nginx와 애플리케이션 로그가 Kafka에 수집되고 있다면 로컬에 인덱싱하고 장애 시간대를 좁힌 뒤 trace ID로 원인을 추적할 수 있습니다.</p>
               <ol class="scenario-flow">
                 <li><span>01</span>Nginx 10만 건에서 checkout 502 필터링</li>
-                <li><span>02</span>장애 시간대로 Drill</li>
+                <li><span>02</span>장애 시간대로 범위 좁히기</li>
                 <li><span>03</span>trace ID로 애플리케이션 로그 추적</li>
               </ol>
             </div>
@@ -162,7 +162,7 @@
                 </video>
                 <span class="scenario-video-label">실제 제품 데모 · 가상 데이터 · 35초</span>
               </div>
-              <div class="scenario-query" aria-label="Web and application log tracing result">
+              <div class="scenario-query" aria-label="Web/WAS 로그 추적 결과">
                 <small>상세검색</small>
                 <code>P.status = "502*" AND P.path = "/api/checkout*" AND P.method = "POST*"</code>
                 <p><b>확인 결과</b> checkout 서비스의 결제 연결 풀이 고갈됐습니다. <strong>50 / 50 사용 중</strong>, 184건 대기.</p>
@@ -178,7 +178,7 @@
               <ol class="scenario-flow">
                 <li><span>01</span><code>payment_failed</code> Watch 설정</li>
                 <li><span>02</span>결제 토픽 자동 동기화</li>
-                <li><span>03</span>새 매치를 열어 원인에 대응</li>
+                <li><span>03</span>새 일치 메시지를 열어 원인에 대응</li>
               </ol>
             </div>
             <div class="scenario-evidence">
@@ -188,10 +188,10 @@
                 </video>
                 <span class="scenario-video-label">실제 제품 데모 · 가상 데이터 · 27초</span>
               </div>
-              <div class="scenario-query" aria-label="Matching traffic watch result">
+              <div class="scenario-query" aria-label="조건 일치 트래픽 Watch 결과">
                 <small>Watch 키워드</small>
                 <code>payment_failed</code>
-                <p><b>새 매치</b> 주문 <strong>ORD-20260819-WATCH03</strong>이 결제 게이트웨이 3000ms 타임아웃으로 실패했습니다.</p>
+                <p><b>새 일치 메시지</b> 주문 <strong>ORD-20260819-WATCH03</strong>이 결제 게이트웨이 3000ms 타임아웃으로 실패했습니다.</p>
               </div>
             </div>
           </article>
@@ -214,10 +214,10 @@
                 </video>
                 <span class="scenario-video-label">실제 제품 데모 · 가상 데이터 · 49초</span>
               </div>
-              <div class="scenario-query" aria-label="Offline incident investigation result">
+              <div class="scenario-query" aria-label="오프라인 장애 조사 결과">
                 <small>로컬 인덱스 검색</small>
                 <code>PENDING</code>
-                <p><b>확인 결과</b> 결제는 승인됐지만 fulfillment가 시작되지 않았습니다. 주문은 수동 검토가 필요한 <strong>PENDING</strong> 상태입니다.</p>
+                <p><b>확인 결과</b> 결제는 승인됐지만 주문 처리가 시작되지 않았습니다. 주문은 수동 검토가 필요한 <strong>PENDING</strong> 상태입니다.</p>
               </div>
             </div>
           </article>
@@ -230,7 +230,7 @@
               <ol class="scenario-flow">
                 <li><span>01</span>필요한 토픽을 로컬에 인덱싱</li>
                 <li><span>02</span>식별자, 필드 또는 키워드 검색</li>
-                <li><span>03</span>목록, 탐색, 시계열로 증거 좁히기</li>
+                <li><span>03</span>목록과 시계열을 살펴보며 증거 좁히기</li>
               </ol>
             </div>
             <div class="scenario-query" aria-label="나의 Kafka 데이터 조사">
@@ -293,8 +293,8 @@
           </div>
         </article>
         <div class="feature-grid">
-          <article><span>01</span><h3>스캔 대신 검색</h3><p>필요한 토픽만 인덱싱하고 설정 가능한 로컬 용량 안에서 수백만 건의 메시지를 검색합니다.</p></article>
-          <article><span>02</span><h3>실제 payload 검색</h3><p>키, 헤더, 중첩 JSON 필드와 시간 범위에 AND, OR, NOT 조건을 조합합니다.</p></article>
+          <article><span>01</span><h3>스캔 대신 검색</h3><p>필요한 토픽만 인덱싱하고 설정한 로컬 용량 안에서 수백만 건 중 조건에 맞는 메시지를 찾습니다.</p></article>
+          <article><span>02</span><h3>실제 페이로드 검색</h3><p>키, 헤더, 중첩 JSON 필드와 시간 범위에 AND, OR, NOT 조건을 조합합니다.</p></article>
           <article><span>03</span><h3>다양한 형식 디코딩</h3><p>Confluent Schema Registry를 포함해 JSON, Avro, Protobuf를 지원합니다.</p></article>
           <article><span>04</span><h3>처음부터 로컬 중심</h3><p>메시지와 인덱스는 사용자의 PC에 유지되며 Kaflow Search는 읽기 전용입니다.</p></article>
         </div>
