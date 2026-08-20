@@ -18,6 +18,5 @@ Use `website` as the static asset directory when creating the Cloudflare project
 
 The production sitemap is available at `/sitemap.xml` and is advertised in `robots.txt`.
 The canonical and Open Graph URLs are set in `index.html`. If the production domain
-changes, update all three files together.
-
-Add a purpose-made social preview image as `og:image` when one is available.
+changes, update all three files together. The social preview uses
+`assets/banner-en.jpg`, a deployment copy of the README banner optimized for sharing.
