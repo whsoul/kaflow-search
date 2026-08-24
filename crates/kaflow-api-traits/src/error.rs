@@ -1,5 +1,6 @@
 //! What an engine can fail with.
 
+use kaflow_api_types::auth::UntrustedCertInfo;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -9,6 +10,12 @@ pub enum EngineError {
 
     #[error("kafka error: {0}")]
     Kafka(String),
+
+    /// A server certificate failed standard TLS validation, but was captured well enough
+    /// to offer the caller a trust decision. Not every reason may be bypassed — see
+    /// `CertFailureReason::Revoked`.
+    #[error("kafka cert untrusted: {} broker(s) failed certificate verification", .0.len())]
+    UntrustedCert(Vec<UntrustedCertInfo>),
 
     #[error("storage error: {0}")]
     Storage(String),

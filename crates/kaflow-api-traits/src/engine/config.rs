@@ -15,19 +15,17 @@ pub trait ConfigApi: Send + Sync {
     ///
     /// ⚠️ **The profile is not trusted.** Keys that are not recognised and constraints that
     /// do not apply are ignored, and every value is held inside the hard bounds before it
-    /// takes effect. A profile arrives over a network; acting on it as given would let a
-    /// mistake elsewhere reconfigure the engine.
+    /// takes effect.
     async fn apply_profile_limits(
         &self,
         limits: ProfileLimits,
     ) -> Result<EffectiveLimitsView, EngineError>;
 
-    /// The limits actually in force, resolved once. Callers read these rather than
-    /// carrying their own copies, which would go stale the moment a profile changed.
+    /// The limits actually in force. Callers should read these directly rather than
+    /// caching their own copy — a profile change can shift them at any time.
     async fn get_effective_limits(&self) -> Result<EffectiveLimitsView, EngineError>;
 
-    /// System limits, for diagnosis. Read-only by nature: they are compiled in, so
-    /// offering to edit them would promise a change that nothing acts on.
+    /// System limits, for diagnosis only — there is no way to change them through this API.
     async fn get_system_limits(&self) -> Result<SystemLimitsView, EngineError>;
 
     /// Changes the global settings, returning what actually took effect.

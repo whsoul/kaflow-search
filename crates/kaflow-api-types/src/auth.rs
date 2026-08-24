@@ -89,6 +89,16 @@ pub enum KafkaAuth {
         client_key_path: Option<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         key_password: Option<String>,
+        /// SHA-256 fingerprints of server certificates the user has explicitly chosen to
+        /// trust despite failing chain validation (expired, unknown issuer, unsupported
+        /// version, ...). Not a secret — a broker's certificate is public.
+        ///
+        /// An implementation must accept a presented certificate whose fingerprint is in
+        /// this list even when standard chain validation would reject it, while still
+        /// requiring proof of possession of the matching private key. It must not relax
+        /// any other check for a fingerprint not in this list.
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pinned_cert_fingerprints: Vec<String>,
     },
     #[serde(rename = "SASL_SSL")]
     SaslSsl {
@@ -109,6 +119,9 @@ pub enum KafkaAuth {
         client_key_path: Option<String>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         key_password: Option<String>,
+        /// See `KafkaAuth::Ssl::pinned_cert_fingerprints` — same contract.
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        pinned_cert_fingerprints: Vec<String>,
     },
 }
 
@@ -228,6 +241,10 @@ pub struct StoredAuthConfig {
     pub client_cert_path: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub client_key_path: Option<String>,
+    /// See `KafkaAuth::Ssl::pinned_cert_fingerprints`. Not a secret, so it is kept —
+    /// carrying it over on reconnect is the point (SSH `known_hosts`-style trust).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub pinned_cert_fingerprints: Vec<String>,
 }
 
 impl StoredAuthConfig {
@@ -252,12 +269,14 @@ impl StoredAuthConfig {
                 ca_cert_path,
                 client_cert_path,
                 client_key_path,
+                pinned_cert_fingerprints,
                 ..
             } => StoredAuthConfig {
                 protocol: KafkaProtocol::Ssl,
                 ca_cert_path: ca_cert_path.clone(),
                 client_cert_path: client_cert_path.clone(),
                 client_key_path: client_key_path.clone(),
+                pinned_cert_fingerprints: pinned_cert_fingerprints.clone(),
                 ..Default::default()
             },
             KafkaAuth::SaslSsl {
@@ -267,6 +286,7 @@ impl StoredAuthConfig {
                 ca_cert_path,
                 client_cert_path,
                 client_key_path,
+                pinned_cert_fingerprints,
                 ..
             } => StoredAuthConfig {
                 protocol: KafkaProtocol::SaslSsl,
@@ -276,6 +296,7 @@ impl StoredAuthConfig {
                 ca_cert_path: ca_cert_path.clone(),
                 client_cert_path: client_cert_path.clone(),
                 client_key_path: client_key_path.clone(),
+                pinned_cert_fingerprints: pinned_cert_fingerprints.clone(),
                 // Where the credentials came from is not part of the connection itself —
                 // by then they are just values. Only the caller that read them knows, so
                 // it supplies these separately.
@@ -283,4 +304,75 @@ impl StoredAuthConfig {
             },
         }
     }
+}
+
+/// Why a presented TLS certificate failed standard chain validation.
+///
+/// A locale-invariant identifier — a client translates it for display; the variant name
+/// itself must not change (it is compared as text: FE contracts, tests, ...).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum CertFailureReason {
+    /// Not a v3 X.509 certificate.
+    UnsupportedVersion,
+    /// No trusted CA issued it (includes self-signed).
+    UnknownIssuer,
+    Expired,
+    NotValidYet,
+    /// The certificate's names do not cover the address that was dialed.
+    HostnameMismatch,
+    /// The issuing CA has explicitly revoked it.
+    ///
+    /// An implementation must never let a caller bypass validation for this reason.
+    Revoked,
+    /// Any other validation failure not covered above.
+    Other,
+}
+
+/// A server certificate that failed standard validation, offered up for the caller to
+/// decide whether to trust it anyway (see `CertFailureReason::Revoked` for the one case
+/// where an implementation must not offer that choice).
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct UntrustedCertInfo {
+    /// The broker address (`host:port`) that presented this certificate.
+    pub broker_addr: String,
+    /// SHA-256 fingerprint of the certificate, lowercase hex, colon-separated
+    /// (`"aa:bb:cc:..."`) — the form a caller would pin back via
+    /// `pinned_cert_fingerprints` to trust this exact certificate.
+    pub sha256_fingerprint: String,
+    pub reason: CertFailureReason,
+    /// The underlying validation error, English, for display alongside the reason —
+    /// not meant to be parsed.
+    pub detail: String,
+}
+
+/// A broker that could not be reached at all while checking cluster-wide certificate
+/// trust — not a certificate problem, just no answer from that address.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct UnreachableBrokerInfo {
+    /// The broker address (`host:port`) that did not respond.
+    pub broker_addr: String,
+    /// The underlying connection error, English, for display alongside the address —
+    /// not meant to be parsed.
+    pub detail: String,
+}
+
+/// What `verify_kafka_auth`/`confirm_kafka_cert_trust`/`verify_cluster_broker_trust` resolve
+/// to, over the wire.
+///
+/// A tagged enum rather than a plain error: `UntrustedCert` is a decision point for the
+/// caller, not a failure — only genuine failures (network, wrong password, ...) still
+/// travel as an error.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(tag = "type")]
+pub enum VerifyKafkaAuthResult {
+    Trusted {
+        /// Brokers that could not be reached at all while checking trust — not a
+        /// reason to fail, but a caller should surface it rather than discard it.
+        /// Always empty for a check scoped to a single already-connected address.
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        unreachable_brokers: Vec<UnreachableBrokerInfo>,
+    },
+    UntrustedCert {
+        candidates: Vec<UntrustedCertInfo>,
+    },
 }

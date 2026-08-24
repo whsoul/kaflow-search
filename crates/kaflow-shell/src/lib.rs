@@ -123,6 +123,8 @@ macro_rules! all_handlers {
             $crate::commands::register_kafka_auth,
             $crate::commands::clear_kafka_auth,
             $crate::commands::verify_kafka_auth,
+            $crate::commands::verify_cluster_broker_trust,
+            $crate::commands::confirm_kafka_cert_trust,
             $crate::commands::list_sasl_mechanisms,
             $crate::commands::list_aws_profiles,
             $crate::commands::resolve_aws_paths,

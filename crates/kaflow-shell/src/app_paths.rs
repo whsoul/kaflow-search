@@ -43,10 +43,14 @@ fn ensure_safe_workspace(workspace: &str) -> Result<(), String> {
         return Err("workspace name is empty".to_string());
     }
     if workspace.contains('/') || workspace.contains('\\') {
-        return Err(format!("workspace name must not contain a path separator: {workspace}"));
+        return Err(format!(
+            "workspace name must not contain a path separator: {workspace}"
+        ));
     }
     if workspace == ".." || workspace == "." {
-        return Err(format!("workspace name must not be a relative path: {workspace}"));
+        return Err(format!(
+            "workspace name must not be a relative path: {workspace}"
+        ));
     }
     if workspace.contains(':') {
         return Err(format!("workspace name must not contain ':': {workspace}"));
@@ -71,7 +75,6 @@ pub fn rocksdb_dir(workspace: &str) -> Result<PathBuf, String> {
 pub fn reports_dir() -> Result<PathBuf, String> {
     Ok(app_data_dir()?.join("reports"))
 }
-
 
 #[cfg(test)]
 mod tests {
