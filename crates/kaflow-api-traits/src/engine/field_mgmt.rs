@@ -1,10 +1,8 @@
 //! Choosing what of a topic is indexed, and keeping that up to date.
 //!
-//! ⚠️ **Reserved fields are not the user's to manage.** A field the engine records for its
-//! own accounting — recognised by [`kaflow_api_types::is_system_field`] — must be kept out
-//! of anything offered for selection, and must not be removed by anything here or by
-//! reclaiming space. Dropping one loses the record of what the engine did, and nothing
-//! afterwards can tell that it is missing rather than absent.
+//! ⚠️ **Reserved fields are not the user's to manage.** A field recognised by
+//! [`kaflow_api_types::is_system_field`] must be kept out of anything offered for
+//! selection, and must not be removed by anything here or by reclaiming space.
 
 use async_trait::async_trait;
 use kaflow_api_types::{IndexedFieldInput, TopicDeserializers};

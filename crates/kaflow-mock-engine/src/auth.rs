@@ -3,6 +3,7 @@
 use async_trait::async_trait;
 use kaflow_api_traits::engine::AuthApi;
 use kaflow_api_traits::error::EngineError;
+use kaflow_api_types::auth::UnreachableBrokerInfo;
 use kaflow_api_types::{AwsPaths, AwsProfileCredentials, AwsProfileSummary, KafkaAuth};
 
 use crate::MockEngine;
@@ -22,6 +23,25 @@ impl AuthApi for MockEngine {
     }
 
     async fn verify_kafka_auth(&self, _bootstrap: &str) -> Result<(), EngineError> {
+        Ok(())
+    }
+
+    /// This engine never opens a real TLS connection to any broker, so there is never a
+    /// wider cluster of certificates to check, or a broker to be unreachable, either.
+    async fn verify_cluster_broker_trust(
+        &self,
+        _bootstrap: &str,
+    ) -> Result<Vec<UnreachableBrokerInfo>, EngineError> {
+        Ok(Vec::new())
+    }
+
+    /// This engine never opens a real TLS connection, so there is never a certificate to
+    /// distrust and nothing for a caller to confirm — trust always succeeds.
+    async fn confirm_kafka_cert_trust(
+        &self,
+        _bootstrap: &str,
+        _accepted_fingerprints: Vec<String>,
+    ) -> Result<(), EngineError> {
         Ok(())
     }
 

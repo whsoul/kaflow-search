@@ -13,9 +13,6 @@ pub trait ProfilesApi: Send + Sync {
     /// Saves or updates one.
     ///
     /// ⚠️ **Past the limit this must fail, and nothing may be removed to make room.**
-    /// A saved connection disappearing on its own is indistinguishable from losing it, so
-    /// the refusal is deliberate — evicting the oldest would be the friendlier-looking
-    /// behaviour and the wrong one.
     ///
     /// `auth_config` carries no secrets — see `StoredAuthConfig`.
     async fn save_cluster_profile(

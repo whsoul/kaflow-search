@@ -1,8 +1,7 @@
 //! Reporting progress, without knowing who is listening.
 //!
 //! Deliberately synchronous and fire-and-forget: nothing waits on a progress event and
-//! nothing depends on one arriving, so making this async would add ceremony to every
-//! caller for no gain.
+//! nothing depends on one arriving.
 
 use std::sync::Arc;
 
