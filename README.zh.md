@@ -75,12 +75,12 @@
 |---|---|---|
 | macOS | Apple Silicon | `.dmg` |
 | macOS | Intel | `.dmg` |
-| Windows | x64 | ⏳ 进行中 —— [发布后接收通知](https://github.com/whsoul/kaflow-search/issues/5) |
+| Windows | x64 | [`.exe` / `.msi` —— **预览版，验证中**](https://github.com/whsoul/kaflow-search/releases/tag/v0.1.2_win) |
 | Linux | — | 需求足够就会提供 —— [投上一票](https://github.com/whsoul/kaflow-search/issues/6) |
 
 **[⬇ 获取最新版本](https://github.com/whsoul/kaflow-search/releases/latest)** —— 请只从这里下载。
 
-**运行要求** —— macOS 11 (Big Sur) 及以上 · Apache Kafka 2.4 及以上（[支持哪些环境](#支持的环境)）
+**运行要求** —— macOS 11 (Big Sur) 及以上，或 Windows 10 及以上 (x64) · Apache Kafka 2.4 及以上（[支持哪些环境](#支持的环境)）
 
 | | |
 |---|---|
@@ -88,7 +88,8 @@
 | **可用空间** | **在此之外**，本地索引每个集群需预留 **10 GB 以上**（两个集群即 20 GB 以上）。索引上限可在设置中调整 |
 | **磁盘类型** | **建议使用 SSD。** 建索引写入量大，机械硬盘也能用，但会明显变慢 |
 
-除此之外无需安装任何东西 —— 不需要运行时、数据库或后台服务。
+无需另行准备数据库或后台服务。如果 Windows 版启动后立即退出，请查看
+[Windows 安装与启动故障排除](https://github.com/whsoul/kaflow-search/issues/5#issuecomment-5406572758)。
 
 > 🔔 **想知道新版本什么时候发布？** 用本仓库顶部的 **[Watch ▾] → Custom → ☑ Releases**，
 > 每次发布都会收到通知 —— 如果你在等某个还在开发中的平台，这会很方便。
@@ -133,6 +134,20 @@ xattr -dr com.apple.quarantine "/Applications/Kaflow Search.app"
 ```
 
 *（每个安装版本执行一次即可。提示文案会因 macOS 版本略有差异。）*
+
+</details>
+
+<details open>
+<summary><b>Windows</b> —— 遇到“未知发布者”警告时继续安装</summary>
+
+Windows 版目前以**预览版形式提供，仍在验证中**。
+
+安装时，Windows 可能会显示“未知发布者”或 Microsoft Defender SmartScreen 警告。
+与 macOS 相同，这是因为 Kaflow Search 尚未使用付费代码签名证书，**并不表示**系统发现了有害内容。
+请选择**更多信息 → 仍要运行**以继续安装。
+
+如果安装或启动失败，或者应用启动后立即退出，请查看
+[Windows 安装与启动故障排除](https://github.com/whsoul/kaflow-search/issues/5#issuecomment-5406572758)。
 
 </details>
 

@@ -75,12 +75,12 @@
 |---|---|---|
 | macOS | Apple Silicon | `.dmg` |
 | macOS | Intel | `.dmg` |
-| Windows | x64 | ⏳ 作業中 — [公開されたら通知を受け取る](https://github.com/whsoul/kaflow-search/issues/5) |
+| Windows | x64 | [`.exe` / `.msi` — **プレビュー、検証中**](https://github.com/whsoul/kaflow-search/releases/tag/v0.1.2_win) |
 | Linux | — | ご要望が集まれば提供 — [賛同する](https://github.com/whsoul/kaflow-search/issues/6) |
 
 **[⬇ 最新リリースを入手](https://github.com/whsoul/kaflow-search/releases/latest)** — ダウンロードはここからのみお願いします。
 
-**動作要件** — macOS 11 (Big Sur) 以降 · Apache Kafka 2.4 以降 ([対応環境](#動作環境))
+**動作要件** — macOS 11 (Big Sur) 以降、または Windows 10 以降 (x64) · Apache Kafka 2.4 以降 ([対応環境](#動作環境))
 
 | | |
 |---|---|
@@ -88,7 +88,8 @@
 | **空き容量** | **それとは別に**、ローカルインデックス用としてクラスタあたり **10 GB 以上**（2 クラスタなら 20 GB 以上）。インデックスの上限は設定で変更できます |
 | **ディスク** | **SSD 推奨。** インデックス作成は書き込みが多く、HDD でも動きますが目に見えて遅くなります |
 
-ほかに入れるものはありません — ランタイムもデータベースもサービスも不要です。
+別途データベースやサービスを用意する必要はありません。Windows 版が起動直後に終了する場合は、
+[Windows のインストール・起動トラブルシューティング](https://github.com/whsoul/kaflow-search/issues/5#issuecomment-5406572758)をご覧ください。
 
 > 🔔 **新しいバージョンを知りたいときは** このリポジトリ上部の **[Watch ▾] → Custom → ☑ Releases**
 > を使うと、リリースのたびに通知が届きます。まだ作業中のプラットフォームを待っている場合にも便利です。
@@ -137,6 +138,20 @@ xattr -dr com.apple.quarantine "/Applications/Kaflow Search.app"
 ```
 
 *(インストールしたバージョンごとに 1 回。文言は macOS のバージョンによって多少異なります。)*
+
+</details>
+
+<details open>
+<summary><b>Windows</b> —「不明な発行元」の警告が表示された場合</summary>
+
+Windows 版は現在**プレビューとして提供されており、検証中**です。
+
+インストール時に「不明な発行元」または Microsoft Defender SmartScreen の警告が表示されることがあります。
+macOS と同様、Kaflow Search がまだ有料のコード署名証明書を使用していないためであり、
+有害なものが検出されたという意味ではありません。**詳細情報 → 実行**を選んで続行してください。
+
+インストールや起動に失敗する場合、または起動直後に終了する場合は、
+[Windows のインストール・起動トラブルシューティング](https://github.com/whsoul/kaflow-search/issues/5#issuecomment-5406572758)をご覧ください。
 
 </details>
 

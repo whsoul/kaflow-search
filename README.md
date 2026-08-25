@@ -79,12 +79,12 @@
 |---|---|---|
 | macOS | Apple Silicon | `.dmg` |
 | macOS | Intel | `.dmg` |
-| Windows | x64 | ⏳ In progress — [tell me when it lands](https://github.com/whsoul/kaflow-search/issues/5) |
+| Windows | x64 | [`.exe` / `.msi` — **Preview, validation in progress**](https://github.com/whsoul/kaflow-search/releases/tag/v0.1.2_win) |
 | Linux | — | Built if enough people want it — [add your vote](https://github.com/whsoul/kaflow-search/issues/6) |
 
 **[⬇ Get the latest release](https://github.com/whsoul/kaflow-search/releases/latest)** — download only from here.
 
-**Requirements** — macOS 11 (Big Sur) or later · Apache Kafka 2.4 or later ([which environments](#supported-environments))
+**Requirements** — macOS 11 (Big Sur) or later, or Windows 10 or later (x64) · Apache Kafka 2.4 or later ([which environments](#supported-environments))
 
 | | |
 |---|---|
@@ -92,7 +92,8 @@
 | **Free space** | **On top of that**, allow **10 GB or more per cluster** for the local index (two clusters = 20 GB or more). The index limit is adjustable in settings |
 | **Disk type** | **SSD recommended.** Indexing is write-heavy — an HDD works but will be noticeably slower |
 
-Nothing else to install — no runtime, no database, no service.
+No separate database or service is required. If the Windows app closes immediately after launch,
+see [Windows installation and launch troubleshooting](https://github.com/whsoul/kaflow-search/issues/5#issuecomment-5406572758).
 
 > 🔔 **Want to know when a new version lands?** Use **[Watch ▾] → Custom → ☑ Releases** at the top
 > of this repository and you'll be notified on every release — handy if you're waiting on a platform
@@ -142,6 +143,21 @@ xattr -dr com.apple.quarantine "/Applications/Kaflow Search.app"
 ```
 
 *(Once per installed version. Exact wording varies by macOS version.)*
+
+</details>
+
+<details open>
+<summary><b>Windows</b> — Continue past the "Unknown publisher" warning</summary>
+
+The Windows build is currently available as a **Preview and is still being validated**.
+
+Windows may show an **Unknown publisher** or Microsoft Defender SmartScreen warning during
+installation. As on macOS, this appears because Kaflow Search does not yet use a paid code-signing
+certificate; it does **not** mean Windows found anything harmful. Select **More info → Run anyway**
+to continue.
+
+If installation or launch fails, or the app closes immediately after launch, see
+[Windows installation and launch troubleshooting](https://github.com/whsoul/kaflow-search/issues/5#issuecomment-5406572758).
 
 </details>
 
