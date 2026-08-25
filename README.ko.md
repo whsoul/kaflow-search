@@ -75,12 +75,12 @@
 |---|---|---|
 | macOS | Apple Silicon | `.dmg` |
 | macOS | Intel | `.dmg` |
-| Windows | x64 | ⏳ 진행 중 — [출시되면 알림 받기](https://github.com/whsoul/kaflow-search/issues/5) |
+| Windows | x64 | [`.exe` / `.msi` — **Preview, 검증 중**](https://github.com/whsoul/kaflow-search/releases/tag/v0.1.2_win) |
 | Linux | — | 수요가 모이면 제공 — [의견 더하기](https://github.com/whsoul/kaflow-search/issues/6) |
 
 **[⬇ 최신 릴리스 받기](https://github.com/whsoul/kaflow-search/releases/latest)** — 설치 파일은 여기서만 받으세요.
 
-**요구 사항** — macOS 11 (Big Sur) 이상 · Apache Kafka 2.4 이상 ([어떤 환경인지](#지원-환경))
+**요구 사항** — macOS 11 (Big Sur) 이상 또는 Windows 10 이상 (x64) · Apache Kafka 2.4 이상 ([어떤 환경인지](#지원-환경))
 
 | | |
 |---|---|
@@ -88,7 +88,8 @@
 | **여유 공간** | 설치 공간과 **별도로**, 데이터 인덱싱을 위해 **클러스터당 10GB 이상**이 있어야 안정적입니다 (클러스터 2개 = 20GB 이상). 인덱스 한도는 설정에서 조정할 수 있습니다 |
 | **디스크 종류** | **SSD 권장.** 인덱싱은 쓰기가 많아 HDD에서도 동작하지만 눈에 띄게 느립니다 |
 
-그 밖에 설치할 것은 없습니다 — 런타임도, 데이터베이스도, 서비스도 필요 없습니다.
+별도의 데이터베이스나 서비스는 필요 없습니다. Windows에서 실행 직후 종료된다면
+[Windows 설치·실행 문제 해결](https://github.com/whsoul/kaflow-search/issues/5#issuecomment-5406572758)을 확인해 주세요.
 
 > 🔔 **새 버전이 나오면 알림을 받으시려면** — 이 저장소 상단의 **[Watch ▾] → Custom → ☑ Releases**
 > 를 켜두시면 릴리스가 올라올 때마다 알려드립니다. (준비 중인 플랫폼을 기다리시는 분께도 유용합니다.)
@@ -137,6 +138,20 @@ xattr -dr com.apple.quarantine "/Applications/Kaflow Search.app"
 ```
 
 *(설치한 버전마다 한 번씩만 하면 됩니다. 경고 문구는 macOS 버전에 따라 조금씩 다릅니다.)*
+
+</details>
+
+<details open>
+<summary><b>Windows</b> — "알 수 없는 게시자" 경고에서 계속 진행</summary>
+
+Windows용 빌드는 현재 **Preview로 제공되며 검증 중**입니다.
+
+설치할 때 Windows가 **알 수 없는 게시자** 또는 Microsoft Defender SmartScreen 경고를 표시할 수 있습니다.
+이는 macOS와 마찬가지로 Kaflow Search가 아직 유료 코드 서명 인증서를 사용하지 않기 때문이며,
+앱에서 유해한 것이 발견됐다는 뜻은 아닙니다. **추가 정보 → 실행**을 선택해 설치를 계속해 주세요.
+
+설치 또는 실행에 문제가 있거나 앱이 실행 직후 종료된다면
+[Windows 설치·실행 문제 해결](https://github.com/whsoul/kaflow-search/issues/5#issuecomment-5406572758)을 확인해 주세요.
 
 </details>
 
