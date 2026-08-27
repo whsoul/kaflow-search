@@ -4,7 +4,7 @@ blank_issues_enabled: true
 contact_links:
   - name: Windows installation help
     url: https://github.com/whsoul/kaflow-search#install
-    about: SmartScreen and missing Visual C++ runtime steps are covered in the README.
+    about: SmartScreen and legacy v0.1.2 Preview troubleshooting are covered in the README.
   - name: Waiting on a Linux build
     url: https://github.com/whsoul/kaflow-search/issues/6
     about: One thread for the platform — add your vote there rather than opening another.

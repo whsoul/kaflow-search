@@ -88,8 +88,7 @@
 | **可用空间** | **在此之外**，本地索引每个集群需预留 **10 GB 以上**（两个集群即 20 GB 以上）。索引上限可在设置中调整 |
 | **磁盘类型** | **建议使用 SSD。** 建索引写入量大，机械硬盘也能用，但会明显变慢 |
 
-无需另行准备数据库或后台服务。Windows 还需要 Microsoft Visual C++ 运行库；如果尚未安装，
-请参阅下方的 [Windows 安装说明](#安装)。
+无需另行准备数据库或后台服务。
 
 > 🔔 **想知道新版本什么时候发布？** 用本仓库顶部的 **[Watch ▾] → Custom → ☑ Releases**，
 > 每次发布都会收到通知 —— 如果你在等某个还在开发中的平台，这会很方便。
@@ -144,10 +143,11 @@ xattr -dr com.apple.quarantine "/Applications/Kaflow Search.app"
 与 macOS 相同，这是因为 Kaflow Search 尚未使用付费代码签名证书，**并不表示**系统发现了有害内容。
 请选择**更多信息 → 仍要运行**以继续安装。
 
-如果应用启动后立即退出，请安装最新的
-[Microsoft Visual C++ Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe)，
-然后重新启动 Kaflow Search。如果运行库缺失或版本过旧，Windows 事件查看器中可能会出现
-`MSVCP140.dll`、`VCRUNTIME140.dll` 或异常代码 `0xc0000005`。
+从 v0.1.3 开始，Microsoft Visual C++ 运行库已链接到应用中，无需单独安装。如果仍在使用
+v0.1.2 Windows Preview 且应用启动后立即退出，请更新到最新版本。如果必须继续使用该预览版，
+可以安装 [Microsoft Visual C++ Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe)。
+旧版本的运行库问题可能会在 Windows 事件查看器中显示为 `MSVCP140.dll`、`VCRUNTIME140.dll`
+或异常代码 `0xc0000005`。
 
 如果仍然无法启动，请附上 Windows 版本以及事件查看器中与 Kaflow Search 相关的错误，
 [提交错误报告](https://github.com/whsoul/kaflow-search/issues/new?template=bug_report.yml)。

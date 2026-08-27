@@ -92,8 +92,7 @@
 | **Free space** | **On top of that**, allow **10 GB or more per cluster** for the local index (two clusters = 20 GB or more). The index limit is adjustable in settings |
 | **Disk type** | **SSD recommended.** Indexing is write-heavy — an HDD works but will be noticeably slower |
 
-No separate database or service is required. Windows systems also need the Microsoft Visual C++
-runtime; the [Windows installation steps](#install) below cover what to do if it is missing.
+No separate database or service is required.
 
 > 🔔 **Want to know when a new version lands?** Use **[Watch ▾] → Custom → ☑ Releases** at the top
 > of this repository and you'll be notified on every release — handy if you're waiting on a platform
@@ -154,10 +153,12 @@ installation. As on macOS, this appears because Kaflow Search does not yet use a
 certificate; it does **not** mean Windows found anything harmful. Select **More info → Run anyway**
 to continue.
 
-If the app closes immediately after launch, install the latest
-[Microsoft Visual C++ Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe),
-then start Kaflow Search again. A missing or outdated runtime may appear in Windows Event Viewer as
-`MSVCP140.dll`, `VCRUNTIME140.dll`, or exception code `0xc0000005`.
+Starting with v0.1.3, the Microsoft Visual C++ runtime is linked into the app, so there is nothing
+extra to install. If you are still using the v0.1.2 Windows Preview and it closes immediately after
+launch, update to the latest release. As a fallback for that Preview build, install the
+[Microsoft Visual C++ Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe).
+The old runtime issue may appear in Windows Event Viewer as `MSVCP140.dll`, `VCRUNTIME140.dll`, or
+exception code `0xc0000005`.
 
 If it still does not start, [open a bug report](https://github.com/whsoul/kaflow-search/issues/new?template=bug_report.yml)
 and include your Windows version and any Event Viewer error shown for Kaflow Search.
