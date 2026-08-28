@@ -60,6 +60,29 @@ h1 em { color: var(--accent-bright); font-style: normal; }
 .hero-copy { max-width: 650px; margin: auto; color: var(--muted); font-size: clamp(17px, 2vw, 20px); line-height: 1.65; }
 .hero-actions { margin: 34px 0 14px; display: flex; align-items: center; justify-content: center; gap: 26px; }
 .hero-note { margin: 0 0 74px; color: #8f97aa; font-size: 13px; line-height: 1.5; }
+
+/* 환경별 직접 다운로드 버튼. 셋 다 항상 보인다 — JS 는 감지된 것을 강조만 하고,
+   JS 가 없거나 감지가 빗나가도 사용자가 그대로 고를 수 있다. */
+.dl-buttons { margin: 34px 0 16px; display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center; gap: 12px; }
+.dl-button {
+  display: inline-flex; align-items: center; gap: 10px;
+  min-height: 56px; padding: 0 20px; border-radius: 12px;
+  border: 1px solid var(--line); background: rgba(255,255,255,.04);
+  color: var(--text); font-weight: 700; text-align: left;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+}
+.dl-button:hover { transform: translateY(-2px); border-color: rgba(180,170,255,.45); background: rgba(139,124,255,.12); }
+.dl-icon { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; color: var(--accent-bright); }
+.dl-text { display: flex; flex-direction: column; line-height: 1.2; }
+.dl-text small { color: #8f97aa; font-size: 11px; font-weight: 600; letter-spacing: .02em; }
+/* 감지된 환경 — 다른 것들보다 확실히 앞서 보이게 */
+.dl-button.is-suggested { border-color: transparent; background: var(--accent); color: #090b12; box-shadow: 0 12px 40px rgba(100,76,255,.26); }
+.dl-button.is-suggested:hover { background: var(--accent-bright); }
+.dl-button.is-suggested .dl-icon { color: #090b12; }
+.dl-button.is-suggested .dl-text small { color: rgba(9,11,18,.62); }
+.button-ghost { background: transparent; border: 1px solid var(--line); color: #c6cada; box-shadow: none; font-weight: 650; }
+.button-ghost:hover { background: rgba(255,255,255,.06); border-color: rgba(180,170,255,.4); }
+
 .text-link { color: #c6cada; font-size: 14px; font-weight: 650; }
 .text-link span { color: var(--accent-bright); }
 
@@ -175,6 +198,8 @@ footer { height: 110px; color: #666e82; font-size: 12px; }
   .hero { padding-top: 80px; }
   .hero-actions { margin-bottom: 14px; flex-direction: column; }
   .hero-note { margin-bottom: 50px; }
+  .dl-buttons { flex-direction: column; }
+  .dl-button { justify-content: center; }
   .product-shot-bar small { display: none; }
   .hero-shot-stage { padding-bottom: 16%; }
   .hero-query-builder { right: 3%; bottom: 5%; width: 82%; }
