@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Kafka 메시지를 로컬에 인덱싱해 빠르게 검색하고 조건에 맞는 트래픽을 Watch하는 데스크톱 도구입니다. 별도 ELK 구축 없이 Kafka 데이터와 Web/WAS 로그를 조사하세요."
+      content="Kafka 토픽에서 키, 헤더, JSON 필드, 키워드 또는 시간 범위로 메시지를 찾는 검색 도구입니다. 별도 Consumer나 ELK 없이 로컬에서 검색하세요."
     />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
     <meta name="naver-site-verification" content="6d7b1da07f49af054c0a3fb581742df259acd926" />
@@ -23,7 +23,7 @@
     <meta property="og:title" content="Kaflow Search — Kafka 메시지 검색 및 Watch 도구" />
     <meta
       property="og:description"
-      content="개인 개발자와 소규모 팀을 위한 Kafka 검색 도구. ELK 없이 로컬 인덱스로 Kafka 메시지와 로그를 검색하고 조건에 맞는 트래픽을 Watch하세요."
+      content="Kafka 토픽에서 키, 헤더, JSON 필드, 키워드 또는 시간 범위로 메시지를 찾으세요. ELK 없이 로컬에서 검색하고 조건에 맞는 트래픽을 Watch합니다."
     />
     <meta property="og:image" content="https://kaflow-search.whsoul-tools.com/assets/banner-en.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
@@ -34,7 +34,7 @@
     <meta name="twitter:title" content="Kaflow Search — Kafka 메시지 검색 및 Watch 도구" />
     <meta
       name="twitter:description"
-      content="ELK 없이 로컬 인덱스로 Kafka 메시지와 로그를 검색하고 조건에 맞는 트래픽을 Watch하세요."
+      content="Kafka 토픽에서 원하는 메시지를 찾으세요. 키, 헤더, JSON 필드, 키워드와 시간 범위를 로컬에서 검색하고 일치 트래픽을 Watch합니다."
     />
     <meta name="twitter:image" content="https://kaflow-search.whsoul-tools.com/assets/banner-en.jpg" />
     <meta name="twitter:image:alt" content="Kaflow Search — Kafka 메시지를 위한 빠른 데스크톱 검색" />
@@ -43,7 +43,7 @@
   </head>
   <body itemscope itemtype="https://schema.org/SoftwareApplication">
     <meta itemprop="applicationCategory" content="DeveloperApplication" />
-    <meta itemprop="operatingSystem" content="macOS 11 or later" />
+    <meta itemprop="operatingSystem" content="macOS 11 or later, Windows 10 or later" />
     <header class="site-header">
       <a class="brand" href="#top" aria-label="Kaflow Search 홈">
         <span class="brand-mark" aria-hidden="true">K</span>
@@ -66,13 +66,14 @@
         <div class="eyebrow"><span></span> Kafka를 위한 데스크톱 검색</div>
         <h1>수백만 건 중 조건에 맞는<br /><em>Kafka 메시지를 몇 초 안에 찾으세요.</em></h1>
         <p class="hero-copy" itemprop="description">
-          필요한 토픽만 로컬에 인덱싱해 빠르고 상세하게 검색합니다.
-          임시 Consumer나 별도의 검색 인프라는 필요하지 않습니다.
+          선택한 Kafka 토픽을 로컬에 인덱싱해 키, 헤더, 중첩 JSON 필드, 키워드 또는
+          시간 범위로 메시지를 찾습니다. 임시 Consumer나 별도의 검색 인프라는 필요하지 않습니다.
         </p>
         <div class="hero-actions">
           <a class="button" href="https://github.com/whsoul/kaflow-search/releases/latest">최신 버전 다운로드</a>
           <a class="text-link" href="https://github.com/whsoul/kaflow-search">GitHub에서 보기 <span>↗</span></a>
         </div>
+        <p class="hero-note">macOS 11+ (Apple Silicon &amp; Intel) · Windows 10+ (x64)</p>
 
         <figure class="hero-product-shot">
           <div class="product-shot-bar"><span><i></i> 실제 제품 화면</span><small>선택한 토픽을 로컬에 인덱싱</small></div>

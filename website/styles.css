@@ -58,7 +58,8 @@ nav a:hover, .text-link:hover { color: var(--text); }
 h1 { margin: 26px 0 24px; font-size: clamp(48px, 6.5vw, 74px); line-height: .94; letter-spacing: -.07em; }
 h1 em { color: var(--accent-bright); font-style: normal; }
 .hero-copy { max-width: 650px; margin: auto; color: var(--muted); font-size: clamp(17px, 2vw, 20px); line-height: 1.65; }
-.hero-actions { margin: 34px 0 74px; display: flex; align-items: center; justify-content: center; gap: 26px; }
+.hero-actions { margin: 34px 0 14px; display: flex; align-items: center; justify-content: center; gap: 26px; }
+.hero-note { margin: 0 0 74px; color: #8f97aa; font-size: 13px; line-height: 1.5; }
 .text-link { color: #c6cada; font-size: 14px; font-weight: 650; }
 .text-link span { color: var(--accent-bright); }
 
@@ -172,7 +173,8 @@ footer { height: 110px; color: #666e82; font-size: 12px; }
 @media (max-width: 800px) {
   nav > a:not(.button) { display: none; }
   .hero { padding-top: 80px; }
-  .hero-actions { margin-bottom: 50px; flex-direction: column; }
+  .hero-actions { margin-bottom: 14px; flex-direction: column; }
+  .hero-note { margin-bottom: 50px; }
   .product-shot-bar small { display: none; }
   .hero-shot-stage { padding-bottom: 16%; }
   .hero-query-builder { right: 3%; bottom: 5%; width: 82%; }
