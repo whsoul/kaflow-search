@@ -79,7 +79,7 @@
 |---|---|---|
 | macOS | Apple Silicon | `.dmg` |
 | macOS | Intel | `.dmg` |
-| Windows | x64 | [`.exe` / `.msi` — **Preview, validation in progress**](https://github.com/whsoul/kaflow-search/releases/tag/v0.1.2_win) |
+| Windows | x64 | [`.exe` / `.msi`](https://github.com/whsoul/kaflow-search/releases/latest) |
 | Linux | — | Built if enough people want it — [add your vote](https://github.com/whsoul/kaflow-search/issues/6) |
 
 **[⬇ Get the latest release](https://github.com/whsoul/kaflow-search/releases/latest)** — download only from here.
@@ -92,8 +92,7 @@
 | **Free space** | **On top of that**, allow **10 GB or more per cluster** for the local index (two clusters = 20 GB or more). The index limit is adjustable in settings |
 | **Disk type** | **SSD recommended.** Indexing is write-heavy — an HDD works but will be noticeably slower |
 
-No separate database or service is required. If the Windows app closes immediately after launch,
-see [Windows installation and launch troubleshooting](https://github.com/whsoul/kaflow-search/issues/5#issuecomment-5406572758).
+No separate database or service is required.
 
 > 🔔 **Want to know when a new version lands?** Use **[Watch ▾] → Custom → ☑ Releases** at the top
 > of this repository and you'll be notified on every release — handy if you're waiting on a platform
@@ -149,15 +148,20 @@ xattr -dr com.apple.quarantine "/Applications/Kaflow Search.app"
 <details open>
 <summary><b>Windows</b> — Continue past the "Unknown publisher" warning</summary>
 
-The Windows build is currently available as a **Preview and is still being validated**.
-
 Windows may show an **Unknown publisher** or Microsoft Defender SmartScreen warning during
 installation. As on macOS, this appears because Kaflow Search does not yet use a paid code-signing
 certificate; it does **not** mean Windows found anything harmful. Select **More info → Run anyway**
 to continue.
 
-If installation or launch fails, or the app closes immediately after launch, see
-[Windows installation and launch troubleshooting](https://github.com/whsoul/kaflow-search/issues/5#issuecomment-5406572758).
+Starting with v0.1.3, the Microsoft Visual C++ runtime is linked into the app, so there is nothing
+extra to install. If you are still using the v0.1.2 Windows Preview and it closes immediately after
+launch, update to the latest release. As a fallback for that Preview build, install the
+[Microsoft Visual C++ Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe).
+The old runtime issue may appear in Windows Event Viewer as `MSVCP140.dll`, `VCRUNTIME140.dll`, or
+exception code `0xc0000005`.
+
+If it still does not start, [open a bug report](https://github.com/whsoul/kaflow-search/issues/new?template=bug_report.yml)
+and include your Windows version and any Event Viewer error shown for Kaflow Search.
 
 </details>
 
@@ -316,7 +320,7 @@ disk speed. No fixed performance is guaranteed.
 
 ## Project status
 
-**Version 0.1.0 — open beta.** Usable for daily work.
+**Version 0.1.3 — open beta.** Usable for daily work.
 
 **Known limitations**
 

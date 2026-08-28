@@ -75,7 +75,7 @@
 |---|---|---|
 | macOS | Apple Silicon | `.dmg` |
 | macOS | Intel | `.dmg` |
-| Windows | x64 | [`.exe` / `.msi` — **プレビュー、検証中**](https://github.com/whsoul/kaflow-search/releases/tag/v0.1.2_win) |
+| Windows | x64 | [`.exe` / `.msi`](https://github.com/whsoul/kaflow-search/releases/latest) |
 | Linux | — | ご要望が集まれば提供 — [賛同する](https://github.com/whsoul/kaflow-search/issues/6) |
 
 **[⬇ 最新リリースを入手](https://github.com/whsoul/kaflow-search/releases/latest)** — ダウンロードはここからのみお願いします。
@@ -88,8 +88,7 @@
 | **空き容量** | **それとは別に**、ローカルインデックス用としてクラスタあたり **10 GB 以上**（2 クラスタなら 20 GB 以上）。インデックスの上限は設定で変更できます |
 | **ディスク** | **SSD 推奨。** インデックス作成は書き込みが多く、HDD でも動きますが目に見えて遅くなります |
 
-別途データベースやサービスを用意する必要はありません。Windows 版が起動直後に終了する場合は、
-[Windows のインストール・起動トラブルシューティング](https://github.com/whsoul/kaflow-search/issues/5#issuecomment-5406572758)をご覧ください。
+別途データベースやサービスを用意する必要はありません。
 
 > 🔔 **新しいバージョンを知りたいときは** このリポジトリ上部の **[Watch ▾] → Custom → ☑ Releases**
 > を使うと、リリースのたびに通知が届きます。まだ作業中のプラットフォームを待っている場合にも便利です。
@@ -144,14 +143,19 @@ xattr -dr com.apple.quarantine "/Applications/Kaflow Search.app"
 <details open>
 <summary><b>Windows</b> —「不明な発行元」の警告が表示された場合</summary>
 
-Windows 版は現在**プレビューとして提供されており、検証中**です。
-
 インストール時に「不明な発行元」または Microsoft Defender SmartScreen の警告が表示されることがあります。
 macOS と同様、Kaflow Search がまだ有料のコード署名証明書を使用していないためであり、
 有害なものが検出されたという意味ではありません。**詳細情報 → 実行**を選んで続行してください。
 
-インストールや起動に失敗する場合、または起動直後に終了する場合は、
-[Windows のインストール・起動トラブルシューティング](https://github.com/whsoul/kaflow-search/issues/5#issuecomment-5406572758)をご覧ください。
+v0.1.3 以降は Microsoft Visual C++ ランタイムがアプリに組み込まれているため、別途インストールする
+必要はありません。まだ v0.1.2 Windows Preview を使用していて起動直後に終了する場合は、最新リリースへ
+更新してください。その Preview ビルドを使い続ける必要がある場合は、
+[Microsoft Visual C++ 再頒布可能パッケージ (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe)
+をインストールできます。旧バージョンのランタイム問題は、Windows イベント ビューアーに
+`MSVCP140.dll`、`VCRUNTIME140.dll`、または例外コード `0xc0000005` と表示されることがあります。
+
+それでも起動しない場合は、Windows のバージョンと Kaflow Search に関するイベント ビューアーの
+エラーを添えて[バグを報告してください](https://github.com/whsoul/kaflow-search/issues/new?template=bug_report.yml)。
 
 </details>
 
@@ -309,7 +313,7 @@ Get-FileHash <file> -Algorithm SHA256
 
 ## プロジェクトの状況
 
-**バージョン 0.1.0 — オープンベータです。** 日常の作業に使えます。
+**バージョン 0.1.3 — オープンベータです。** 日常の作業に使えます。
 
 **既知の制限**
 
