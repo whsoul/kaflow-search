@@ -92,6 +92,18 @@ h1 em { color: var(--accent-bright); font-style: normal; }
 /* 히어로 데모 — 자동재생 루프. 오버레이(구 .hero-query-builder)는 제거했다:
    움직이는 영상 위에 정지 이미지가 겹치면 시선이 갈린다. 상세검색 빌더는 아래 섹션에서 보여준다. */
 .hero-quick-search { width: 100%; height: auto; display: block; }
+/* 히어로 영상 토글 — 자동재생이 막히거나 동작 줄이기 설정일 때 직접 재생하고,
+   결과 화면을 멈춰 보고 싶을 때 정지한다. 시선을 뺏지 않도록 평소엔 낮은 대비. */
+.hero-video-toggle {
+  position: absolute; right: 12px; bottom: 12px; z-index: 2;
+  width: 34px; height: 34px; display: grid; place-items: center;
+  border: 1px solid rgba(180,170,255,.28); border-radius: 50%;
+  background: rgba(8,10,16,.72); color: #d8d3ff;
+  opacity: .55; transition: opacity .2s ease, background .2s ease, border-color .2s ease;
+  backdrop-filter: blur(5px);
+}
+.hero-video-toggle:hover, .hero-video-toggle:focus-visible { opacity: 1; background: rgba(8,10,16,.9); border-color: rgba(180,170,255,.55); }
+.hero-video-toggle svg { width: 15px; height: 15px; fill: currentColor; }
 .product-shot-bar { min-height: 42px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); color: #858da1; font: 10px ui-monospace, monospace; text-transform: uppercase; letter-spacing: .08em; }
 .product-shot-bar span { display: flex; align-items: center; gap: 8px; }
 .product-shot-bar i { width: 7px; height: 7px; border-radius: 50%; background: #65d6a4; box-shadow: 0 0 12px rgba(101,214,164,.65); }
