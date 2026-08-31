@@ -75,3 +75,54 @@ if (selectedScenario) selectScenario(selectedScenario);
       .catch(() => {});
   }
 })();
+
+/* 히어로 데모 영상 — 재생/일시정지 토글 + 동작 줄이기 설정 대응.
+ *
+ * autoplay 속성을 쓰지 않는다: 그 속성으로 시작해버리면 "동작 줄이기"를 켠 사용자에게
+ * 이미 재생된 뒤에야 멈출 수 있어 한 번은 움직이는 화면을 보게 된다. 재생 여부를 여기서
+ * 판단해 처음부터 시작하지 않는다.
+ *
+ * 마크업에는 controls 를 남겨둔다 — JS 가 없으면 네이티브 컨트롤이 폴백으로 남고,
+ * JS 가 있으면 그것을 걷어내고 작은 토글 버튼으로 바꾼다. */
+(function () {
+  const video = document.querySelector('video.hero-quick-search');
+  const stage = video && video.closest('.hero-shot-stage');
+  if (!video || !stage) return;
+
+  video.removeAttribute('controls');
+
+  const ICON = {
+    play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>',
+    pause: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>',
+  };
+  const label = {
+    play: video.dataset.playLabel || 'Play',
+    pause: video.dataset.pauseLabel || 'Pause',
+  };
+
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'hero-video-toggle';
+  stage.appendChild(button);
+
+  function sync() {
+    const playing = !video.paused && !video.ended;
+    button.innerHTML = playing ? ICON.pause : ICON.play;
+    button.setAttribute('aria-label', playing ? label.pause : label.play);
+  }
+
+  button.addEventListener('click', () => {
+    if (video.paused) video.play().catch(() => {});
+    else video.pause();
+  });
+  video.addEventListener('play', sync);
+  video.addEventListener('pause', sync);
+
+  // 동작 줄이기 설정이면 시작하지 않는다 — 포스터가 그대로 보이고, 원하면 버튼으로 재생한다.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!reduceMotion.matches) {
+    // 자동재생이 막히면(모바일 등) 조용히 실패하고 포스터 + 재생 버튼 상태로 남는다.
+    video.play().catch(() => {});
+  }
+  sync();
+})();

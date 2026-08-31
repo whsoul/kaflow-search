@@ -88,7 +88,7 @@
 
 | | |
 |---|---|
-| **Install size** | about 100 MB |
+| **Size** | 75–85 MB to download, about 105 MB once installed |
 | **Free space** | **On top of that**, allow **10 GB or more per cluster** for the local index (two clusters = 20 GB or more). The index limit is adjustable in settings |
 | **Disk type** | **SSD recommended.** Indexing is write-heavy — an HDD works but will be noticeably slower |
 

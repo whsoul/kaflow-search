@@ -92,27 +92,24 @@
         <figure class="hero-product-shot">
           <div class="product-shot-bar"><span><i></i> Real product screen</span><small>Selected topics indexed locally</small></div>
           <div class="hero-shot-stage">
-            <img
+            <video
               class="hero-quick-search"
-              src="./assets/screenshots/search-hero.webp"
-              width="1410"
-              height="625"
-              alt="Kaflow Search quick search showing highlighted matches in a locally indexed Kafka topic"
-              fetchpriority="high"
-              decoding="async"
-            />
-            <div class="hero-query-builder">
-              <span>Detailed query builder</span>
-              <img
-                src="./assets/screenshots/query-builder.webp"
-                width="1235"
-                height="345"
-                alt="Kaflow Search detailed query builder combining field filters with AND and NOT groups"
-                decoding="async"
-              />
-            </div>
+              muted
+              controls
+              loop
+              playsinline
+              preload="metadata"
+              width="1280"
+              height="734"
+              data-play-label="Play the demo"
+              data-pause-label="Pause the demo"
+              poster="./assets/demos/hero-search-poster.jpg"
+              aria-label="Kaflow Search running repeated searches over a locally indexed Kafka topic of four million messages"
+            >
+              <source src="./assets/demos/hero-search.mp4" type="video/mp4" />
+            </video>
           </div>
-          <figcaption>Start with a quick search, or combine precise field conditions with the detailed query builder.</figcaption>
+          <figcaption>Repeated searches over a four-million-message topic — each one answered from the local index.</figcaption>
         </figure>
       </section>
 

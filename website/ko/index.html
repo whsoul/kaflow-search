@@ -92,27 +92,24 @@
         <figure class="hero-product-shot">
           <div class="product-shot-bar"><span><i></i> 실제 제품 화면</span><small>선택한 토픽을 로컬에 인덱싱</small></div>
           <div class="hero-shot-stage">
-            <img
+            <video
               class="hero-quick-search"
-              src="../assets/screenshots/search-hero.webp"
-              width="1410"
-              height="625"
-              alt="로컬에 인덱싱한 Kafka 토픽에서 일치 메시지를 강조하는 Kaflow Search 빠른 검색 화면"
-              fetchpriority="high"
-              decoding="async"
-            />
-            <div class="hero-query-builder">
-              <span>상세검색 빌더</span>
-              <img
-                src="../assets/screenshots/query-builder.webp"
-                width="1235"
-                height="345"
-                alt="필드 조건과 AND 및 NOT 그룹을 조합하는 Kaflow Search 상세검색 빌더"
-                decoding="async"
-              />
-            </div>
+              muted
+              controls
+              loop
+              playsinline
+              preload="metadata"
+              width="1280"
+              height="734"
+              data-play-label="데모 재생"
+              data-pause-label="데모 일시정지"
+              poster="../assets/demos/hero-search-poster.jpg"
+              aria-label="400만 건이 인덱싱된 Kafka 토픽에서 조건을 바꿔가며 반복 검색하는 Kaflow Search 화면"
+            >
+              <source src="../assets/demos/hero-search.mp4" type="video/mp4" />
+            </video>
           </div>
-          <figcaption>빠른 검색으로 시작하거나 상세검색 빌더에서 정교한 필드 조건을 조합하세요.</figcaption>
+          <figcaption>400만 건 토픽에서 조건을 바꿔가며 반복 검색 — 매번 로컬 인덱스에서 답합니다.</figcaption>
         </figure>
       </section>
 
