@@ -75,6 +75,14 @@
 
 ## Download
 
+**macOS — install with Homebrew:**
+
+```bash
+brew install --cask whsoul/tap/kaflow-search && open -a "Kaflow Search"
+```
+
+The command selects the right build for Apple Silicon or Intel. On first launch, follow the [one-time macOS approval steps](#install).
+
 | OS | Architecture | File |
 |---|---|---|
 | macOS | Apple Silicon | `.dmg` |
@@ -112,6 +120,21 @@ No separate database or service is required.
 
 <details open>
 <summary><b>macOS</b> — System Settings → "Open Anyway"</summary>
+
+**Homebrew (recommended)**
+
+```bash
+brew install --cask whsoul/tap/kaflow-search && open -a "Kaflow Search"
+```
+
+This installs the build for your Mac and attempts the first launch. If Homebrew reports that
+`/Applications/Kaflow Search.app` already exists, quit Kaflow Search and move the previous
+manually installed app out of Applications, then run the command again. Your settings and local
+indexes remain in `~/.kaflow`; moving the app itself does not remove them.
+
+When macOS shows the message in step 2 below, click **OK**, then continue with step 3.
+
+**Manual DMG installation**
 
 1. Open the `.dmg` and drag **Kaflow Search** into your Applications folder.
 
