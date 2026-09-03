@@ -49,8 +49,14 @@ if (selectedScenario) selectScenario(selectedScenario);
   const buttons = [...document.querySelectorAll('.dl-button[data-platform]')];
   if (!buttons.length) return;
 
+  // 데모 빌드는 현재 macOS 전용 — 같은 감지 결과로 아키텍처만 맞춰준다.
+  // Windows/Linux 는 위에서 일찍 빠져나가므로 기본값(Apple Silicon)이 그대로 남는데,
+  // 어차피 그쪽에서는 받아도 쓸 수 없어 라벨에 (macOS) 를 붙여 두었다.
+  const demoLink = document.querySelector('[data-demo-link]');
+
   const suggest = (id) => {
     buttons.forEach((b) => b.classList.toggle('is-suggested', b.dataset.platform === id));
+    if (demoLink && id.startsWith('mac-')) demoLink.href = `/download/demo-${id}`;
   };
 
   const uaData = navigator.userAgentData;

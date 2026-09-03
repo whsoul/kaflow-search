@@ -8,9 +8,13 @@
 # exe(74MB)를 올릴 수 없다. 그리고 서명이 없는 동안에는 브라우저 평판이 쌓인
 # github.com 에서 받는 편이 다운로드 경고도 덜하다.
 #
-# ⚠️ 릴리스할 때 아래 4줄의 버전을 갱신할 것.
+# ⚠️ 릴리스할 때 아래 6줄의 버전을 갱신할 것.
 
 /download/mac-arm64    https://github.com/whsoul/kaflow-search/releases/download/v0.1.3/Kaflow-Search_0.1.3_macOS_arm64.dmg  302
 /download/mac-intel    https://github.com/whsoul/kaflow-search/releases/download/v0.1.3/Kaflow-Search_0.1.3_macOS_intel.dmg  302
 /download/windows      https://github.com/whsoul/kaflow-search/releases/download/v0.1.3/Kaflow.Search_0.1.3_x64-setup.exe    302
 /download/windows-msi  https://github.com/whsoul/kaflow-search/releases/download/v0.1.3/Kaflow.Search_0.1.3_x64_en-US.msi    302
+
+# 데모 빌드(mock 엔진 + 번들 샘플 토픽) — 클러스터 없이 실행된다. 현재 macOS 만 제공.
+/download/demo-mac-arm64  https://github.com/whsoul/kaflow-search/releases/download/v0.1.3/Kaflow-Search-Demo_0.1.3_macOS_arm64.dmg  302
+/download/demo-mac-intel  https://github.com/whsoul/kaflow-search/releases/download/v0.1.3/Kaflow-Search-Demo_0.1.3_macOS_intel.dmg  302
