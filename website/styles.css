@@ -60,6 +60,10 @@ h1 em { color: var(--accent-bright); font-style: normal; }
 .hero-copy { max-width: 650px; margin: auto; color: var(--muted); font-size: clamp(17px, 2vw, 20px); line-height: 1.65; }
 .hero-actions { margin: 24px 0 14px; display: flex; align-items: center; justify-content: center; gap: 26px; }
 .hero-note { margin: 0; color: #8f97aa; font-size: 13px; line-height: 1.5; }
+.hero-demo { margin: 10px 0 0; color: #8f97aa; font-size: 13px; line-height: 1.6; }
+.hero-demo a { color: #c6cada; text-decoration: underline; text-underline-offset: 3px; }
+.hero-demo a:hover { color: #fff; }
+.hero-demo small { color: #6f7789; font-size: 12px; }
 
 /* 환경별 직접 다운로드 버튼. 셋 다 항상 보인다 — JS 는 감지된 것을 강조만 하고,
    JS 가 없거나 감지가 빗나가도 사용자가 그대로 고를 수 있다. */
