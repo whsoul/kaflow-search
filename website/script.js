@@ -49,14 +49,8 @@ if (selectedScenario) selectScenario(selectedScenario);
   const buttons = [...document.querySelectorAll('.dl-button[data-platform]')];
   if (!buttons.length) return;
 
-  // 데모 빌드는 현재 macOS 전용 — 같은 감지 결과로 아키텍처만 맞춰준다.
-  // Windows/Linux 는 위에서 일찍 빠져나가므로 기본값(Apple Silicon)이 그대로 남는데,
-  // 어차피 그쪽에서는 받아도 쓸 수 없어 라벨에 (macOS) 를 붙여 두었다.
-  const demoLink = document.querySelector('[data-demo-link]');
-
   const suggest = (id) => {
     buttons.forEach((b) => b.classList.toggle('is-suggested', b.dataset.platform === id));
-    if (demoLink && id.startsWith('mac-')) demoLink.href = `/download/demo-${id}`;
   };
 
   const uaData = navigator.userAgentData;
@@ -80,6 +74,43 @@ if (selectedScenario) selectScenario(selectedScenario);
       })
       .catch(() => {});
   }
+})();
+
+/* 데모 토글 — 체크하면 위의 세 버튼이 그대로 데모 빌드를 가리킨다.
+ *
+ * 데모와 제품은 다른 물건이 아니라 클러스터를 들고 왔는지만 다르다. 버튼을 따로 만들지
+ * 않고 같은 버튼의 목적지를 바꾸는 이유가 그것이다. 부수적으로 OS 감지가 빗나가도
+ * 나머지 버튼이 그대로 보여서 막다른 길이 생기지 않는다 — 링크 하나로 두었을 때는
+ * Windows·Linux 방문자와 Intel Mac 의 Safari 사용자가 arm64 dmg 를 받았다
+ * (아키텍처 판별에 쓰는 navigator.userAgentData 가 Chromium 전용이라).
+ *
+ * 라벨까지 바꾸는 것이 중요하다. 체크 사실을 잊고 제품인 줄 알며 데모를 받는 것이
+ * 이 UI 의 유일한 실패 방식이라, 버튼 자신이 무엇을 주는지 말해야 한다. */
+(function () {
+  const toggle = document.querySelector('[data-demo-toggle]');
+  const row = document.querySelector('.dl-buttons');
+  const buttons = Array.from(document.querySelectorAll('.dl-button'));
+  if (!toggle || !row || !buttons.length) return;
+
+  buttons.forEach((b) => {
+    const small = b.querySelector('small');
+    b.dataset.prodHref = b.getAttribute('href');
+    b.dataset.prodSmall = small ? small.textContent : '';
+  });
+
+  const apply = () => {
+    const demo = toggle.checked;
+    buttons.forEach((b) => {
+      const small = b.querySelector('small');
+      b.setAttribute('href', demo ? `/download/demo-${b.dataset.platform}` : b.dataset.prodHref);
+      if (small) small.textContent = demo ? `Demo · ${b.dataset.prodSmall}` : b.dataset.prodSmall;
+    });
+    row.classList.toggle('is-demo', demo);
+  };
+
+  toggle.addEventListener('change', apply);
+  // 뒤로가기나 새로고침에서 브라우저가 체크 상태를 되살리므로, 적재 시점에도 맞춰준다.
+  apply();
 })();
 
 /* 히어로 데모 영상 — 재생/일시정지 토글 + 동작 줄이기 설정 대응.

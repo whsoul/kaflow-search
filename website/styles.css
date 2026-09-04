@@ -60,10 +60,16 @@ h1 em { color: var(--accent-bright); font-style: normal; }
 .hero-copy { max-width: 650px; margin: auto; color: var(--muted); font-size: clamp(17px, 2vw, 20px); line-height: 1.65; }
 .hero-actions { margin: 24px 0 14px; display: flex; align-items: center; justify-content: center; gap: 26px; }
 .hero-note { margin: 0; color: #8f97aa; font-size: 13px; line-height: 1.5; }
-.hero-demo { margin: 10px 0 0; color: #8f97aa; font-size: 13px; line-height: 1.6; }
-.hero-demo a { color: #c6cada; text-decoration: underline; text-underline-offset: 3px; }
-.hero-demo a:hover { color: #fff; }
-.hero-demo small { color: #6f7789; font-size: 12px; }
+/* 데모 토글. 체크하면 위 버튼들이 데모 빌드를 가리킨다 (script.js 참고). */
+.hero-demo {
+  margin: 10px auto 0; max-width: 46em;
+  display: flex; align-items: flex-start; justify-content: center; gap: 8px;
+  color: #8f97aa; font-size: 13px; line-height: 1.6; text-align: left; cursor: pointer;
+}
+.hero-demo input { flex: none; margin: 4px 0 0; accent-color: #8b7cff; cursor: pointer; }
+.hero-demo:hover { color: #c6cada; }
+/* 바뀐 상태는 버튼 쪽에서도 보여야 한다 — 체크박스만으로는 눈에 안 들어온다. */
+.dl-buttons.is-demo .dl-button { border-color: rgba(180,170,255,.45); background: rgba(139,124,255,.10); }
 
 /* 환경별 직접 다운로드 버튼. 셋 다 항상 보인다 — JS 는 감지된 것을 강조만 하고,
    JS 가 없거나 감지가 빗나가도 사용자가 그대로 고를 수 있다. */
