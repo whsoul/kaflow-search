@@ -113,6 +113,32 @@ if (selectedScenario) selectScenario(selectedScenario);
   apply();
 })();
 
+/* Download guidance — the download starts, then the OS-specific warning note opens in place.
+ *
+ * Not a modal before the click: the warning is the last thing a stranger should read while still
+ * deciding, and "press Continue to allow our installer" is the shape malware sites use. Shown
+ * after the click instead, so it is on screen exactly when the OS dialog appears.
+ *
+ * Reads the button's own data-platform rather than re-detecting the OS — the visitor may be
+ * downloading for a different machine than the one they are browsing on. */
+(function () {
+  const guide = document.querySelector('[data-dl-guide]');
+  const buttons = Array.from(document.querySelectorAll('.dl-button[data-platform]'));
+  if (!guide || !buttons.length) return;
+
+  const notes = Array.from(guide.querySelectorAll('[data-guide]'));
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const os = button.dataset.platform.startsWith('mac') ? 'mac' : 'windows';
+      notes.forEach((note) => {
+        note.hidden = note.dataset.guide !== os;
+      });
+      guide.hidden = false;
+    });
+  });
+})();
+
 /* 히어로 데모 영상 — 재생/일시정지 토글 + 동작 줄이기 설정 대응.
  *
  * autoplay 속성을 쓰지 않는다: 그 속성으로 시작해버리면 "동작 줄이기"를 켠 사용자에게
