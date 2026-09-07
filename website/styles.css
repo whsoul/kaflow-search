@@ -61,6 +61,17 @@ h1 em { color: var(--accent-bright); font-style: normal; }
 .hero-actions { margin: 24px 0 14px; display: flex; align-items: center; justify-content: center; gap: 26px; }
 .hero-note { margin: 0; color: #8f97aa; font-size: 13px; line-height: 1.5; }
 /* 데모 토글. 체크하면 위 버튼들이 데모 빌드를 가리킨다 (script.js 참고). */
+.dl-guide {
+  width: min(620px, 100%); margin: 0 auto 16px; padding: 13px 15px;
+  border: 1px solid rgba(180,170,255,.26); border-radius: 12px;
+  background: rgba(139,124,255,.07);
+  color: var(--muted); font-size: 13px; line-height: 1.65; text-align: left;
+}
+.dl-guide-title { margin: 0 0 5px; color: var(--text); font-weight: 650; }
+.dl-guide-body { margin: 0; }
+.dl-guide b { color: #d5d8e4; font-weight: 600; }
+.dl-guide a { color: var(--accent-bright); text-decoration: underline; text-underline-offset: 2px; }
+
 .hero-demo {
   margin: 10px auto 0; max-width: 46em;
   display: flex; align-items: flex-start; justify-content: center; gap: 8px;
