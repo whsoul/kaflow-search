@@ -40,14 +40,51 @@
     <meta name="twitter:image:alt" content="Kaflow Search — Kafka 메시지를 위한 빠른 데스크톱 검색" />
     <title>Kafka 메시지 검색 및 모니터링 도구 | Kaflow Search</title>
     <link rel="stylesheet" href="../styles.css" />
+    <!-- Update softwareVersion / datePublished at release time, with the download URLs
+         in `_redirects`. offers.price pairs with the "free, no account needed" line on
+         the page; structured data that contradicts the page is discarded. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Kaflow Search",
+        "url": "https://kaflow-search.whsoul-tools.com/ko/",
+        "inLanguage": "ko",
+        "description": "Kafka 토픽에서 키, 헤더, JSON 필드, 키워드 또는 시간 범위로 메시지를 찾는 검색 도구입니다. 별도 Consumer나 ELK 없이 로컬에서 검색하세요.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "macOS 11 or later, Windows 10 or later",
+        "softwareVersion": "0.1.3",
+        "datePublished": "2026-08-28",
+        "downloadUrl": "https://github.com/whsoul/kaflow-search/releases/latest",
+        "screenshot": [
+          "https://kaflow-search.whsoul-tools.com/assets/screenshots/search.png",
+          "https://kaflow-search.whsoul-tools.com/assets/screenshots/dashboard.png",
+          "https://kaflow-search.whsoul-tools.com/assets/screenshots/search-builder.png",
+          "https://kaflow-search.whsoul-tools.com/assets/screenshots/message-detail.png"
+        ],
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Whsoul Tools",
+          "url": "https://kaflow-search.whsoul-tools.com/"
+        },
+        "license": "https://github.com/whsoul/kaflow-search/blob/main/LICENSE",
+        "sameAs": [
+          "https://github.com/whsoul/kaflow-search"
+        ]
+      }
+    </script>
   </head>
-  <body itemscope itemtype="https://schema.org/SoftwareApplication">
-    <meta itemprop="applicationCategory" content="DeveloperApplication" />
-    <meta itemprop="operatingSystem" content="macOS 11 or later, Windows 10 or later" />
+  <body>
     <header class="site-header">
       <a class="brand" href="#top" aria-label="Kaflow Search 홈">
         <span class="brand-mark" aria-hidden="true">K</span>
-        <span itemprop="name">Kaflow Search</span>
+        <span>Kaflow Search</span>
       </a>
       <nav aria-label="주요 메뉴">
         <a href="#scenarios">활용 사례</a>
@@ -56,7 +93,7 @@
           <a href="../" lang="en" hreflang="en">English</a>
           <a href="./" lang="ko" hreflang="ko" aria-current="page">한국어</a>
         </div>
-        <a href="https://github.com/whsoul/kaflow-search" target="_blank" rel="noreferrer" itemprop="sameAs">GitHub</a>
+        <a href="https://github.com/whsoul/kaflow-search" target="_blank" rel="noreferrer">GitHub</a>
         <a class="button button-small" href="https://github.com/whsoul/kaflow-search/releases/latest">다운로드</a>
       </nav>
     </header>
@@ -65,7 +102,7 @@
       <section class="hero">
         <div class="eyebrow"><span></span> Kafka를 위한 데스크톱 검색</div>
         <h1>수백만 건 중 조건에 맞는<br /><em>Kafka 메시지를 몇 초 안에 찾으세요.</em></h1>
-        <p class="hero-copy" itemprop="description">
+        <p class="hero-copy">
           선택한 Kafka 토픽을 로컬에 인덱싱해 키, 헤더, 중첩 JSON 필드, 키워드 또는
           시간 범위로 메시지를 찾습니다. 임시 Consumer나 별도의 검색 인프라는 필요하지 않습니다.
         </p>
