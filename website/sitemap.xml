@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  lastmod = 이 페이지가 마지막으로 바뀐 날. 크롤러의 재방문 신호로 쓰인다.
+
+  ⚠️ 페이지 내용을 고치면 해당 lastmod 도 같이 갱신할 것. 안 고치고 두면 "안 바뀌었다"
+  고 말하는 셈이라 재크롤이 늦어지고, 반대로 안 바뀐 페이지의 날짜만 올리면 신뢰를 잃어
+  구글이 이 파일의 lastmod 를 통째로 무시한다. 둘 다 손해라 실제 날짜만 적는다.
+-->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://kaflow-search.whsoul-tools.com/</loc>
+    <lastmod>2026-09-04</lastmod>
   </url>
   <url>
     <loc>https://kaflow-search.whsoul-tools.com/ko/</loc>
+    <lastmod>2026-09-04</lastmod>
   </url>
 </urlset>
