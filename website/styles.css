@@ -61,9 +61,10 @@ nav a:hover, .text-link:hover { color: var(--text); }
 .hero { width: min(960px, calc(100% - 40px)); margin: 0 auto; padding: 112px 0 72px; text-align: center; }
 .eyebrow { color: var(--accent-bright); text-transform: uppercase; letter-spacing: .14em; font-size: 12px; font-weight: 750; }
 .eyebrow span { display: inline-block; width: 6px; height: 6px; margin: 0 8px 2px 0; border-radius: 50%; background: currentColor; box-shadow: 0 0 14px currentColor; }
-h1 { margin: 26px 0 24px; font-size: clamp(48px, 6.5vw, 74px); line-height: .94; letter-spacing: -.07em; }
+h1 { margin: 26px 0 24px; font-size: clamp(32px, 4.5vw, 52px); line-height: 1.18; letter-spacing: -.035em; }
 h1 em { color: var(--accent-bright); font-style: normal; }
-.hero-copy { max-width: 650px; margin: auto; color: var(--muted); font-size: clamp(17px, 2vw, 20px); line-height: 1.65; }
+.hero-copy-detail { display: block; margin-top: 10px; font-size: .9em; }
+.hero-copy { max-width: 720px; margin: auto; color: var(--muted); font-size: clamp(17px, 2vw, 20px); line-height: 1.65; }
 .hero-actions { margin: 24px 0 14px; display: flex; align-items: center; justify-content: center; gap: 26px; }
 .hero-note { margin: 0; color: #8f97aa; font-size: 13px; line-height: 1.5; }
 /* 데모 토글. 체크하면 위 버튼들이 데모 빌드를 가리킨다 (script.js 참고). */
@@ -260,7 +261,7 @@ footer { height: 110px; color: #666e82; font-size: 12px; }
 @media (max-width: 520px) {
   .site-header { height: auto; min-height: 78px; padding: 16px 0; flex-wrap: wrap; gap: 14px; }
   .site-header nav { width: 100%; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
-  h1 { font-size: 40px; }
+  h1 { font-size: clamp(28px, 7vw, 36px); }
   .scenario-panel { padding: 26px 20px; }
 }
 
