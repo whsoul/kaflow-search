@@ -266,3 +266,5 @@ footer { height: 110px; color: #666e82; font-size: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+
+.hero-language { margin: 8px 0 0; color: var(--accent-bright); font-size: 13px; line-height: 1.5; }
