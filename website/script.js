@@ -90,6 +90,7 @@ if (selectedScenario) selectScenario(selectedScenario);
   const toggle = document.querySelector('[data-demo-toggle]');
   const row = document.querySelector('.dl-buttons');
   const buttons = Array.from(document.querySelectorAll('.dl-button'));
+  const portable = document.querySelector('[data-portable-link]');
   if (!toggle || !row || !buttons.length) return;
 
   buttons.forEach((b) => {
@@ -105,6 +106,11 @@ if (selectedScenario) selectScenario(selectedScenario);
       b.setAttribute('href', demo ? `/download/demo-${b.dataset.platform}` : b.dataset.prodHref);
       if (small) small.textContent = demo ? `Demo · ${b.dataset.prodSmall}` : b.dataset.prodSmall;
     });
+    // 안내 속 포터블 링크도 같이 돌린다. 빠뜨리면 데모를 받으려던 사람이 제품을 받는다 —
+    // 버튼은 데모를 가리키는데 그 아래 한 줄만 제품이라, 눈치채기 어려운 종류의 어긋남이다.
+    if (portable) {
+      portable.setAttribute('href', demo ? '/download/demo-windows-portable' : '/download/windows-portable');
+    }
     row.classList.toggle('is-demo', demo);
   };
 
