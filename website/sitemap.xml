@@ -3,10 +3,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://kaflow-search.whsoul-tools.com/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-08</lastmod>
   </url>
   <url>
     <loc>https://kaflow-search.whsoul-tools.com/ko/</loc>
-    <lastmod>2026-09-04</lastmod>
+    <lastmod>2026-09-08</lastmod>
+  </url>
+  <url>
+    <loc>https://kaflow-search.whsoul-tools.com/ja/</loc>
+    <lastmod>2026-09-08</lastmod>
+  </url>
+  <url>
+    <loc>https://kaflow-search.whsoul-tools.com/zh/</loc>
+    <lastmod>2026-09-08</lastmod>
   </url>
 </urlset>
