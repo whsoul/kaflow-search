@@ -17,6 +17,8 @@ import { readFileSync } from "node:fs";
 const SOURCE = "README.md";
 const TRANSLATIONS = ["README.ko.md", "README.ja.md", "README.zh.md"];
 const EQUIVALENT_LINKS = new Map([
+  ["https://kaflow-search.whsoul-tools.com/ja/", "https://kaflow-search.whsoul-tools.com/"],
+  ["https://kaflow-search.whsoul-tools.com/zh/", "https://kaflow-search.whsoul-tools.com/"],
   ["https://kaflow-search.whsoul-tools.com/ko/", "https://kaflow-search.whsoul-tools.com/"],
 ]);
 

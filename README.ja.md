@@ -17,7 +17,7 @@
 
 `ローカルインデックス` · `追加インフラ不要` · `サインアップ不要` · `データは手元から出ない`
 
-**[⬇ ダウンロード](#ダウンロード)** · **[ウェブサイト](https://kaflow-search.whsoul-tools.com/)** · **[インストール手順](#インストール)** · [Issue](https://github.com/whsoul/kaflow-search/issues)
+**[⬇ ダウンロード](#ダウンロード)** · **[ウェブサイト](https://kaflow-search.whsoul-tools.com/ja/)** · **[インストール手順](#インストール)** · [Issue](https://github.com/whsoul/kaflow-search/issues)
 
 </div>
 
@@ -407,7 +407,7 @@ ASF と提携しておらず、ASF による推奨・後援も受けていませ
 **Kaflow Search** — Kafka メッセージのためのデスクトップ検索エンジン。
 
 [ダウンロード](https://github.com/whsoul/kaflow-search/releases/latest) ·
-[ウェブサイト](https://kaflow-search.whsoul-tools.com/) ·
+[ウェブサイト](https://kaflow-search.whsoul-tools.com/ja/) ·
 [Issue](https://github.com/whsoul/kaflow-search/issues) ·
 [プライバシー](legal/PRIVACY.md)
 
