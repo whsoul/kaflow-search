@@ -20,3 +20,11 @@ The production sitemap is available at `/sitemap.xml` and is advertised in `robo
 The canonical and Open Graph URLs are set in `index.html`. If the production domain
 changes, update all three files together. The social preview uses
 `assets/banner-en.jpg`, a deployment copy of the README banner optimized for sharing.
+
+## Languages
+
+The site serves English at `/`, Korean at `/ko/`, Japanese at `/ja/`, and
+Simplified Chinese at `/zh/`. All pages share `styles.css`, `script.js`, and the
+existing demo media. Keep content, language navigation, alternate links, and
+`sitemap.xml` in sync when updating the site. Installation links on localized
+pages point to the corresponding README.

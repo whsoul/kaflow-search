@@ -12,6 +12,7 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 html[lang="ko"] { word-break: keep-all; }
+html[lang="ja"], html[lang="zh-CN"] { line-break: strict; }
 body {
   margin: 0;
   background:
@@ -29,15 +30,20 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   justify-content: space-between;
 }
-.site-header { height: 78px; border-bottom: 1px solid var(--line); }
+.site-header { min-height: 78px; padding: 14px 0; gap: 16px 24px; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 720; letter-spacing: -0.02em; }
+.brand-copy { display: grid; gap: 4px; }
+.brand-title { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.brand-free { padding: 2px 7px; border: 1px solid rgba(180,170,255,.28); border-radius: 6px; background: rgba(139,124,255,.09); color: #d8d3ff; font-size: 12px; font-weight: 500; line-height: 1.5; letter-spacing: normal; white-space: nowrap; }
+.brand-audience { color: var(--muted); font-size: 12px; font-weight: 400; line-height: 1.5; letter-spacing: normal; }
 .brand-mark {
+  flex-shrink: 0;
   width: 30px; height: 30px; display: grid; place-items: center;
   border-radius: 9px; background: var(--accent); color: #090b12; font-weight: 900;
 }
 nav { display: flex; align-items: center; gap: 28px; color: var(--muted); font-size: 14px; }
 nav a:hover, .text-link:hover { color: var(--text); }
-.language-tabs { display: flex; align-items: center; padding: 3px; gap: 2px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255,255,255,.025); }
+.language-tabs { flex-shrink: 0; white-space: nowrap; display: flex; align-items: center; padding: 3px; gap: 2px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255,255,255,.025); }
 .language-tabs a { padding: 5px 8px; border-radius: 5px; color: #737c91; font: 9px ui-monospace, monospace; letter-spacing: .02em; }
 .language-tabs a:hover { color: #cbd0dd; }
 .language-tabs a[aria-current="page"] { background: rgba(139,124,255,.18); color: #d8d3ff; box-shadow: inset 0 0 0 1px rgba(180,170,255,.2); }
@@ -55,9 +61,10 @@ nav a:hover, .text-link:hover { color: var(--text); }
 .hero { width: min(960px, calc(100% - 40px)); margin: 0 auto; padding: 112px 0 72px; text-align: center; }
 .eyebrow { color: var(--accent-bright); text-transform: uppercase; letter-spacing: .14em; font-size: 12px; font-weight: 750; }
 .eyebrow span { display: inline-block; width: 6px; height: 6px; margin: 0 8px 2px 0; border-radius: 50%; background: currentColor; box-shadow: 0 0 14px currentColor; }
-h1 { margin: 26px 0 24px; font-size: clamp(48px, 6.5vw, 74px); line-height: .94; letter-spacing: -.07em; }
+h1 { margin: 26px 0 24px; font-size: clamp(32px, 4.5vw, 52px); line-height: 1.18; letter-spacing: -.035em; }
 h1 em { color: var(--accent-bright); font-style: normal; }
-.hero-copy { max-width: 650px; margin: auto; color: var(--muted); font-size: clamp(17px, 2vw, 20px); line-height: 1.65; }
+.hero-copy-detail { display: block; margin-top: 10px; font-size: .9em; }
+.hero-copy { max-width: 720px; margin: auto; color: var(--muted); font-size: clamp(17px, 2vw, 20px); line-height: 1.65; }
 .hero-actions { margin: 24px 0 14px; display: flex; align-items: center; justify-content: center; gap: 26px; }
 .hero-note { margin: 0; color: #8f97aa; font-size: 13px; line-height: 1.5; }
 /* 데모 토글. 체크하면 위 버튼들이 데모 빌드를 가리킨다 (script.js 참고). */
@@ -252,8 +259,12 @@ footer { height: 110px; color: #666e82; font-size: 12px; }
 }
 
 @media (max-width: 520px) {
-  h1 { font-size: 40px; }
+  .site-header { height: auto; min-height: 78px; padding: 16px 0; flex-wrap: wrap; gap: 14px; }
+  .site-header nav { width: 100%; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+  h1 { font-size: clamp(28px, 7vw, 36px); }
   .scenario-panel { padding: 26px 20px; }
 }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+
+.hero-language { margin: 8px 0 0; color: var(--accent-bright); font-size: 13px; line-height: 1.5; }

@@ -15,6 +15,8 @@
     <link rel="canonical" href="https://kaflow-search.whsoul-tools.com/ko/" />
     <link rel="alternate" hreflang="en" href="https://kaflow-search.whsoul-tools.com/" />
     <link rel="alternate" hreflang="ko" href="https://kaflow-search.whsoul-tools.com/ko/" />
+    <link rel="alternate" hreflang="ja" href="https://kaflow-search.whsoul-tools.com/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://kaflow-search.whsoul-tools.com/zh/" />
     <link rel="alternate" hreflang="x-default" href="https://kaflow-search.whsoul-tools.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Kaflow Search" />
@@ -57,10 +59,10 @@
         "datePublished": "2026-08-28",
         "downloadUrl": "https://github.com/whsoul/kaflow-search/releases/latest",
         "screenshot": [
-          "https://kaflow-search.whsoul-tools.com/assets/screenshots/search.png",
-          "https://kaflow-search.whsoul-tools.com/assets/screenshots/dashboard.png",
-          "https://kaflow-search.whsoul-tools.com/assets/screenshots/search-builder.png",
-          "https://kaflow-search.whsoul-tools.com/assets/screenshots/message-detail.png"
+          "https://kaflow-search.whsoul-tools.com/assets/screenshots/ko/search-light.png",
+          "https://kaflow-search.whsoul-tools.com/assets/screenshots/en/dashboard-light.png",
+          "https://kaflow-search.whsoul-tools.com/assets/screenshots/ko/search-builder-light.png",
+          "https://kaflow-search.whsoul-tools.com/assets/screenshots/ko/message-detail-light.png"
         ],
         "offers": {
           "@type": "Offer",
@@ -82,16 +84,21 @@
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="#top" aria-label="Kaflow Search 홈">
+      <a class="brand" href="#top">
         <span class="brand-mark" aria-hidden="true">K</span>
-        <span>Kaflow Search</span>
+        <span class="brand-copy">
+          <span class="brand-title">Kaflow Search <span class="brand-free">무료 사용</span></span>
+          <span class="brand-audience">Kafka 개발자와 운영자를 위한 도구</span>
+        </span>
       </a>
       <nav aria-label="주요 메뉴">
         <a href="#scenarios">활용 사례</a>
         <a href="#features">기능</a>
         <div class="language-tabs" aria-label="언어 선택">
-          <a href="../" lang="en" hreflang="en">English</a>
-          <a href="./" lang="ko" hreflang="ko" aria-current="page">한국어</a>
+          <a href="/" lang="en" hreflang="en">English</a>
+          <a href="/ko/" lang="ko" hreflang="ko" aria-current="page">한국어</a>
+          <a href="/ja/" lang="ja" hreflang="ja">日本語</a>
+          <a href="/zh/" lang="zh-CN" hreflang="zh-CN">简体中文</a>
         </div>
         <a href="https://github.com/whsoul/kaflow-search" target="_blank" rel="noreferrer">GitHub</a>
         <a class="button button-small" href="https://github.com/whsoul/kaflow-search/releases/latest">다운로드</a>
@@ -100,11 +107,11 @@
 
     <main id="top">
       <section class="hero">
-        <div class="eyebrow"><span></span> Kafka를 위한 데스크톱 검색</div>
-        <h1>수백만 건 중 조건에 맞는<br /><em>Kafka 메시지를 몇 초 안에 찾으세요.</em></h1>
+        <div class="eyebrow"><span></span> Kafka를 위한 데스크톱 도구</div>
+        <h1>Kafka 메시지를 빠르게 찾고,<br /><em>깊이 살펴보고, 계속 지켜보세요.</em></h1>
         <p class="hero-copy">
-          선택한 Kafka 토픽을 로컬에 인덱싱해 키, 헤더, 중첩 JSON 필드, 키워드 또는
-          시간 범위로 메시지를 찾습니다. 임시 Consumer나 별도의 검색 인프라는 필요하지 않습니다.
+          선택한 토픽을 로컬에 인덱싱해, 수백만 건에서도 필요한 메시지를 빠르게 찾습니다.
+          <span class="hero-copy-detail">키워드·상세 조건으로 검색하고, 메시지 내용을 살펴보고, 새로 들어오는 메시지를 Watch하세요. 별도 검색 서버는 필요 없습니다.</span>
         </p>
         <div class="dl-buttons">
           <a class="dl-button" data-platform="mac-arm64" href="/download/mac-arm64">
@@ -121,6 +128,7 @@
           </a>
         </div>
         <p class="hero-note">macOS 11+ · Windows 10+ — 무료, 계정 없이 사용</p>
+        <p class="hero-language">앱에서도 한국어로 사용할 수 있습니다.</p>
         <div class="dl-guide" data-dl-guide hidden>
           <p class="dl-guide-title">다운로드가 시작되었습니다.</p>
           <p class="dl-guide-body" data-guide="windows" hidden>
@@ -334,19 +342,19 @@
         </div>
         <div class="product-rail" tabindex="0" aria-label="Kaflow Search 제품 스크린샷">
           <figure class="product-card">
-            <div class="product-card-media"><img src="../assets/screenshots/dashboard.png" width="1600" height="683" loading="lazy" decoding="async" alt="선택한 토픽, 로컬 인덱스 크기와 동기화 메시지 수를 보여주는 Kaflow Search 대시보드" /></div>
+            <div class="product-card-media"><img src="../assets/screenshots/en/dashboard-light.png" width="3360" height="1914" loading="lazy" decoding="async" alt="선택한 토픽, 로컬 인덱스 크기와 동기화 메시지 수를 보여주는 Kaflow Search 대시보드" /></div>
             <figcaption><small>01 · 로컬 인덱스</small><b>토픽을 선택하고 로컬에 저장된 범위를 파악하세요.</b></figcaption>
           </figure>
           <figure class="product-card">
-            <div class="product-card-media"><img src="../assets/screenshots/search.png" width="1600" height="864" loading="lazy" decoding="async" alt="수백만 건의 Kafka 메시지에서 키워드 일치를 강조하는 Kaflow Search 빠른 검색" /></div>
+            <div class="product-card-media"><img src="../assets/screenshots/ko/search-light.png" width="3356" height="1918" loading="lazy" decoding="async" alt="수백만 건의 Kafka 메시지에서 키워드 일치를 강조하는 Kaflow Search 빠른 검색" /></div>
             <figcaption><small>02 · 빠른 검색</small><b>Kafka를 다시 스캔하지 않고 일치 메시지를 찾으세요.</b></figcaption>
           </figure>
           <figure class="product-card">
-            <div class="product-card-media"><img src="../assets/screenshots/search-builder.png" width="1600" height="863" loading="lazy" decoding="async" alt="payload 필드와 불리언 조건을 적용해 검색 결과를 좁힌 Kaflow Search 화면" /></div>
+            <div class="product-card-media"><img src="../assets/screenshots/ko/search-builder-light.png" width="3360" height="1916" loading="lazy" decoding="async" alt="payload 필드와 불리언 조건을 적용해 검색 결과를 좁힌 Kaflow Search 화면" /></div>
             <figcaption><small>03 · 상세검색</small><b>필드와 불리언 조건을 조합해 증거를 좁히세요.</b></figcaption>
           </figure>
           <figure class="product-card">
-            <div class="product-card-media"><img src="../assets/screenshots/message-detail.png" width="1600" height="915" loading="lazy" decoding="async" alt="Kafka 메시지 헤더와 JSON payload 상세 창이 열린 Kaflow Search Watch 차트" /></div>
+            <div class="product-card-media"><img src="../assets/screenshots/ko/message-detail-light.png" width="3358" height="1920" loading="lazy" decoding="async" alt="Kafka 메시지 헤더와 JSON payload 상세 창이 열린 Kaflow Search Watch 차트" /></div>
             <figcaption><small>04 · Watch와 상세 확인</small><b>일치 트래픽을 확인하고 원본 메시지를 여세요.</b></figcaption>
           </figure>
         </div>

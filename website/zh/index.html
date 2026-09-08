@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="按键、消息头、JSON 字段、关键词或时间范围搜索 Kafka 消息。无需编写 Consumer 或部署 ELK，即可在本地搜索。"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="naver-site-verification" content="6d7b1da07f49af054c0a3fb581742df259acd926" />
+    <meta name="msvalidate.01" content="D1C16A03262641ACDFD1A566CF2C2380" />
+    <meta name="author" content="Kaflow Search" />
+    <meta name="theme-color" content="#090b12" />
+    <link rel="canonical" href="https://kaflow-search.whsoul-tools.com/zh/" />
+    <link rel="alternate" hreflang="en" href="https://kaflow-search.whsoul-tools.com/" />
+    <link rel="alternate" hreflang="ko" href="https://kaflow-search.whsoul-tools.com/ko/" />
+    <link rel="alternate" hreflang="ja" href="https://kaflow-search.whsoul-tools.com/ja/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://kaflow-search.whsoul-tools.com/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://kaflow-search.whsoul-tools.com/" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kaflow Search" />
+    <meta property="og:url" content="https://kaflow-search.whsoul-tools.com/zh/" />
+    <meta property="og:title" content="Kaflow Search — Kafka 消息搜索与关键词 Watch 工具" />
+    <meta
+      property="og:description"
+      content="按键、消息头、JSON 字段、关键词或时间范围查找 Kafka 消息。无需 ELK，即可本地搜索并观察匹配消息。"
+    />
+    <meta property="og:image" content="https://kaflow-search.whsoul-tools.com/assets/banner-en.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1774" />
+    <meta property="og:image:height" content="887" />
+    <meta property="og:image:alt" content="Kaflow Search — 快速搜索 Kafka 消息的桌面应用" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Kaflow Search — Kafka 消息搜索与关键词 Watch 工具" />
+    <meta
+      name="twitter:description"
+      content="按键、消息头、JSON 字段、关键词或时间范围查找 Kafka 消息。无需 ELK，即可本地搜索并观察匹配消息。"
+    />
+    <meta name="twitter:image" content="https://kaflow-search.whsoul-tools.com/assets/banner-en.jpg" />
+    <meta name="twitter:image:alt" content="Kaflow Search — 快速搜索 Kafka 消息的桌面应用" />
+    <title>Kafka 消息搜索 &amp; 关键词 Watch 工具 | Kaflow Search</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <!-- Update softwareVersion / datePublished at release time, with the download URLs
+         in `_redirects`. offers.price pairs with the "free, no account needed" line on
+         the page; structured data that contradicts the page is discarded. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Kaflow Search",
+        "url": "https://kaflow-search.whsoul-tools.com/zh/",
+        "inLanguage": "zh-CN",
+        "description": "按键、消息头、JSON 字段、关键词或时间范围搜索 Kafka 消息。无需编写 Consumer 或部署 ELK，即可在本地搜索。",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "macOS 11 or later, Windows 10 or later",
+        "softwareVersion": "0.1.3",
+        "datePublished": "2026-08-28",
+        "downloadUrl": "https://github.com/whsoul/kaflow-search/releases/latest",
+        "screenshot": [
+          "https://kaflow-search.whsoul-tools.com/assets/screenshots/zh/search-light.png",
+          "https://kaflow-search.whsoul-tools.com/assets/screenshots/en/dashboard-light.png",
+          "https://kaflow-search.whsoul-tools.com/assets/screenshots/zh/search-builder-light.png",
+          "https://kaflow-search.whsoul-tools.com/assets/screenshots/zh/message-detail-light.png"
+        ],
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Whsoul Tools",
+          "url": "https://kaflow-search.whsoul-tools.com/"
+        },
+        "license": "https://github.com/whsoul/kaflow-search/blob/main/LICENSE",
+        "sameAs": [
+          "https://github.com/whsoul/kaflow-search"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top">
+        <span class="brand-mark" aria-hidden="true">K</span>
+        <span class="brand-copy">
+          <span class="brand-title">Kaflow Search <span class="brand-free">免费使用</span></span>
+          <span class="brand-audience">为 Kafka 开发者与运维人员打造</span>
+        </span>
+      </a>
+      <nav aria-label="主导航">
+        <a href="#scenarios">使用场景</a>
+        <a href="#features">功能</a>
+        <div class="language-tabs" aria-label="语言">
+          <a href="/" lang="en" hreflang="en">English</a>
+          <a href="/ko/" lang="ko" hreflang="ko">한국어</a>
+          <a href="/ja/" lang="ja" hreflang="ja">日本語</a>
+          <a href="/zh/" lang="zh-CN" hreflang="zh-CN" aria-current="page">简体中文</a>
+        </div>
+        <a href="https://github.com/whsoul/kaflow-search" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="button button-small" href="https://github.com/whsoul/kaflow-search/releases/latest">下载</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="eyebrow"><span></span> 专为 Kafka 打造的桌面工具</div>
+        <h1>快速搜索 Kafka 消息，<br /><em>深入探索，持续关注。</em></h1>
+        <p class="hero-copy">
+          为选定主题建立本地索引，即使有数百万条消息，也能快速找到所需内容。
+          <span class="hero-copy-detail">按关键词或详细条件搜索，查看消息内容，并通过 Watch 关注新消息。无需额外部署搜索服务器。</span>
+        </p>
+        <div class="dl-buttons">
+          <a class="dl-button" data-platform="mac-arm64" href="/download/mac-arm64">
+            <svg class="dl-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v11m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+            <span class="dl-text">macOS<small>Apple Silicon</small></span>
+          </a>
+          <a class="dl-button" data-platform="mac-intel" href="/download/mac-intel">
+            <svg class="dl-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v11m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+            <span class="dl-text">macOS<small>Intel</small></span>
+          </a>
+          <a class="dl-button" data-platform="windows" href="/download/windows">
+            <svg class="dl-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v11m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+            <span class="dl-text">Windows<small>x64 安装程序</small></span>
+          </a>
+        </div>
+        <p class="hero-note">macOS 11+ · Windows 10+ — 免费，无需注册</p>
+        <p class="hero-language">应用界面也支持简体中文。</p>
+        <div class="dl-guide" data-dl-guide hidden>
+          <p class="dl-guide-title">下载说明</p>
+          <p class="dl-guide-body" data-guide="windows" hidden>
+            浏览器可能提示文件“不常下载”，此时可能需要选择<b>保留</b>。首次运行时，Windows 可能显示保护提示，可选择<b>更多信息 → 仍要运行</b>。当前版本尚未进行代码签名。如果下载无法完成，也可尝试无需安装程序的<a href="/download/windows-portable" data-portable-link>便携版 ZIP</a>。
+            <a href="https://github.com/whsoul/kaflow-search/blob/main/README.zh.md#安装">安装指南</a>
+          </p>
+          <p class="dl-guide-body" data-guide="mac" hidden>
+            首次打开时，macOS 可能提示无法验证开发者。请在<b>系统设置 → 隐私与安全性 → 仍要打开</b>中允许打开。当前版本尚未经过 Apple 公证。
+            <a href="https://github.com/whsoul/kaflow-search/blob/main/README.zh.md#安装">安装指南</a>
+          </p>
+        </div>
+        <label class="hero-demo">
+          <input type="checkbox" data-demo-toggle>
+          <span>手边没有 Kafka 集群？勾选后，上方按钮将切换为演示版下载。内含 7 个示例主题，无需连接集群。</span>
+        </label>
+        <div class="hero-actions">
+          <a class="button button-small button-ghost" href="https://github.com/whsoul/kaflow-search/releases/latest">全部版本 &amp; 校验和</a>
+          <a class="text-link" href="https://github.com/whsoul/kaflow-search">在 GitHub 上查看 <span>↗</span></a>
+        </div>
+
+        <figure class="hero-product-shot">
+          <div class="product-shot-bar"><span><i></i> 实际应用界面</span><small>为选定主题建立本地索引</small></div>
+          <div class="hero-shot-stage">
+            <video
+              class="hero-quick-search"
+              muted
+              controls
+              loop
+              playsinline
+              preload="metadata"
+              width="1280"
+              height="734"
+              data-play-label="播放演示"
+              data-pause-label="暂停演示"
+              poster="../assets/demos/hero-search-poster.jpg"
+              aria-label="Kaflow Search 演示：在本地索引中多次搜索包含 400 万条消息的 Kafka 主题"
+            >
+              <source src="../assets/demos/hero-search.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <figcaption>在包含 400 万条消息的主题中多次搜索，每次均从本地索引获取结果。</figcaption>
+        </figure>
+      </section>
+
+      <section class="trust-line" aria-label="主要优势">
+        <span>仅索引所需主题</span><span>可设置本地存储上限</span><span>无需额外基础设施</span><span>数据保留在本地</span>
+      </section>
+
+      <section class="scenarios" id="scenarios">
+        <div class="section-heading scenarios-heading">
+          <div>
+            <p>从这些场景开始</p>
+            <h2>使用场景</h2>
+          </div>
+          <p class="section-intro">
+            以下只是部分示例。您可以使用系统中的标识符、字段、关键词或时间范围，调查所需的 Kafka 消息。
+            <span class="audience-note">尤其适合已将业务运行数据保存在 Kafka 中，但不需要承担整套 ELK 部署成本和维护负担的独立开发者与小型团队。</span>
+          </p>
+        </div>
+
+        <div class="scenario-tabs">
+          <div class="scenario-tablist" role="tablist" aria-label="Kaflow Search 使用场景">
+            <button id="scenario-tab-1" role="tab" aria-selected="true" aria-controls="scenario-panel-1" tabindex="0"><small>01</small><span>追踪停滞的订单</span></button>
+            <button id="scenario-tab-2" role="tab" aria-selected="false" aria-controls="scenario-panel-2" tabindex="-1"><small>02</small><span>追踪 Web 与应用日志</span></button>
+            <button id="scenario-tab-3" role="tab" aria-selected="false" aria-controls="scenario-panel-3" tabindex="-1"><small>03</small><span>观察匹配消息</span></button>
+            <button id="scenario-tab-4" role="tab" aria-selected="false" aria-controls="scenario-panel-4" tabindex="-1"><small>04</small><span>Kafka 故障时继续调查</span></button>
+            <button id="scenario-tab-5" role="tab" aria-selected="false" aria-controls="scenario-panel-5" tabindex="-1"><small>05</small><span>您的使用场景</span></button>
+          </div>
+
+          <article class="scenario-panel" id="scenario-panel-1" role="tabpanel" aria-labelledby="scenario-tab-1">
+            <div class="scenario-copy">
+              <span class="scenario-tag">订单调查</span>
+              <h3>客户已付款，订单为什么还卡着？</h3>
+              <p>在订单、支付和处理主题中依次搜索同一个订单 ID，无需为每个主题编写临时 Consumer。</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>找到等待库存的订单</li>
+                <li><span>02</span>确认支付已获授权</li>
+                <li><span>03</span>定位仓库系统超时</li>
+              </ol>
+            </div>
+            <div class="scenario-evidence">
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="../assets/demos/stuck-order-preview.jpg" aria-label="跨订单、支付和处理主题追踪停滞订单的演示">
+                  <source src="../assets/demos/stuck-order-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">实际应用演示 · 模拟数据 · 28 秒</span>
+              </div>
+              <div class="scenario-query" aria-label="订单追踪结果">
+                <small>搜索键</small>
+                <code>ORD-20260812-483921</code>
+                <p><b>调查结果</b> 支付成功，但库存预留失败，错误为 <strong>WAREHOUSE_TIMEOUT</strong>。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-2" role="tabpanel" aria-labelledby="scenario-tab-2" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">保存在 Kafka 中的 Web 与应用日志</span>
+              <h3>无需部署 ELK，即可搜索 Kafka 中的日志。</h3>
+              <p>如果 Nginx 和应用日志已收集到 Kafka，可在本地建立索引，缩小故障时间范围，再沿 trace ID 追踪原因。</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>从 10 万条 Nginx 日志中筛选 checkout 的 502 错误</li>
+                <li><span>02</span>缩小到故障时间段</li>
+                <li><span>03</span>通过 trace ID 追踪应用日志</li>
+              </ol>
+            </div>
+            <div class="scenario-evidence">
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="../assets/demos/log-investigation-preview.jpg" aria-label="筛选 Nginx 错误、缩小时间范围并在应用日志中追踪原因的演示">
+                  <source src="../assets/demos/log-investigation-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">实际应用演示 · 模拟数据 · 35 秒</span>
+              </div>
+              <div class="scenario-query" aria-label="Web 与应用日志追踪结果">
+                <small>高级搜索</small>
+                <code>P.status = "502*" AND P.path = "/api/checkout*" AND P.method = "POST*"</code>
+                <p><b>调查结果</b> checkout 服务的支付连接池已耗尽： <strong>50 / 50 个连接正在使用</strong>，184 个请求等待中。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-3" role="tabpanel" aria-labelledby="scenario-tab-3" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">观察符合条件的消息</span>
+              <h3>及时发现新出现的支付失败。</h3>
+              <p>Kaflow Search 持续同步主题时，支付运维人员可通过轻量的关键词 Watch 观察所需消息。</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>Watch 关键词： <code>payment_failed</code></li>
+                <li><span>02</span>保持支付主题自动同步</li>
+                <li><span>03</span>打开新匹配的消息并处理原因</li>
+              </ol>
+            </div>
+            <div class="scenario-evidence">
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="../assets/demos/payment-watch-preview.jpg" aria-label="关键词 Watch 中出现新支付失败消息的演示">
+                  <source src="../assets/demos/payment-watch-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">实际应用演示 · 模拟数据 · 27 秒</span>
+              </div>
+              <div class="scenario-query" aria-label="关键词 Watch 结果">
+                <small>Watch 关键词</small>
+                <code>payment_failed</code>
+                <p><b>新匹配消息</b> 订单 <strong>ORD-20260819-WATCH03</strong> 因支付网关在 3000 毫秒后超时而失败。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-4" role="tabpanel" aria-labelledby="scenario-tab-4" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">Kafka 故障期间的调查</span>
+              <h3>Kafka 不可用时，也能继续调查。</h3>
+              <p>利用最后保存的本地索引查看故障前收集的消息，找出仍需人工处理的任务。</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>检查断开连接前的处理流程</li>
+                <li><span>02</span>继续搜索本地索引</li>
+                <li><span>03</span>找到最后一笔需要人工审核的订单</li>
+              </ol>
+            </div>
+            <div class="scenario-evidence">
+              <div class="scenario-video">
+                <video muted loop playsinline controls preload="metadata" poster="../assets/demos/offline-incident-preview.jpg" aria-label="Kafka 不可用后通过本地索引继续调查的演示">
+                  <source src="../assets/demos/offline-incident-preview.mp4" type="video/mp4" />
+                </video>
+                <span class="scenario-video-label">实际应用演示 · 模拟数据 · 49 秒</span>
+              </div>
+              <div class="scenario-query" aria-label="离线故障调查结果">
+                <small>本地索引搜索</small>
+                <code>PENDING</code>
+                <p><b>调查结果</b> 支付已获授权，但履约尚未开始。订单状态仍为 <strong>PENDING</strong> ，需要人工审核。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario-panel" id="scenario-panel-5" role="tabpanel" aria-labelledby="scenario-tab-5" hidden>
+            <div class="scenario-copy">
+              <span class="scenario-tag">不止这些示例</span>
+              <h3>还想从 Kafka 数据中查找什么？</h3>
+              <p>使用适合您系统的线索。Kaflow Search 可直接使用您已有的主题和字段。</p>
+              <ol class="scenario-flow">
+                <li><span>01</span>为所需主题建立本地索引</li>
+                <li><span>02</span>搜索标识符、字段或关键词</li>
+                <li><span>03</span>通过列表、探索视图和时间线缩小范围</li>
+              </ol>
+            </div>
+            <div class="scenario-query" aria-label="您的 Kafka 调查">
+              <small>搜索线索</small>
+              <code>标识符 · 字段 · 关键词 · 时间范围</code>
+              <p><b>用于您的调查</b> 这四个场景仅作示例。您可以将同样的本地搜索流程用于团队运营的 Kafka 数据。</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="product-tour" aria-labelledby="product-tour-title">
+        <div class="product-tour-heading">
+          <div class="section-heading">
+            <p>实际应用界面</p>
+            <h2 id="product-tour-title">进一步了解操作流程。</h2>
+          </div>
+          <p>横向滚动以查看实际界面。</p>
+        </div>
+        <div class="product-rail" tabindex="0" aria-label="Kaflow Search 界面截图">
+          <figure class="product-card">
+            <div class="product-card-media"><img src="../assets/screenshots/en/dashboard-light.png" width="3360" height="1914" loading="lazy" decoding="async" alt="显示选定主题、本地索引大小和已同步消息数量的仪表盘" /></div>
+            <figcaption><small>01 · 本地索引</small><b>选择主题，了解本地已存储的数据范围。</b></figcaption>
+          </figure>
+          <figure class="product-card">
+            <div class="product-card-media"><img src="../assets/screenshots/zh/search-light.png" width="3360" height="1916" loading="lazy" decoding="async" alt="在数百万条已索引 Kafka 消息中高亮显示关键词匹配的快速搜索界面" /></div>
+            <figcaption><small>02 · 快速搜索</small><b>无需重新扫描 Kafka，即可查找匹配消息。</b></figcaption>
+          </figure>
+          <figure class="product-card">
+            <div class="product-card-media"><img src="../assets/screenshots/zh/search-builder-light.png" width="3360" height="1918" loading="lazy" decoding="async" alt="按消息体字段和布尔条件缩小范围后的搜索结果" /></div>
+            <figcaption><small>03 · 高级搜索</small><b>组合字段与布尔条件，缩小调查范围。</b></figcaption>
+          </figure>
+          <figure class="product-card">
+            <div class="product-card-media"><img src="../assets/screenshots/zh/message-detail-light.png" width="3358" height="1916" loading="lazy" decoding="async" alt="Watch 图表及显示消息头和 JSON 消息体的详情面板" /></div>
+            <figcaption><small>04 · Watch &amp; 详情查看</small><b>观察匹配消息，并打开原始内容。</b></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="features" id="features">
+        <div class="section-heading">
+          <p>Kafka 消息搜索 &amp; 关键词 Watch</p>
+          <h2>像查询数据库一样搜索 Kafka。</h2>
+        </div>
+        <article class="watch-feature">
+          <div class="watch-copy">
+            <span class="feature-label">Watch 与自动同步</span>
+            <h3>持续关注重要消息。</h3>
+            <p>
+              保持选定主题同步，在新消息到达时观察已保存的关键词。无需额外部署监控系统，即可轻松发现日常运维中关心的信号。
+            </p>
+          </div>
+          <div class="watch-preview" aria-label="Watch 操作流程">
+            <div class="watch-step"><small>01</small><span>选择主题</span></div>
+            <div class="watch-arrow" aria-hidden="true">↓</div>
+            <div class="watch-step"><small>02</small><span>保持自动同步</span></div>
+            <div class="watch-arrow" aria-hidden="true">↓</div>
+            <div class="watch-step watch-step-accent"><small>03</small><span>观察关键词</span></div>
+          </div>
+        </article>
+        <div class="feature-grid">
+          <article><span>01</span><h3>用搜索代替扫描</h3><p>仅为所需主题建立索引，在可配置的本地存储上限内搜索数百万条消息。</p></article>
+          <article><span>02</span><h3>按消息内容筛选</h3><p>对键、消息头、嵌套 JSON 字段和时间范围组合使用 AND、OR、NOT 条件。</p></article>
+          <article><span>03</span><h3>支持多种数据格式</h3><p>支持 JSON、Avro 和 Protobuf，可配合 Confluent Schema Registry 使用。</p></article>
+          <article><span>04</span><h3>以本地存储为核心</h3><p>消息与索引保存在您的电脑上。Kaflow Search 以只读方式访问 Kafka。</p></article>
+        </div>
+      </section>
+
+      <section class="cta">
+        <p>不必再逐条翻看 Kafka 消息。</p>
+        <h2>快速找到所需消息。</h2>
+        <a class="button button-light" href="https://github.com/whsoul/kaflow-search/releases/latest">下载 Kaflow Search</a>
+        <div class="cta-aside">
+          <p class="cta-aside-title">现在还不打算安装？没关系。</p>
+          <p>如果觉得以后可能用得上，可以先在 GitHub 上点个 Star，方便需要时找到。您的关注也是我们持续改进的动力。使用 Kafka 的过程中，总会遇到需要查找某条消息的时候。</p>
+          <a href="https://github.com/whsoul/kaflow-search">在 GitHub 上为项目点 Star <span aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+    </main>
+
+    <footer><span>© 2026 Kaflow Search</span><span>快速。本地。私密。</span></footer>
+    <script src="../script.js" defer></script>
+  </body>
+</html>
