@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 430" role="img" aria-label="Partial indexing: a full index, a count-based index keeping only the newest messages, and a field-based index keeping only the searched fields">
+<style>
+svg{
+  --ink:#141a1e; --ink-2:#5a666e; --ink-3:#8a969d;
+  --surface:#ffffff; --surface-2:#eef2f4;
+  --rule:#d5dcdf; --rule-strong:#b6c1c6;
+  --cost:#8c5a2b; --cost-bg:#f5ece1; --cost-line:#c9a273;
+  --local:#14666c; --local-bg:#e0eff0; --local-line:#6fb0b4;
+  --kafka:#42525b; --kafka-bg:#e6ebee; --kafka-line:#9aa9b2;
+  --arrow:#7d8b93;
+  background:var(--surface);
+}
+@media (prefers-color-scheme:dark){
+  svg{
+    --ink:#e7eef1; --ink-2:#95a4ac; --ink-3:#6d7d86;
+    --surface:#192025; --surface-2:#1f282d;
+    --rule:#2a343a; --rule-strong:#3b4950;
+    --cost:#d59f64; --cost-bg:#2a2017; --cost-line:#7b5a35;
+    --local:#54b9be; --local-bg:#102a2c; --local-line:#2f6a6e;
+    --kafka:#a2b1ba; --kafka-bg:#212b31; --kafka-line:#44545d;
+    --arrow:#74858e;
+  }
+}
+.n{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;font-weight:500;fill:var(--ink)}
+.ns{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;fill:var(--ink-3)}
+.zl{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase}
+.al{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:var(--ink-2)}
+.empty{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;fill:var(--ink-3);font-style:italic}
+line,path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
+</style>
+
+        <defs>
+          <pattern id="pOn" x="180" y="0" width="28" height="18" patternUnits="userSpaceOnUse">
+            <rect x="1" y="1" width="26" height="16" rx="1" fill="var(--local-line)"/>
+          </pattern>
+          <pattern id="pOff" x="180" y="0" width="28" height="18" patternUnits="userSpaceOnUse">
+            <rect x="1" y="1" width="26" height="16" rx="1" fill="var(--rule)"/>
+          </pattern>
+        </defs>
+
+        <text class="ns" x="180" y="38">&#8592; older</text>
+        <text class="ns" x="852" y="38" text-anchor="end">newer &#8594;</text>
+
+        <text class="zl" x="20" y="90" fill="var(--local)">Full</text>
+        <text class="ns" x="20" y="108">메시지 전체 · 필드 전체</text>
+        <rect x="180" y="54" width="672" height="90" fill="url(#pOn)"/>
+
+        <text class="zl" x="20" y="216" fill="var(--local)">CountBased</text>
+        <text class="ns" x="20" y="234">파티션당 최근 N건만</text>
+        <rect x="180" y="180" width="420" height="90" fill="url(#pOff)"/>
+        <rect x="600" y="180" width="252" height="90" fill="url(#pOn)"/>
+        <text class="al" x="390" y="290" text-anchor="middle">trimmed first</text>
+        <text class="al" x="726" y="290" text-anchor="middle" fill="var(--local)">kept</text>
+
+        <text class="zl" x="20" y="342" fill="var(--local)">FieldBased</text>
+        <text class="ns" x="20" y="360">검색에 쓰는 필드만</text>
+        <rect x="180" y="306" width="672" height="18" fill="url(#pOn)"/>
+        <rect x="180" y="324" width="672" height="18" fill="url(#pOn)"/>
+        <rect x="180" y="342" width="672" height="18" fill="url(#pOn)"/>
+        <rect x="180" y="360" width="672" height="18" fill="url(#pOff)"/>
+        <rect x="180" y="378" width="672" height="18" fill="url(#pOff)"/>
+        <text class="ns" x="862" y="319" fill="var(--ink-2)">key</text>
+        <text class="ns" x="862" y="337" fill="var(--ink-2)">orderId</text>
+        <text class="ns" x="862" y="355" fill="var(--ink-2)">status</text>
+        <text class="ns" x="862" y="373">payload</text>
+        <text class="ns" x="862" y="391">debugCtx</text>
+      </svg>

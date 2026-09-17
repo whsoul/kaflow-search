@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 330" role="img" aria-label="To-be architecture: Kafka is fetched directly by partition and offset into a local index on the laptop, with no extra server infrastructure">
+<style>
+svg{
+  --ink:#141a1e; --ink-2:#5a666e; --ink-3:#8a969d;
+  --surface:#ffffff; --surface-2:#eef2f4;
+  --rule:#d5dcdf; --rule-strong:#b6c1c6;
+  --cost:#8c5a2b; --cost-bg:#f5ece1; --cost-line:#c9a273;
+  --local:#14666c; --local-bg:#e0eff0; --local-line:#6fb0b4;
+  --kafka:#42525b; --kafka-bg:#e6ebee; --kafka-line:#9aa9b2;
+  --arrow:#7d8b93;
+  background:var(--surface);
+}
+@media (prefers-color-scheme:dark){
+  svg{
+    --ink:#e7eef1; --ink-2:#95a4ac; --ink-3:#6d7d86;
+    --surface:#192025; --surface-2:#1f282d;
+    --rule:#2a343a; --rule-strong:#3b4950;
+    --cost:#d59f64; --cost-bg:#2a2017; --cost-line:#7b5a35;
+    --local:#54b9be; --local-bg:#102a2c; --local-line:#2f6a6e;
+    --kafka:#a2b1ba; --kafka-bg:#212b31; --kafka-line:#44545d;
+    --arrow:#74858e;
+  }
+}
+.n{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;font-weight:500;fill:var(--ink)}
+.ns{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;fill:var(--ink-3)}
+.zl{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase}
+.al{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:var(--ink-2)}
+.empty{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;fill:var(--ink-3);font-style:italic}
+line,path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
+</style>
+
+        <defs>
+          <marker id="ah2" viewBox="0 0 8 6" refX="7.5" refY="3" markerWidth="8" markerHeight="6" orient="auto">
+            <path d="M0,0 L8,3 L0,6 z" fill="var(--arrow)"/>
+          </marker>
+        </defs>
+
+        <text class="zl" x="335" y="16" fill="var(--ink-3)">No extra infrastructure</text>
+        <rect x="335" y="24" width="430" height="282" rx="3" fill="none" stroke="var(--rule-strong)" stroke-width="1.2" stroke-dasharray="5 4"/>
+        <text class="empty" x="550" y="214" text-anchor="middle">nothing to run here</text>
+
+        <text class="zl" x="788" y="16" fill="var(--local)">Your laptop — already paid for</text>
+        <rect x="788" y="24" width="172" height="282" rx="3" fill="var(--local-bg)" stroke="var(--local-line)" stroke-width="1.4"/>
+
+        <rect x="20" y="134" width="110" height="56" rx="3" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.2"/>
+        <text class="n" x="75" y="159" text-anchor="middle">Your</text>
+        <text class="n" x="75" y="175" text-anchor="middle">service</text>
+
+        <rect x="175" y="124" width="120" height="76" rx="3" fill="var(--kafka-bg)" stroke="var(--kafka-line)" stroke-width="1.4"/>
+        <text class="n" x="235" y="157" text-anchor="middle" fill="var(--kafka)">Kafka</text>
+        <text class="n" x="235" y="174" text-anchor="middle" fill="var(--kafka)">cluster</text>
+
+        <path class="arw" d="M130,162 L170,162" marker-end="url(#ah2)"/>
+        <path class="arw" d="M295,162 L796,162" marker-end="url(#ah2)"/>
+        <text class="al" x="545" y="151" text-anchor="middle">fetch by (partition, offset)</text>
+
+        <rect x="802" y="136" width="144" height="52" rx="3" fill="var(--surface)" stroke="var(--local-line)" stroke-width="1.2"/>
+        <text class="n" x="874" y="157" text-anchor="middle">Local index</text>
+        <text class="ns" x="874" y="173" text-anchor="middle">RocksDB</text>
+
+        <path class="arw" d="M874,188 L874,218" marker-end="url(#ah2)"/>
+
+        <rect x="802" y="224" width="144" height="52" rx="3" fill="var(--surface)" stroke="var(--local-line)" stroke-width="1.2"/>
+        <text class="n" x="874" y="245" text-anchor="middle">Search</text>
+        <text class="n" x="874" y="261" text-anchor="middle">UI</text>
+
+        <text class="ns" x="874" y="296" text-anchor="middle">incremental — offsets only</text>
+      </svg>
