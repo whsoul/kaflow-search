@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- DRAFT: remove this robots line to publish. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta
+      name="description"
+      content="Indexing Kafka topics on a laptop instead of running a search pipeline: the architecture, what it costs on disk, and what it gives up."
+    />
+    <meta name="author" content="Kaflow Search" />
+    <meta name="theme-color" content="#090b12" />
+    <link rel="canonical" href="https://kaflow-search.whsoul-tools.com/blog/read-kafka-like-a-database.html" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Kaflow Search" />
+    <meta property="og:url" content="https://kaflow-search.whsoul-tools.com/blog/read-kafka-like-a-database.html" />
+    <meta property="og:title" content="Read Kafka like a Database" />
+    <meta
+      property="og:description"
+      content="Indexing Kafka topics on a laptop instead of running a search pipeline: the architecture, what it costs on disk, and what it gives up."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Read Kafka like a Database — Kaflow Search</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+      .article { max-width: 47rem; margin: 0 auto; padding: 3rem 1.25rem 6rem; }
+      .article-head { border-bottom: 1px solid var(--line); padding-bottom: 1.75rem; margin-bottom: 2.5rem; }
+      .article-head h1 { font-size: clamp(2rem, 5vw, 2.85rem); line-height: 1.15; margin: 0.5rem 0 0; letter-spacing: -0.02em; }
+      .article-head .standfirst { color: var(--muted); font-size: 1.05rem; margin: 0.9rem 0 0; }
+      .article h2 { font-size: 1.4rem; margin: 3rem 0 1rem; letter-spacing: -0.01em; }
+      .article p { line-height: 1.75; margin: 0 0 1.15rem; }
+      .article figure { margin: 2rem 0; }
+      .article figure img { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+      .article figcaption { color: var(--muted); font-size: 0.875rem; margin-top: 0.7rem; }
+      .article .table-wrap { overflow-x: auto; margin: 1.75rem 0; border: 1px solid var(--line); border-radius: 10px; }
+      .article table { border-collapse: collapse; width: 100%; font-size: 0.925rem; }
+      .article th, .article td { padding: 0.7rem 1rem; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+      .article tbody tr:last-child td { border-bottom: 0; }
+      .article th { background: var(--panel); color: var(--muted); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; }
+      .article td.n { text-align: right; font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .article .footnote { color: var(--muted); font-size: 0.9rem; }
+      .article code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: var(--panel); padding: 0.1em 0.4em; border-radius: 4px; }
+      .draft-note { border: 1px dashed var(--accent); border-radius: 10px; padding: 1rem 1.25rem; margin: 1.5rem 0; color: var(--accent-bright); font-size: 0.95rem; }
+      .draft-note p { margin: 0 0 0.6rem; }
+      .draft-note p:last-child { margin: 0; }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true">K</span>
+        <span class="brand-copy">
+          <span class="brand-title">Kaflow Search <span class="brand-free">Free to use</span></span>
+          <span class="brand-audience">For Kafka developers &amp; operators</span>
+        </span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="/#scenarios">Scenarios</a>
+        <a href="/#features">Features</a>
+        <a href="https://github.com/whsoul/kaflow-search" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="button button-small" href="https://github.com/whsoul/kaflow-search/releases/latest">Download</a>
+      </nav>
+    </header>
+
+    <main class="article">
+      <div class="article-head">
+        <h1>Read Kafka like a Database</h1>
+        <p class="standfirst">Building a local index so a Kafka topic can be queried directly.</p>
+      </div>
+
+      <div class="draft-note">
+        <p><strong>초안입니다.</strong> 산문은 비어 있습니다 — 아래 점선 상자를 채우거나 지우면서 쓰시면 됩니다.</p>
+        <p>발행 전: 이 상자들과 <code>&lt;head&gt;</code> 의 <code>robots noindex</code> 한 줄을 지우고, <code>sitemap.xml</code> 에 이 URL 을 추가하세요.</p>
+      </div>
+
+      <h2>Why this exists</h2>
+      <div class="draft-note">
+        <p>문제부터. 로그 한 줄 찾자고 ELK 를 세워야 했던 상황을 짧게.</p>
+        <p>킥: <em>"난 단지 로그를 찾고 싶었을 뿐인데, ELK 를 다 구축해야만 하는가."</em></p>
+        <p>3~4 문단이면 충분합니다. 제품 이야기는 아직 하지 않습니다.</p>
+      </div>
+
+      <h2>The stack you end up running</h2>
+      <figure>
+        <img src="figures/as-is.svg" alt="Kafka feeding Kafka Connect or Logstash into Elasticsearch and Kibana, a sink connector into a database, and ksqlDB or Flink — all running as extra always-on infrastructure, viewed through three separate clients." />
+        <figcaption>Five components to operate, three clients to open. None of them is the thing you wanted.</figcaption>
+      </figure>
+      <p>
+        To search messages you operate Kafka Connect (or Logstash) into Elasticsearch, a sink connector into a
+        database, and ksqlDB or Flink for counting. Each one is a service that has to be up, upgraded and paid for,
+        and each is read through a different client.
+      </p>
+      <div class="draft-note">
+        <p>실제로 운영해 본 입장에서 한 문단. 무엇이 제일 성가셨는지.</p>
+      </div>
+
+      <h2>What makes a local index possible</h2>
+      <p>
+        A Kafka topic is append-only, ordered within a partition, and addressable by offset. An index over it is
+        therefore a pure function of <code>(topic, partition, offset range)</code> — it can be built incrementally,
+        and resumed from wherever it stopped, without coordinating with anything else.
+      </p>
+      <div class="draft-note">
+        <p>위 한 문단이 핵심 논거입니다. <strong>Kafka 개론으로 늘리지 마세요</strong> — 늘리면 "교육 포장을 씌운 홍보글" 로 읽힙니다.</p>
+      </div>
+
+      <h2>Doing it on the laptop instead</h2>
+      <figure>
+        <img src="figures/to-be.svg" alt="Kafka fetched directly by partition and offset into a local index and search UI on the laptop, with the extra-infrastructure frame left empty." />
+        <figcaption>Nothing to run on the server side. The dashed frame is the same size and place as in the figure above.</figcaption>
+      </figure>
+      <p>
+        Fetch by explicit partition and offset, build the index locally, search it locally. No consumer group is
+        joined and no offsets are committed, so the cluster does not notice.
+      </p>
+      <div class="draft-note">
+        <p>인덱싱이 실제로 어떻게 도는지. key/value 파싱 → 항목 생성 → 저장 → 조회. 키 스키마 같은 내부는 개념 수준까지만.</p>
+      </div>
+
+      <h2>What it costs on disk</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Config</th><th>Messages</th><th>Entries / msg</th><th>Meta</th><th>Index</th><th>Total on disk</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>FieldBased</td><td class="n">2,099,964</td><td class="n">14.6</td><td class="n">497 MB</td><td class="n">478 MB</td><td class="n">0.97 GB</td></tr>
+            <tr><td>Full</td><td class="n">2,099,964</td><td class="n">18.6</td><td class="n">497 MB</td><td class="n">606 MB*</td><td class="n">1.10 GB*</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        A two-million-message topic costs about a gigabyte of local disk. On 100 GB of free space that is roughly
+        200 million messages, or a hundred topics of that size.
+      </p>
+      <p class="footnote">
+        * Projected, not measured: a full index of the same topic has not been captured yet. Derived from 18.6
+        entries per message and 15.5 bytes per entry.
+      </p>
+      <p>
+        <strong>No comparison to the Kafka-side size is given.</strong> The same messages occupy wildly different
+        numbers of bytes on a broker depending on producer compression and batching, so it is not a stable
+        baseline. What is reported here is what the local disk actually holds, after compression.
+      </p>
+      <p class="footnote">
+        Both rows come from one JSON topic. A different serialization format, or a topic with far more fields, will
+        move these numbers.
+      </p>
+
+      <h2>Not indexing everything</h2>
+      <figure>
+        <img src="figures/partial-indexing.svg" alt="A grid of messages by fields showing three index shapes: a full index, a count-based index keeping only the newest messages, and a field-based index keeping only the searched fields." />
+        <figcaption>Horizontal axis is messages, vertical is fields. Dropping a field removes it from search, not from the message — the body is still read in full.</figcaption>
+      </figure>
+      <p>
+        The index is trimmed along two axes — how far back, and how wide. Choosing which topics to index at all is
+        the third and largest lever.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Lever</th><th>Axis</th><th>Policy</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Index only the topics worth searching</td><td>topic</td><td>—</td></tr>
+            <tr><td>Keep the newest N per partition</td><td>messages</td><td><code>CountBased { max_count }</code></td></tr>
+            <tr><td>Keep only the fields you search</td><td>fields</td><td><code>FieldBased</code></td></tr>
+            <tr><td>Never trim this topic</td><td>—</td><td><code>Pinned</code></td></tr>
+            <tr><td>Drop this topic's index</td><td>topic</td><td><code>DropIndex</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Measured: <code>FieldBased</code> took entries from 18.6 to 14.6 per message on the topic above — about 21%
+        off the index, or 128 MB.
+      </p>
+      <div class="draft-note">
+        <p>어떤 필드를 버릴지 정하는 감각. 실제로 뭘 남기고 뭘 버렸는지 예시 하나.</p>
+      </div>
+
+      <h2>What you give up</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>Pipeline</th><th>Local index</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>To stand it up</td><td>Connect, Elasticsearch, Kibana</td><td>install an app</td></tr>
+            <tr><td>Operating</td><td>always on; versions, shards, disk</td><td>none</td></tr>
+            <tr><td>Fixed cost</td><td>instances, every month</td><td>none — hardware you own</td></tr>
+            <tr><td>Where the data goes</td><td>replicated out of the cluster</td><td>stays on your disk</td></tr>
+            <tr><td>Scale ceiling</td><td>whatever you pay for</td><td>whatever the disk holds</td></tr>
+            <tr><td><strong>Sharing with a team</strong></td><td>everyone sees the same view</td><td><strong>no — each disk is its own</strong></td></tr>
+            <tr><td>Retention</td><td>keep it forever</td><td>Kafka retention plus local trimming</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        The last two rows are the honest part. If a team needs one shared view, or the data has to outlive Kafka's
+        retention, the pipeline is the right answer. A local index trades those two away to get everything else.
+      </p>
+
+      <h2>Closing</h2>
+      <div class="draft-note">
+        <p>이 구조를 실제로 구현한 것이 Kaflow Search 라는 한 문단, 링크 하나.</p>
+        <p>기능 목록은 넣지 않습니다 — 그건 메인 페이지가 합니다.</p>
+        <p><em>"만들었습니다"</em> 가 아니라 <em>"만들어 보니 위 숫자가 나왔다"</em> 의 톤으로.</p>
+      </div>
+    </main>
+
+    <footer><span>© 2026 Kaflow Search</span><span>Fast. Local. Private.</span></footer>
+  </body>
+</html>

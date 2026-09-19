@@ -2,31 +2,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 330" role="img" aria-label="To-be architecture: Kafka is fetched directly by partition and offset into a local index on the laptop, with no extra server infrastructure">
 <style>
 svg{
-  --ink:#141a1e; --ink-2:#5a666e; --ink-3:#8a969d;
-  --surface:#ffffff; --surface-2:#eef2f4;
-  --rule:#d5dcdf; --rule-strong:#b6c1c6;
-  --cost:#8c5a2b; --cost-bg:#f5ece1; --cost-line:#c9a273;
-  --local:#14666c; --local-bg:#e0eff0; --local-line:#6fb0b4;
-  --kafka:#42525b; --kafka-bg:#e6ebee; --kafka-line:#9aa9b2;
-  --arrow:#7d8b93;
-  background:var(--surface);
+  --ink:#f4f5f8; --ink-2:#9ba3b8; --ink-3:#6f778d;
+  --surface:#111522; --surface-2:#171c2c;
+  --rule:rgba(255,255,255,.12); --rule-strong:rgba(255,255,255,.26);
+  --cost:#c9915a; --cost-bg:#1d1a19; --cost-line:#6d5436;
+  --local:#8b7cff; --local-bg:#17162b; --local-line:#5b51a8;
+  --kafka:#9ba3b8; --kafka-bg:#161b28; --kafka-line:#414b62;
+  --arrow:#7b849a;
+  background:#090b12;
 }
-@media (prefers-color-scheme:dark){
-  svg{
-    --ink:#e7eef1; --ink-2:#95a4ac; --ink-3:#6d7d86;
-    --surface:#192025; --surface-2:#1f282d;
-    --rule:#2a343a; --rule-strong:#3b4950;
-    --cost:#d59f64; --cost-bg:#2a2017; --cost-line:#7b5a35;
-    --local:#54b9be; --local-bg:#102a2c; --local-line:#2f6a6e;
-    --kafka:#a2b1ba; --kafka-bg:#212b31; --kafka-line:#44545d;
-    --arrow:#74858e;
-  }
-}
-.n{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;font-weight:500;fill:var(--ink)}
-.ns{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;fill:var(--ink-3)}
-.zl{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase}
-.al{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;fill:var(--ink-2)}
-.empty{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;fill:var(--ink-3);font-style:italic}
+.n{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;font-weight:500;fill:var(--ink)}
+.ns{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;fill:var(--ink-3)}
+.zl{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase}
+.al{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;fill:var(--ink-2)}
+.empty{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;fill:var(--ink-3);font-style:italic}
 line,path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
 </style>
 
