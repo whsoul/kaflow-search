@@ -138,26 +138,29 @@
         after it is proportional to the number of hits.
       </p>
 
-      <h2>What a search actually reads</h2>
+      <h2>Everything it asks of the cluster</h2>
       <figure>
-        <img src="figures/read-path.svg" alt="Typing a query reads only the local index and costs the cluster nothing; opening one message costs a single fetch by partition and offset." />
-        <figcaption>A pipeline copies the whole topic out, continuously. This reads the topic once to index it, then only the messages you open.</figcaption>
+        <img src="figures/read-path.svg" alt="Everything the tool asks of the cluster: one sequential pass to index a topic, nothing at all to run a query, and a single targeted fetch when a message is opened." />
+        <figcaption>Three interactions, and that is the whole list. A pipeline, by contrast, copies the topic out continuously for as long as it runs.</figcaption>
       </figure>
       <p>
-        Typing a query never leaves the machine. Terms are looked up in the local index, and the result list is
-        built from what the index already holds — the cluster is not contacted at all, so a search costs the
-        brokers nothing no matter how many times it is run or refined.
+        Searching is free, as the previous figure showed. What is left is the other two rows, and both are worth
+        being exact about — a desktop tool pointed at a production cluster deserves that.
       </p>
       <p>
-        Opening a row is the only thing that reaches out, and it asks for exactly one message by
-        <code>(partition, offset)</code> — the raw payload and any field that was not indexed. There is no scan and
-        no consumer group, so nothing moves for anyone else on the cluster.
+        Opening a row is the only thing a search ever sends outward, and it asks for exactly one message by
+        <code>(partition, offset)</code> — the raw payload and any field that was not indexed. No consumer group is
+        joined and no offsets are committed, so no rebalance is triggered and nobody else's position moves. There
+        is no scan: the fetch names the message it wants.
+      </p>
+      <p>
+        The first row is the real cost, and it gets its own section next.
       </p>
       <div class="draft-note">
-        <p>여기에 검색 속도를 한 문장 넣을 수 있습니다 — <strong>표는 만들지 마세요.</strong></p>
-        <p>넣는다면 조건을 붙여서: <em>"2M 건 인덱스에서 키워드 검색이 노트북(M1, SSD) 기준 약 N초"</em> 형태로.
+        <p>검색 속도를 한 문장 넣는다면 여기입니다 — <strong>표는 만들지 마세요.</strong></p>
+        <p>조건을 붙여서: <em>"2M 건 인덱스에서 키워드 검색이 노트북(M4) 기준 약 N초"</em> 형태로.
            조건 없는 숫자는 다른 장비에서 재본 사람이 "과장" 으로 결론냅니다.</p>
-        <p>실측값이 없으면 이 상자를 그냥 지우세요. 위 두 문단만으로도 "빠르냐" 에는 답이 됩니다.</p>
+        <p>실측값이 없으면 이 상자를 지우세요. 그림만으로도 "빠르냐" 에는 답이 됩니다.</p>
       </div>
 
       <h2>The one pass you have to make</h2>
