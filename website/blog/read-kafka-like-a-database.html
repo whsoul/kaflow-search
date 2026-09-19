@@ -119,6 +119,22 @@
         <p>인덱싱이 실제로 어떻게 도는지. key/value 파싱 → 항목 생성 → 저장 → 조회. 키 스키마 같은 내부는 개념 수준까지만.</p>
       </div>
 
+      <h2>Scanning versus looking up</h2>
+      <figure>
+        <img src="figures/scan-vs-lookup.svg" alt="Consuming and filtering reads every message in the topic to find two matches; an index lookup resolves the term to two positions and reads only those." />
+        <figcaption>Run the same search again and the top bar repeats in full. The bottom one does not.</figcaption>
+      </figure>
+      <p>
+        Without an index there is only one way to find a message: consume the topic and filter client-side. The
+        work is proportional to the topic, not to the answer — two matches in two million messages still costs two
+        million reads, and refining the query costs them again.
+      </p>
+      <p>
+        An index inverts that. A term resolves to a list of <code>(partition, offset)</code> positions, and the only
+        messages read are the ones that matched. Indexing pays the full pass once, up front; every search after it
+        is proportional to the number of hits.
+      </p>
+
       <h2>What a search actually reads</h2>
       <figure>
         <img src="figures/read-path.svg" alt="Typing a query reads only the local index and costs the cluster nothing; opening one message costs a single fetch by partition and offset." />

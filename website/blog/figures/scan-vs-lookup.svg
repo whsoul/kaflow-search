@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 260" role="img" aria-label="Consuming and filtering reads every message in the topic to find two matches; an index lookup resolves the term to two positions and reads only those.">
+<style>
+svg{
+  --ink:#f4f5f8; --ink-2:#9ba3b8; --ink-3:#6f778d;
+  --surface:#111522;
+  --rule:rgba(255,255,255,.13); --rule-strong:rgba(255,255,255,.26);
+  --cost:#c9915a; --local:#8b7cff;
+  --arrow:#7b849a;
+  background:#090b12;
+}
+.n{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;font-weight:500;fill:var(--ink)}
+.ns{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;fill:var(--ink-3)}
+.zl{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase}
+.cost{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;font-weight:600}
+.key{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;fill:var(--local)}
+</style>
+  <defs>
+    <pattern id="read" x="180" y="0" width="28" height="34" patternUnits="userSpaceOnUse">
+      <rect x="1" y="1" width="26" height="32" rx="2" fill="var(--cost)" fill-opacity="0.55"/>
+    </pattern>
+    <pattern id="skip" x="180" y="0" width="28" height="34" patternUnits="userSpaceOnUse">
+      <rect x="1" y="1" width="26" height="32" rx="2" fill="var(--rule)"/>
+    </pattern>
+  </defs>
+
+  <text class="zl" x="20" y="44" fill="var(--ink-3)">One topic &#183; 2,099,964 messages &#183; 2 of them match</text>
+
+  <text class="zl" x="20" y="82" fill="var(--cost)">Consume + filter</text>
+  <text class="ns" x="20" y="98">read all, keep 2</text>
+  <rect x="180" y="68" width="560" height="34" fill="url(#read)"/>
+  <rect x="349" y="69" width="26" height="32" rx="2" fill="var(--local)"/>
+  <rect x="601" y="69" width="26" height="32" rx="2" fill="var(--local)"/>
+  <text class="cost" x="756" y="90" fill="var(--cost)">2,099,964 read</text>
+
+  <text class="key" x="180" y="140">index: "order-5821"  &#8594;  (2, 84471) &#183; (5, 19022)</text>
+
+  <text class="zl" x="20" y="184" fill="var(--local)">Index lookup</text>
+  <text class="ns" x="20" y="200">read 2</text>
+  <rect x="180" y="170" width="560" height="34" fill="url(#skip)"/>
+  <rect x="349" y="171" width="26" height="32" rx="2" fill="var(--local)"/>
+  <rect x="601" y="171" width="26" height="32" rx="2" fill="var(--local)"/>
+  <text class="cost" x="756" y="192" fill="var(--local)">2 read</text>
+
+  <text class="ns" x="20" y="240">Run the same search again and the top bar repeats in full; the bottom one does not.</text>
+</svg>
