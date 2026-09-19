@@ -29,6 +29,7 @@
       .article-head { border-bottom: 1px solid var(--line); padding-bottom: 1.75rem; margin-bottom: 2.5rem; }
       .article-head h1 { font-size: clamp(2rem, 5vw, 2.85rem); line-height: 1.15; margin: 0.5rem 0 0; letter-spacing: -0.02em; }
       .article-head .standfirst { color: var(--muted); font-size: 1.05rem; margin: 0.9rem 0 0; }
+      .article h3 { font-size: 1.05rem; margin: 2rem 0 0.75rem; color: var(--accent-bright); letter-spacing: -0.005em; }
       .article h2 { font-size: 1.4rem; margin: 3rem 0 1rem; letter-spacing: -0.01em; }
       .article p { line-height: 1.75; margin: 0 0 1.15rem; }
       .article figure { margin: 2rem 0; }
@@ -159,6 +160,50 @@
         <p>실측값이 없으면 이 상자를 그냥 지우세요. 위 두 문단만으로도 "빠르냐" 에는 답이 됩니다.</p>
       </div>
 
+      <h2>The one pass you have to make</h2>
+      <p>
+        None of this is free. Before the first search there is a full pass over the topic — the same read that
+        scanning would have done, except it happens once instead of on every query. That is the honest cost of the
+        approach, and it is worth being precise about what it does and does not involve.
+      </p>
+
+      <h3>You do not describe the data</h3>
+      <p>
+        Picking a topic samples its messages, classifies the wire format, and ranks which fields are worth
+        indexing. There is no mapping to write, no schema to register and no connector config — the parts of a
+        pipeline that usually cost more than the infrastructure itself.
+      </p>
+
+      <h3>It is quicker than the pipeline it replaces</h3>
+      <div class="draft-note">
+        <p><strong>이 표를 채워주세요.</strong> M4 에서 측정한 값으로. 비워 두면 절 전체를 지우는 편이 낫습니다.</p>
+        <p>조건을 표 아래 한 줄로 밝혀 두면 반박이 줄어듭니다 — 장비, 로컬/원격 클러스터, 필드 수.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Messages</th><th>Fields indexed</th><th>Time</th><th>Rate</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="n">100,000</td><td>all</td><td class="n">—</td><td class="n">—</td></tr>
+            <tr><td class="n">1,000,000</td><td>all</td><td class="n">—</td><td class="n">—</td></tr>
+            <tr><td class="n">2,099,964</td><td>all</td><td class="n">—</td><td class="n">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="footnote">Measured on <!-- 장비 -->, against <!-- 로컬/원격 --> Kafka. Rates move with message size and field count.</p>
+
+      <h3>And it is not repeated</h3>
+      <figure>
+        <img src="figures/index-once.svg" alt="Indexing happens in full once, when a topic is first picked. Reopening it later or letting autoSync run only covers the offsets that arrived since, resuming from a per-partition watermark." />
+        <figcaption>Schematic, not to scale — the point is the ratio between the first pass and every one after it.</figcaption>
+      </figure>
+      <p>
+        The last indexed offset is recorded per partition. Opening the topic again reads from there, not from the
+        beginning, and <code>autoSync</code> does the same on a timer while you work. An interrupted pass resumes
+        where it stopped rather than starting over.
+      </p>
+
       <h2>What it costs on disk</h2>
       <div class="table-wrap">
         <table>
@@ -228,6 +273,7 @@
           </thead>
           <tbody>
             <tr><td>To stand it up</td><td>Connect, Elasticsearch, Kibana</td><td>install an app</td></tr>
+            <tr><td>Before the first search</td><td>build and wire the pipeline</td><td>one pass over the topic</td></tr>
             <tr><td>Operating</td><td>always on; versions, shards, disk</td><td>none</td></tr>
             <tr><td>Fixed cost</td><td>instances, every month</td><td>none — hardware you own</td></tr>
             <tr><td>Where the data goes</td><td>replicated out of the cluster</td><td>stays on your disk</td></tr>

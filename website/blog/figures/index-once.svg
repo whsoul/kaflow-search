@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 300" role="img" aria-label="Indexing happens in full once, when a topic is first picked. Reopening it later or letting autoSync run only covers the offsets that arrived since, resuming from a per-partition watermark.">
+<style>
+svg{
+  --ink:#f4f5f8; --ink-2:#9ba3b8; --ink-3:#6f778d;
+  --surface:#111522;
+  --rule:rgba(255,255,255,.13); --rule-strong:rgba(255,255,255,.26);
+  --cost:#c9915a; --local:#8b7cff; --local-line:#5b51a8;
+  --arrow:#7b849a;
+  background:#090b12;
+}
+.n{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;font-weight:500;fill:var(--ink)}
+.ns{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;fill:var(--ink-3)}
+.zl{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;fill:var(--ink-3)}
+.amt{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;font-weight:600}
+path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
+</style>
+  <text class="zl" x="20" y="34">Work done</text>
+  <line x1="20" y1="46" x2="960" y2="46" stroke="var(--rule)" stroke-width="1"/>
+
+  <text class="n" x="20" y="82">First pick</text>
+  <text class="ns" x="20" y="98">one full pass</text>
+  <rect x="270" y="64" width="660" height="36" rx="3" fill="var(--cost)" fill-opacity=".55"/>
+  <text class="amt" x="600" y="87" text-anchor="middle" fill="var(--ink)">2,099,964 messages</text>
+
+  <text class="n" x="20" y="156">Open it tomorrow</text>
+  <text class="ns" x="20" y="172">resume at the watermark</text>
+  <rect x="270" y="138" width="14" height="36" rx="3" fill="var(--local)"/>
+  <text class="amt" x="296" y="161" fill="var(--local)">only what arrived since</text>
+
+  <text class="n" x="20" y="230">autoSync, every 30s</text>
+  <text class="ns" x="20" y="246">while you work</text>
+  <rect x="270" y="212" width="5" height="36" rx="2" fill="var(--local)"/>
+  <text class="amt" x="287" y="235" fill="var(--local)">a slice at a time</text>
+
+  <line x1="20" y1="268" x2="960" y2="268" stroke="var(--rule)" stroke-width="1"/>
+  <text class="ns" x="20" y="288">The watermark is kept per partition, so a pass is never repeated &#8212; and an interrupted one resumes where it stopped.</text>
+</svg>
