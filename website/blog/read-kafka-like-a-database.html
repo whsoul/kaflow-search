@@ -121,8 +121,8 @@
 
       <h2>Scanning versus looking up</h2>
       <figure>
-        <img src="figures/scan-vs-lookup.svg" alt="Consuming and filtering reads every message in the topic to find two matches; an index lookup resolves the term to two positions and reads only those." />
-        <figcaption>Run the same search again and the top bar repeats in full. The bottom one does not.</figcaption>
+        <img src="figures/scan-vs-lookup.svg" alt="Two pipelines side by side. Consuming and filtering pulls every message out of the cluster and tests each one; an index lookup seeks straight to the matching block of sorted terms and reads only those messages." />
+        <figcaption>Run the same search again and the left column repeats end to end. The right one does not.</figcaption>
       </figure>
       <p>
         Without an index there is only one way to find a message: consume the topic and filter client-side. The
@@ -130,9 +130,10 @@
         million reads, and refining the query costs them again.
       </p>
       <p>
-        An index inverts that. A term resolves to a list of <code>(partition, offset)</code> positions, and the only
-        messages read are the ones that matched. Indexing pays the full pass once, up front; every search after it
-        is proportional to the number of hits.
+        An index inverts that. Terms are stored in sorted order, so a prefix seek lands directly on the block that
+        matches and reads nothing on either side of it. Each entry carries a <code>(partition, offset)</code>, and
+        those are the only messages fetched. Indexing pays the full pass once, up front; every search after it is
+        proportional to the number of hits.
       </p>
 
       <h2>What a search actually reads</h2>
