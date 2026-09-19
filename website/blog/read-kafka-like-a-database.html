@@ -46,6 +46,10 @@
       .draft-note { border: 1px dashed var(--accent); border-radius: 10px; padding: 1rem 1.25rem; margin: 1.5rem 0; color: var(--accent-bright); font-size: 0.95rem; }
       .draft-note p { margin: 0 0 0.6rem; }
       .draft-note p:last-child { margin: 0; }
+      .draft-example { margin-top: 0.9rem; padding-left: 0.9rem; border-left: 2px solid var(--line); color: var(--muted); }
+      .draft-example .lbl { display: block; font-size: 0.75rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.45rem; }
+      .draft-example p { margin: 0 0 0.7rem; font-size: 0.925rem; line-height: 1.7; }
+      .draft-example p:last-child { margin: 0; }
     </style>
   </head>
   <body>
@@ -73,6 +77,7 @@
 
       <div class="draft-note">
         <p><strong>초안입니다.</strong> 산문은 비어 있습니다 — 아래 점선 상자를 채우거나 지우면서 쓰시면 됩니다.</p>
+        <p><strong>예시 문단은 그대로 쓰지 마세요.</strong> HN 은 생성 텍스트 게시를 금지하고, 무엇보다 직접 겪은 이야기여야 힘이 붙습니다 — 방향만 참고하고 본인 문장으로 다시 쓰세요.</p>
         <p>발행 전: 이 상자들과 <code>&lt;head&gt;</code> 의 <code>robots noindex</code> 한 줄을 지우고, <code>sitemap.xml</code> 에 이 URL 을 추가하세요.</p>
       </div>
 
@@ -81,6 +86,15 @@
         <p>문제부터. 로그 한 줄 찾자고 ELK 를 세워야 했던 상황을 짧게.</p>
         <p>킥: <em>"난 단지 로그를 찾고 싶었을 뿐인데, ELK 를 다 구축해야만 하는가."</em></p>
         <p>3~4 문단이면 충분합니다. 제품 이야기는 아직 하지 않습니다.</p>
+        <div class="draft-example">
+          <span class="lbl">예시 — 그대로 쓰지 말고 방향만</span>
+          <p>I have used Kafka for years — user action traces, event sourcing propagation, pipeline steps. Every
+            time, the same things followed it. Elasticsearch and Logstash and Kibana, so that someone could find a
+            message. A sink connector, so the data could be queried. ksqlDB, so it could be counted.</p>
+          <p>One afternoon I was looking for a single trace event. I knew it was in a topic. I knew roughly when it
+            happened. And to get at it I was expected to stand up a search cluster.</p>
+          <p>The machine I was typing on was idle except for a browser.</p>
+        </div>
       </div>
 
       <h2>The stack you end up running</h2>
@@ -95,6 +109,15 @@
       </p>
       <div class="draft-note">
         <p>실제로 운영해 본 입장에서 한 문단. 무엇이 제일 성가셨는지.</p>
+        <div class="draft-example">
+          <span class="lbl">예시</span>
+          <p>None of it was hard, exactly. The connector config took a day. The index mapping took another, and
+            then again every time a field changed shape. Disk on the search nodes needed watching, and its
+            retention never quite matched the topic's, so the answer to "is it still there" depended on which
+            system you asked.</p>
+          <p>None of that work was about finding messages. It was about keeping the thing that finds messages
+            alive.</p>
+        </div>
       </div>
 
       <h2>What makes a local index possible</h2>
@@ -118,6 +141,14 @@
       </p>
       <div class="draft-note">
         <p>인덱싱이 실제로 어떻게 도는지. key/value 파싱 → 항목 생성 → 저장 → 조회. 키 스키마 같은 내부는 개념 수준까지만.</p>
+        <div class="draft-example">
+          <span class="lbl">예시 — 사실관계는 확인하고 쓰세요</span>
+          <p>For each message the tool reads the key and the value, decodes them in whatever format the topic
+            turned out to be in, and walks the result. Every scalar it finds becomes a term: the path it sat under,
+            and its value. Each term is written down with the <code>(partition, offset)</code> it came from.</p>
+          <p>That is the whole index — a sorted map from term to positions, plus one small record per message
+            holding what a result row needs to show. Nothing else is kept.</p>
+        </div>
       </div>
 
       <h2>Scanning versus looking up</h2>
@@ -252,6 +283,13 @@
       </p>
       <div class="draft-note">
         <p>어떤 필드를 버릴지 정하는 감각. 실제로 뭘 남기고 뭘 버렸는지 예시 하나.</p>
+        <div class="draft-example">
+          <span class="lbl">예시</span>
+          <p>On the topic above I keep the identifiers and the status, and drop the payload and the debug context.
+            The test I use is whether I would ever type the value into a search box. An order id, yes. A base64
+            blob or a stack trace, no — those I want to read once I have found the message, and the message is
+            still there to read.</p>
+        </div>
       </div>
 
       <h2>What you give up</h2>
@@ -283,6 +321,13 @@
         <p>이 구조를 실제로 구현한 것이 Kaflow Search 라는 한 문단, 링크 하나.</p>
         <p>기능 목록은 넣지 않습니다 — 그건 메인 페이지가 합니다.</p>
         <p><em>"만들었습니다"</em> 가 아니라 <em>"만들어 보니 위 숫자가 나왔다"</em> 의 톤으로.</p>
+        <div class="draft-example">
+          <span class="lbl">예시</span>
+          <p>I wrote this because I wanted the second architecture and could not buy it. It is a desktop app: it
+            indexes the topics you pick and searches them locally. The numbers above came off my own machine
+            running it, not out of a benchmark built to flatter it.</p>
+          <p>It is free while it is in beta, and it is not signed, so the first launch needs the usual override.</p>
+        </div>
       </div>
     </main>
 
