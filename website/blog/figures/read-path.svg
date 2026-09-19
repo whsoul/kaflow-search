@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 250" role="img" aria-label="Typing a query reads only the local index and costs the cluster nothing; opening one message costs a single fetch by partition and offset.">
+<style>
+svg{
+  --ink:#f4f5f8; --ink-2:#9ba3b8; --ink-3:#6f778d;
+  --surface:#111522;
+  --rule:rgba(255,255,255,.12); --rule-strong:rgba(255,255,255,.26);
+  --local:#8b7cff; --local-line:#5b51a8;
+  --kafka:#9ba3b8; --kafka-bg:#161b28; --kafka-line:#414b62;
+  --arrow:#7b849a;
+  background:#090b12;
+}
+.n{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;font-weight:500;fill:var(--ink)}
+.ns{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;fill:var(--ink-3)}
+.zl{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;fill:var(--ink-3)}
+.cost{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;font-weight:600}
+path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
+</style>
+  <defs>
+    <marker id="a" viewBox="0 0 8 6" refX="7.5" refY="3" markerWidth="8" markerHeight="6" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--arrow)"/>
+    </marker>
+  </defs>
+
+  <text class="zl" x="40" y="30">What you do</text>
+  <text class="zl" x="350" y="30">What it reads</text>
+  <text class="zl" x="672" y="30">Cost to the cluster</text>
+  <path class="arw" d="M40,42 L940,42" stroke="var(--rule)" stroke-width="1"/>
+
+  <rect x="40" y="66" width="260" height="52" rx="4" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.2"/>
+  <text class="n" x="170" y="97" text-anchor="middle">Type a query</text>
+  <path class="arw" d="M300,92 L346,92" marker-end="url(#a)"/>
+  <rect x="352" y="66" width="260" height="52" rx="4" fill="var(--surface)" stroke="var(--local-line)" stroke-width="1.4"/>
+  <text class="n" x="482" y="90" text-anchor="middle" fill="var(--local)">Local index</text>
+  <text class="ns" x="482" y="106" text-anchor="middle">on your disk</text>
+  <path class="arw" d="M612,92 L658,92" marker-end="url(#a)"/>
+  <text class="cost" x="672" y="97" fill="var(--local)">0 broker reads</text>
+
+  <rect x="40" y="158" width="260" height="52" rx="4" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.2"/>
+  <text class="n" x="170" y="189" text-anchor="middle">Open one message</text>
+  <path class="arw" d="M300,184 L346,184" marker-end="url(#a)"/>
+  <rect x="352" y="158" width="260" height="52" rx="4" fill="var(--kafka-bg)" stroke="var(--kafka-line)" stroke-width="1.4"/>
+  <text class="n" x="482" y="182" text-anchor="middle" fill="var(--kafka)">Kafka cluster</text>
+  <text class="ns" x="482" y="198" text-anchor="middle">by (partition, offset)</text>
+  <path class="arw" d="M612,184 L658,184" marker-end="url(#a)"/>
+  <text class="cost" x="672" y="189" fill="var(--kafka)">1 targeted fetch</text>
+</svg>

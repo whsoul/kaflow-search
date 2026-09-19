@@ -119,6 +119,28 @@
         <p>인덱싱이 실제로 어떻게 도는지. key/value 파싱 → 항목 생성 → 저장 → 조회. 키 스키마 같은 내부는 개념 수준까지만.</p>
       </div>
 
+      <h2>What a search actually reads</h2>
+      <figure>
+        <img src="figures/read-path.svg" alt="Typing a query reads only the local index and costs the cluster nothing; opening one message costs a single fetch by partition and offset." />
+        <figcaption>A pipeline copies the whole topic out, continuously. This reads the topic once to index it, then only the messages you open.</figcaption>
+      </figure>
+      <p>
+        Typing a query never leaves the machine. Terms are looked up in the local index, and the result list is
+        built from what the index already holds — the cluster is not contacted at all, so a search costs the
+        brokers nothing no matter how many times it is run or refined.
+      </p>
+      <p>
+        Opening a row is the only thing that reaches out, and it asks for exactly one message by
+        <code>(partition, offset)</code> — the raw payload and any field that was not indexed. There is no scan and
+        no consumer group, so nothing moves for anyone else on the cluster.
+      </p>
+      <div class="draft-note">
+        <p>여기에 검색 속도를 한 문장 넣을 수 있습니다 — <strong>표는 만들지 마세요.</strong></p>
+        <p>넣는다면 조건을 붙여서: <em>"2M 건 인덱스에서 키워드 검색이 노트북(M1, SSD) 기준 약 N초"</em> 형태로.
+           조건 없는 숫자는 다른 장비에서 재본 사람이 "과장" 으로 결론냅니다.</p>
+        <p>실측값이 없으면 이 상자를 그냥 지우세요. 위 두 문단만으로도 "빠르냐" 에는 답이 됩니다.</p>
+      </div>
+
       <h2>What it costs on disk</h2>
       <div class="table-wrap">
         <table>
@@ -191,6 +213,7 @@
             <tr><td>Operating</td><td>always on; versions, shards, disk</td><td>none</td></tr>
             <tr><td>Fixed cost</td><td>instances, every month</td><td>none — hardware you own</td></tr>
             <tr><td>Where the data goes</td><td>replicated out of the cluster</td><td>stays on your disk</td></tr>
+            <tr><td>Load on the cluster</td><td>continuous replication of everything</td><td>one pass to index, then only what you open</td></tr>
             <tr><td>Scale ceiling</td><td>whatever you pay for</td><td>whatever the disk holds</td></tr>
             <tr><td><strong>Sharing with a team</strong></td><td>everyone sees the same view</td><td><strong>no — each disk is its own</strong></td></tr>
             <tr><td>Retention</td><td>keep it forever</td><td>Kafka retention plus local trimming</td></tr>
