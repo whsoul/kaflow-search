@@ -195,13 +195,14 @@
 
       <h3>And it is not repeated</h3>
       <figure>
-        <img src="figures/index-once.svg" alt="Indexing happens in full once, when a topic is first picked. Reopening it later or letting autoSync run only covers the offsets that arrived since, resuming from a per-partition watermark." />
-        <figcaption>Schematic, not to scale — the point is the ratio between the first pass and every one after it.</figcaption>
+        <img src="figures/index-once.svg" alt="Two indexing modes on a time axis. Both begin with one full pass. In manual mode a single increment follows when the topic is picked again. With autoSync, small increments run on a timer while the app is open." />
+        <figcaption>Both modes pay the same one-off pass. What differs after it is only when the increments run.</figcaption>
       </figure>
       <p>
-        The last indexed offset is recorded per partition. Opening the topic again reads from there, not from the
-        beginning, and <code>autoSync</code> does the same on a timer while you work. An interrupted pass resumes
-        where it stopped rather than starting over.
+        The last indexed offset is recorded per partition, so nothing is ever read twice. Leave a topic on manual
+        and it catches up in one step the next time you pick it or press sync; turn on <code>autoSync</code> and it
+        keeps up in slices while the app is open. Either way the full pass happens once, and an interrupted one
+        resumes where it stopped rather than starting over.
       </p>
 
       <h2>What it costs on disk</h2>
