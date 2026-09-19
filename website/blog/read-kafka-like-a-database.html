@@ -121,19 +121,20 @@
 
       <h2>Scanning versus looking up</h2>
       <figure>
-        <img src="figures/scan-vs-lookup.svg" alt="Two pipelines side by side. Consuming and filtering pulls every message out of the cluster and tests each one; an index lookup seeks straight to the matching block of sorted terms and reads only those messages." />
-        <figcaption>Run the same search again and the left column repeats end to end. The right one does not.</figcaption>
+        <img src="figures/scan-vs-lookup.svg" alt="Two pipelines side by side. Scanning and filtering pulls every message out of the cluster and tests each one. An index lookup seeks straight to the matching block of sorted terms on local disk and contacts the cluster not at all." />
+        <figcaption>Run the same search again and the left column repeats end to end. The right one does not — and it never asked the cluster for anything.</figcaption>
       </figure>
       <p>
-        Without an index there is only one way to find a message: consume the topic and filter client-side. The
-        work is proportional to the topic, not to the answer — two matches in two million messages still costs two
-        million reads, and refining the query costs them again.
+        Without an index there is only one way to find a message: scan the topic and filter client-side. The work
+        is proportional to the topic, not to the answer — two matches in two million messages still costs two
+        million reads across the network, and refining the query costs them again.
       </p>
       <p>
         An index inverts that. Terms are stored in sorted order, so a prefix seek lands directly on the block that
-        matches and reads nothing on either side of it. Each entry carries a <code>(partition, offset)</code>, and
-        those are the only messages fetched. Indexing pays the full pass once, up front; every search after it is
-        proportional to the number of hits.
+        matches and reads nothing on either side of it. Each entry carries a <code>(partition, offset)</code> and
+        enough to render a row, so the whole result list is built without asking the cluster for anything — zero
+        reads, however many times the query is refined. Indexing pays the full pass once, up front; everything
+        after it is proportional to the number of hits.
       </p>
 
       <h2>What a search actually reads</h2>
