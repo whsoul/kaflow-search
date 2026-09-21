@@ -93,20 +93,25 @@
       </div>
 
       <h2>Why this exists</h2>
-      <div class="draft-note">
-        <p>문제부터. 로그 한 줄 찾자고 ELK 를 세워야 했던 상황을 짧게.</p>
-        <p>킥: <em>"난 단지 로그를 찾고 싶었을 뿐인데, ELK 를 다 구축해야만 하는가."</em></p>
-        <p>3~4 문단이면 충분합니다. 제품 이야기는 아직 하지 않습니다.</p>
-        <div class="draft-example">
-          <span class="lbl">예시 — 그대로 쓰지 말고 방향만</span>
-          <p>I have used Kafka for years — user action traces, event sourcing propagation, pipeline steps. Every
-            time, the same things followed it. Elasticsearch and Logstash and Kibana, so that someone could find a
-            message. A sink connector, so the data could be queried. ksqlDB, so it could be counted.</p>
-          <p>One afternoon I was looking for a single trace event. I knew it was in a topic. I knew roughly when it
-            happened. And to get at it I was expected to stand up a search cluster.</p>
-          <p>The machine I was typing on was idle except for a browser.</p>
-        </div>
-      </div>
+      <p>
+        I have used Kafka on services for a long time — tracing user actions, propagating events for event
+        sourcing, moving work between pipeline steps. And every time, the same ecosystem went up around it. ELK, so
+        that someone could search the messages when operations or an incident called for it. A sink connector, to
+        forward data into some persistent store. ksqlDB, or Flink, to count and watch the stream. More
+        infrastructure, more software.
+      </p>
+      <p>
+        Then one day a thought crossed my mind.
+      </p>
+      <blockquote class="pull">
+        <p>Kafka processes a message stream sequentially, through a consumer. So if I do not know the partition and
+          offset of the needle, I have to look for it from the beginning. But if I do know them — can I reach the
+          message directly, the way I would in any other database?</p>
+      </blockquote>
+      <p>
+        ELK was not necessary on that service. I only needed to find trace events, and they were already sitting in
+        the topic. All I needed to know was where.
+      </p>
 
       <h2>The stack you end up running</h2>
       <figure>
