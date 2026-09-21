@@ -166,6 +166,34 @@
         </table>
       </div>
       <p>
+        Put the other way round, as a choice rather than a table:
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Reach for</th><th>When</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SQLite</td>
+              <td>the answer is a match inside a sentence, ranked; the data fits comfortably; and you would
+                rather write SQL than an access layer</td>
+            </tr>
+            <tr>
+              <td>DuckDB</td>
+              <td>the answer is an aggregate over many rows rather than a handful of records, and the data arrives
+                in bulk rather than a row at a time</td>
+            </tr>
+            <tr>
+              <td>RocksDB</td>
+              <td>lookups have to stay quick as the data grows, slices have to be thrown away cheaply, and you are
+                prepared to write the matching layer yourself</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
         None of this makes the other two bad at their jobs. DuckDB would beat an LSM store outright at the one
         thing this tool also does with the index — bucketing messages by time for a chart — because columnar
         aggregation is what it is for. It loses on the other three demands, which happen to be the ones that run
