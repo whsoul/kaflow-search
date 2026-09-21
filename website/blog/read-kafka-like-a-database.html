@@ -154,13 +154,13 @@
             </tr>
             <tr>
               <td>DuckDB <span class="footnote">columnar</span></td>
-              <td>SQL over large data, analytical scans</td>
-              <td>sustained single-row ingest is not the access pattern</td>
+              <td>SQL over large data, <code>LIKE '%…%'</code> included</td>
+              <td>every such query is a scan; sustained single-row ingest is not the access pattern</td>
             </tr>
             <tr>
               <td>RocksDB <span class="footnote">LSM tree</span></td>
               <td>sustained writes and cheap bulk deletion at volume</td>
-              <td>matching has to be built on top — n-grams included</td>
+              <td>matching has to be built on top, and ordered keys give exact and prefix — not substring</td>
             </tr>
           </tbody>
         </table>
@@ -175,6 +175,13 @@
         The bill for that comes due in the third column. Deriving terms, keeping them ordered, and matching against
         them are written rather than taken off the shelf — most of the work in this tool sits there. The schema
         those terms use is out of scope here.
+      </p>
+      <p>
+        It also sets the shape of what can be asked. A sorted key store answers <em>equals this</em> and
+        <em>starts with this</em> by seeking; it does not answer <em>contains this</em> without an n-gram index of
+        its own, which is a second index with its own size. So searches here are by value or by prefix. For an
+        order id, a trace id or a key that is the whole job; for finding a phrase in the middle of a free-text
+        field it is not, and that is the one thing a scan still does better.
       </p>
 
       <h2>Doing it on the laptop instead</h2>
@@ -353,6 +360,7 @@
             <tr><td>Where the data goes</td><td>replicated out of the cluster</td><td>stays on your disk</td></tr>
             <tr><td>Load on the cluster</td><td>continuous replication of everything</td><td>one pass to index, then only what you open</td></tr>
             <tr><td>Scale ceiling</td><td>whatever you pay for</td><td>whatever the disk holds</td></tr>
+            <tr><td>Matching</td><td>analyzers, wildcards, substring</td><td>exact and prefix</td></tr>
             <tr><td><strong>Sharing with a team</strong></td><td>everyone sees the same view</td><td><strong>no — each disk is its own</strong></td></tr>
             <tr><td>Retention</td><td>keep it forever</td><td>Kafka retention plus local trimming</td></tr>
           </tbody>
