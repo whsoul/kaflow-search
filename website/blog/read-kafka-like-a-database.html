@@ -273,14 +273,12 @@
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Lever</th><th>Axis</th><th>Policy</th></tr>
+            <tr><th>Strategy</th><th>What it trims</th><th>Setting</th></tr>
           </thead>
           <tbody>
-            <tr><td>Index only the topics worth searching</td><td>topic</td><td>—</td></tr>
-            <tr><td>Keep the newest N per partition</td><td>messages</td><td><code>CountBased { max_count }</code></td></tr>
-            <tr><td>Keep only the fields you search</td><td>fields</td><td><code>FieldBased</code></td></tr>
-            <tr><td>Never trim this topic</td><td>—</td><td><code>Pinned</code></td></tr>
-            <tr><td>Drop this topic's index</td><td>topic</td><td><code>DropIndex</code></td></tr>
+            <tr><td>Index only the topics you actually search</td><td>whole topics</td><td class="num">—</td></tr>
+            <tr><td>Keep the newest N per partition</td><td>messages</td><td class="num">CountBased</td></tr>
+            <tr><td>Keep only the fields you search</td><td>fields</td><td class="num">FieldBased</td></tr>
           </tbody>
         </table>
       </div>
@@ -298,6 +296,37 @@
             still there to read.</p>
         </div>
       </div>
+
+      <h2>When the disk fills anyway</h2>
+      <p>
+        The strategies above are choices made up front. There is also a ceiling that holds regardless: a size
+        budget per cluster, 10 GB by default and adjustable between 1 and 100 GB, checked every ten minutes. Go
+        over it and space is reclaimed without being asked.
+      </p>
+      <p>
+        What gets given up is decided in a fixed order. A topic can be pinned, and a pinned topic is never touched.
+        Among the rest the cheapest sacrifice goes first — trimming to the newest N costs least, dropping
+        rarely-searched fields costs more, and discarding a topic's index outright costs most. Ties go to whichever
+        topic was synced longest ago, then searched longest ago, then to the largest index.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Order</th><th>What happens</th><th>What it costs you</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="num">never</td><td>Pinned topics</td><td>nothing — they are skipped</td></tr>
+            <tr><td class="num">1st</td><td>Trim to the newest N <span class="footnote">CountBased</span></td><td>older messages stop being searchable</td></tr>
+            <tr><td class="num">2nd</td><td>Drop rarely-searched fields <span class="footnote">FieldBased</span></td><td>those fields stop being searchable</td></tr>
+            <tr><td class="num">3rd</td><td>Discard the index <span class="footnote">DropIndex</span></td><td>the topic goes back to unindexed</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        None of it is final. A discarded index is not lost data — the messages are still in Kafka, and picking the
+        topic again builds it back. That is the difference between reclaiming space here and deleting a table in a
+        database you own.
+      </p>
 
       <h2>Where to put the index</h2>
       <p>

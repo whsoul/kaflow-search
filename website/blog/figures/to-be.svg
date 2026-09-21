@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 330" role="img" aria-label="To-be architecture: Kafka is fetched directly by partition and offset into a local index on the laptop, with no extra server infrastructure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 330" role="img" aria-label="To-be architecture: the topics you pick are fetched directly by partition and offset into a local index on the laptop, with no extra server infrastructure">
 <style>
 svg{
   --ink:#f4f5f8; --ink-2:#9ba3b8; --ink-3:#6f778d;
@@ -43,6 +43,7 @@ line,path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
         <path class="arw" d="M130,162 L170,162" marker-end="url(#ah2)"/>
         <path class="arw" d="M295,162 L796,162" marker-end="url(#ah2)"/>
         <text class="al" x="545" y="151" text-anchor="middle">fetch by (partition, offset)</text>
+        <text class="ns" x="545" y="180" text-anchor="middle" fill="var(--local)">only the topics you pick</text>
 
         <rect x="802" y="136" width="144" height="52" rx="3" fill="var(--surface)" stroke="var(--local-line)" stroke-width="1.2"/>
         <text class="n" x="874" y="157" text-anchor="middle">Local index</text>
