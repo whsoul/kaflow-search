@@ -378,8 +378,9 @@
       </p>
       <p>
         What that costs is the key design, the tokenizing and the rest of the matching, all written by hand — and
-        it cuts both ways. Nothing sits behind a query planner, so extending it means adding what is needed rather
-        than working around what a library will not do.
+        it cuts both ways. Nothing sits behind a query planner. What decides speed can be swapped without changing
+        what a search means, and an index you wrote yourself can be asked questions it was not originally built
+        for. Extending it is a matter of adding what is needed, not working around what a library will not do.
       </p>
       <p>
         One consequence is worth naming. A sorted key store seeks to a value or a prefix; matching inside a
