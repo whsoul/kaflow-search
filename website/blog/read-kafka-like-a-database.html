@@ -136,32 +136,46 @@
         <p>위 두 문단이 핵심 논거입니다. <strong>Kafka 개론으로 늘리지 마세요</strong> — 늘리면 "교육 포장을 씌운 홍보글" 로 읽힙니다.</p>
       </div>
 
-      <h2>Why RocksDB, and not a database</h2>
+      <h2>Where to put the index</h2>
       <p>
-        The index makes three demands. It is written in long sustained runs while a topic is being indexed. It is
-        read by seeking to a sorted prefix. And slices of it get thrown away — the oldest N per partition, or a
-        whole topic at once.
+        Three embedded stores could carry this, and choosing between them is a trade rather than a ranking. Each
+        gives something away.
       </p>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th></th><th>Built around</th><th>Prefix-ordered reads</th><th>Throwing a slice away</th></tr>
+            <tr><th></th><th>What it hands you</th><th>What it costs</th></tr>
           </thead>
           <tbody>
-            <tr><td>RocksDB <span class="footnote">LSM tree</span></td><td>sustained ordered writes</td><td>native</td><td>drop a column family, or a key range</td></tr>
-            <tr><td>SQLite <span class="footnote">B-tree</span></td><td>read-heavy, moderate writes</td><td>native</td><td>delete rows, then reclaim</td></tr>
-            <tr><td>DuckDB <span class="footnote">columnar</span></td><td>bulk loads, analytical scans</td><td>not the access pattern</td><td>rewrite the affected data</td></tr>
+            <tr>
+              <td>SQLite <span class="footnote">B-tree, FTS5</span></td>
+              <td>full-text and n-gram search out of the box</td>
+              <td>index size and search time grow with volume</td>
+            </tr>
+            <tr>
+              <td>DuckDB <span class="footnote">columnar</span></td>
+              <td>SQL over large data, analytical scans</td>
+              <td>sustained single-row ingest is not the access pattern</td>
+            </tr>
+            <tr>
+              <td>RocksDB <span class="footnote">LSM tree</span></td>
+              <td>sustained writes and cheap bulk deletion at volume</td>
+              <td>matching has to be built on top — n-grams included</td>
+            </tr>
           </tbody>
         </table>
       </div>
       <p>
-        SQLite would have been simpler, and at a few hundred thousand entries it would have been fine — this is not
-        a case of it being unable to do the job. What decided it was volume together with disposability: the
-        two-million-message topic measured below carries thirty million index entries, and the trimming policies
-        further down have to drop them in bulk without rewriting what stays. That is what an LSM tree is shaped
-        for, and it is the shape Kafka data arrives in anyway — append after append, oldest expiring first.
+        All three are workable routes, and for a few hundred thousand entries the first one is the easy answer.
+        Kaflow takes the third for the reason ksqlDB does: it is shaped like the way Kafka data arrives, append
+        after append with the oldest expiring first, and the trimming policies further down need slices removed in
+        bulk without rewriting what stays.
       </p>
-      <p class="footnote">The schema those entries use is out of scope here.</p>
+      <p>
+        The bill for that comes due in the third column. Deriving terms, keeping them ordered, and matching against
+        them are written rather than taken off the shelf — most of the work in this tool sits there. The schema
+        those terms use is out of scope here.
+      </p>
 
       <h2>Doing it on the laptop instead</h2>
       <figure>
