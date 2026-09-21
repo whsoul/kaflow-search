@@ -279,19 +279,10 @@
         </table>
       </div>
       <p>
-        Because the cost falls per field, dropping fields takes the index down with them, near enough in proportion.
-        Cutting a JSON topic to the fields actually searched took about a fifth off its index.
-      </p>
-      <p>
-        Which fields are worth keeping is usually clear once the question is put plainly: would you ever type this
-        value into a search box? An order id, a trace id, a status — yes. A base64 blob, a stack trace, a rendered
-        body — no. Those are things you read <em>after</em> finding the message, and the message is still there to
-        read.
-      </p>
-      <p>
-        The saving is not spread evenly either. A field holding a short status costs almost nothing to index; one
-        holding a long string costs in proportion to its length. The fields you would never search are usually the
-        ones that were costing the most.
+        If index size starts to matter, not every field has to be in it. A Kafka payload tends to carry all
+        sorts, and the fields you would never search — the encoded ones, the long prose — can be left out. Cost
+        falls per field, so the index comes down in proportion to what you drop. Cutting one JSON topic to the
+        fields actually searched took about a fifth off.
       </p>
 
       <h2>When the disk fills anyway</h2>
