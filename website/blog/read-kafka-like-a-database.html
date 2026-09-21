@@ -386,14 +386,17 @@
       </div>
 
       <h2>What you give up</h2>
+      <p>
+        Most of this table falls the local index's way, which is why the rows that do not are the ones worth
+        reading first.
+      </p>
       <div class="table-wrap">
         <table>
           <thead>
             <tr><th></th><th>Pipeline</th><th>Local index</th></tr>
           </thead>
           <tbody>
-            <tr><td>To stand it up</td><td>Connect, Elasticsearch, Kibana</td><td>install an app</td></tr>
-            <tr><td>Before the first search</td><td>build and wire the pipeline</td><td>one pass over the topic</td></tr>
+            <tr><td>Before the first search</td><td>install and wire Connect, Elasticsearch and Kibana, then write the mapping</td><td>install an app, then one pass over the topic</td></tr>
             <tr><td>Operating</td><td>always on; versions, shards, disk</td><td>none</td></tr>
             <tr><td>Fixed cost</td><td>instances, every month</td><td>none — hardware you own</td></tr>
             <tr><td>Where the data goes</td><td>replicated out of the cluster</td><td>stays on your disk</td></tr>
@@ -406,8 +409,7 @@
         </table>
       </div>
       <p>
-        The last two rows are the honest part. If a team needs one shared view, or the data has to outlive Kafka's
-        retention, the pipeline is the right answer. A local index trades those two away to get everything else.
+        The last three rows are the honest part. If you need to match part of a word, if a team has to share one view, or if the data must outlive Kafka's retention, the pipeline is the right answer. A local index trades those three away to get everything above them.
       </p>
 
       <h2>Closing</h2>
