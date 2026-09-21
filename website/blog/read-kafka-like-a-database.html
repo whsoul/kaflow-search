@@ -222,7 +222,8 @@
       </div>
       <p class="footnote">
         Fifteen fields: one key, eleven in the payload, three headers. Sizes are what the store holds after
-        compression, not what the broker sends. The rate is an M4 laptop with the local side as the bottleneck
+        compression, not what the broker sends. The rate was measured on an M4 laptop with 32 GB,
+        with the local side as the bottleneck
         rather than the network — an order of magnitude, not a benchmark. It moves with message size and field
         count, and a slower disk or a distant cluster moves it further.
       </p>
