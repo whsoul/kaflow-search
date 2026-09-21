@@ -372,11 +372,6 @@
       </p>
 
       <p>
-        None of them is bad at its job. DuckDB would beat an LSM store outright at the one thing this tool also
-        does with the index — bucketing messages by time for a chart. It loses on the three demands that run
-        constantly.
-      </p>
-      <p>
         Below a few hundred thousand entries SQLite is the easy answer. Kaflow takes RocksDB for the reason ksqlDB
         does: it is shaped the way Kafka data arrives, append after append with the oldest expiring first, and the
         trimming policies above need slices removed in bulk without rewriting what stays.
