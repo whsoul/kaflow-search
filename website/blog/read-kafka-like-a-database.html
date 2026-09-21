@@ -304,10 +304,9 @@
         over it and space is reclaimed without being asked.
       </p>
       <p>
-        What gets reclaimed is governed by per-topic policies. A topic can be pinned and left alone, trimmed to the
-        newest N per partition, stripped of the fields that are rarely searched, or have its index discarded
-        outright. Which one applies where is a tuning decision rather than a guarantee, so it is not worth writing
-        down as one.
+        What gets reclaimed is governed by per-topic policies, and each one is a different answer to the same
+        question: what is the cheapest thing to stop knowing? These are the ones that exist today. Which applies
+        where is a tuning decision rather than a guarantee, so it is not worth writing down as one.
       </p>
       <div class="table-wrap">
         <table>
@@ -319,6 +318,7 @@
             <tr><td class="num">CountBased</td><td>older messages stop being searchable</td></tr>
             <tr><td class="num">FieldBased</td><td>those fields stop being searchable</td></tr>
             <tr><td class="num">DropIndex</td><td>the topic goes back to unindexed</td></tr>
+            <tr><td class="num">&hellip;</td><td>the list is open — sampling one message in N is the obvious next one, and anything that trades a little detail for a lot of room belongs here</td></tr>
           </tbody>
         </table>
       </div>
