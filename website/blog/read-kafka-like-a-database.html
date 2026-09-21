@@ -150,12 +150,12 @@
             <tr>
               <td>SQLite <span class="footnote">B-tree, FTS5</span></td>
               <td>full-text and n-gram search out of the box</td>
-              <td>index size and search time grow with volume</td>
+              <td>index size and search time grow with volume; trimming leaves space to reclaim</td>
             </tr>
             <tr>
               <td>DuckDB <span class="footnote">columnar</span></td>
               <td>SQL over large data, <code>LIKE '%…%'</code> included</td>
-              <td>every such query is a scan; sustained single-row ingest is not the access pattern</td>
+              <td>answers by scanning, so cost tracks the topic rather than the hits; trimming the oldest rows rewrites data</td>
             </tr>
             <tr>
               <td>RocksDB <span class="footnote">LSM tree</span></td>
@@ -165,6 +165,12 @@
           </tbody>
         </table>
       </div>
+      <p>
+        None of this makes the other two bad at their jobs. DuckDB would beat an LSM store outright at the one
+        thing this tool also does with the index — bucketing messages by time for a chart — because columnar
+        aggregation is what it is for. It loses on the other three demands, which happen to be the ones that run
+        constantly.
+      </p>
       <p>
         All three are workable routes, and for a few hundred thousand entries the first one is the easy answer.
         Kaflow takes the third for the reason ksqlDB does: it is shaped like the way Kafka data arrives, append
