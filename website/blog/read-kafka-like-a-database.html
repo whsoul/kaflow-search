@@ -144,54 +144,36 @@
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th></th><th>What it hands you</th><th>What it costs</th></tr>
+            <tr><th></th><th>Good at</th><th>Costs you</th><th>Pick it when</th></tr>
           </thead>
           <tbody>
             <tr>
               <td>SQLite <span class="footnote">B-tree, FTS5</span></td>
-              <td>full-text search with ranking, and substring matching through FTS5's trigram tokenizer</td>
-              <td>a trigram index runs several times the size of a word index; B-tree inserts turn random once it outgrows memory, and reclaiming trimmed space rewrites the file</td>
+              <td>full-text search with ranking; substring matching through the trigram tokenizer</td>
+              <td>a trigram index runs several times a word index; B-tree inserts turn random once it outgrows
+                memory; reclaiming trimmed space rewrites the file</td>
+              <td>the data fits comfortably</td>
             </tr>
             <tr>
               <td>DuckDB <span class="footnote">columnar</span></td>
               <td>SQL over large data, <code>LIKE '%…%'</code> included</td>
-              <td>answers by scanning, so cost tracks the topic rather than the hits; trimming the oldest rows rewrites data</td>
+              <td>answers by scanning, so cost tracks the topic rather than the hits; trimming the oldest rows
+                rewrites data</td>
+              <td>the answer is an aggregate</td>
             </tr>
             <tr>
               <td>RocksDB <span class="footnote">LSM tree</span></td>
               <td>sustained writes and cheap bulk deletion at volume</td>
               <td>matching is yours to build — tokenizing and n-grams both</td>
+              <td>the data keeps growing</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p>
-        Put the other way round, as a choice rather than a table:
+      <p class="footnote">
+        The last column is the short version. Each store can be pushed past it; these are the conditions under
+        which it is not a fight.
       </p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Reach for</th><th>When</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>SQLite</td>
-              <td>the answer is a match inside a sentence, ranked; the data fits comfortably; and you would
-                rather write SQL than an access layer</td>
-            </tr>
-            <tr>
-              <td>DuckDB</td>
-              <td>the answer is an aggregate over many rows rather than a handful of records, and the data arrives
-                in bulk rather than a row at a time</td>
-            </tr>
-            <tr>
-              <td>RocksDB</td>
-              <td>lookups have to stay quick as the data grows, slices have to be thrown away cheaply, and you are
-                prepared to write the matching layer yourself</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
 
       <p>
         None of this makes the other two bad at their jobs. DuckDB would beat an LSM store outright at the one
