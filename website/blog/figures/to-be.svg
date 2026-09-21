@@ -43,11 +43,10 @@ line,path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
         <path class="arw" d="M130,162 L170,162" marker-end="url(#ah2)"/>
         <path class="arw" d="M295,162 L796,162" marker-end="url(#ah2)"/>
         <text class="al" x="545" y="151" text-anchor="middle">fetch by (partition, offset)</text>
-        <text class="ns" x="545" y="180" text-anchor="middle" fill="var(--local)">only the topics you pick</text>
 
         <rect x="802" y="136" width="144" height="52" rx="3" fill="var(--surface)" stroke="var(--local-line)" stroke-width="1.2"/>
         <text class="n" x="874" y="157" text-anchor="middle">Local index</text>
-        <text class="ns" x="874" y="173" text-anchor="middle">on your disk</text>
+        <text class="ns" x="874" y="173" text-anchor="middle">of topics you pick</text>
 
         <path class="arw" d="M874,188 L874,218" marker-end="url(#ah2)"/>
 
