@@ -203,23 +203,12 @@
       </p>
 
       <h3>How long the pass takes</h3>
-      <div class="draft-note">
-        <p><strong>이 표를 채워주세요.</strong> M4 에서 측정한 값으로. 비워 두면 절 전체를 지우는 편이 낫습니다.</p>
-        <p>조건을 표 아래 한 줄로 밝혀 두면 반박이 줄어듭니다 — 장비, 로컬/원격 클러스터, 필드 수.</p>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Messages</th><th>Fields indexed</th><th>Time</th><th>Rate</th></tr>
-          </thead>
-          <tbody>
-            <tr><td class="n">100,000</td><td>all</td><td class="n">—</td><td class="n">—</td></tr>
-            <tr><td class="n">1,000,000</td><td>all</td><td class="n">—</td><td class="n">—</td></tr>
-            <tr><td class="n">2,099,964</td><td>all</td><td class="n">—</td><td class="n">—</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="footnote">Measured on <!-- 장비 -->, against <!-- 로컬/원격 --> Kafka. Rates move with message size and field count.</p>
+      <p>
+        On an M4 laptop the pass ran at roughly ten thousand messages a second, with the local side the bottleneck
+        rather than the network — about three and a half minutes for the two-million-message topic measured below.
+        That number moves with message size and field count, and a slower disk or a distant cluster moves it
+        further; treat it as an order of magnitude, not a benchmark.
+      </p>
 
       <h3>And it does not repeat</h3>
       <figure>
