@@ -367,6 +367,7 @@
         </table>
       </div>
       <p>
+        I went with RocksDB for the implementation all of this is drawn from; it gets its name at the end.
         The first two hand over much of the indexing work already done, which is a real convenience to give up.
         But ksqlDB reaches for RocksDB for a reason, and it is the same one here: an LSM tree matches the way
         Kafka data accumulates, and holds its performance as the pile keeps growing.
@@ -379,7 +380,7 @@
       <p>
         One consequence is worth naming. A sorted key store seeks to a value or a prefix; matching inside a
         sentence needs tokenizing at write time, and matching part of a word needs an n-gram index with a size of
-        its own. Kaflow does the first and not the second — a whole word inside a free-text field is found by
+        its own. What is built here is the first and not the second — a whole word inside a free-text field is found by
         seeking, <code>%oo%</code> is not found at all.
       </p>
       <p class="footnote">The schema those terms use is out of scope here.</p>
