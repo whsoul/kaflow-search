@@ -332,8 +332,7 @@
       <h2>Where to put the index</h2>
       <p>
         By now the index has shown what it demands: long sustained writes while a topic is taken on, seeks to a
-        sorted prefix on every search, and slices thrown away whenever a policy trims. Three embedded stores could
-        carry that, and choosing between them is a trade rather than a ranking — each gives something away.
+        sorted prefix on every search, and slices thrown away whenever a policy trims.
       </p>
       <div class="table-wrap">
         <table>
@@ -368,13 +367,9 @@
         </table>
       </div>
       <p>
-        Any of the three could carry it, and there are others — the last row is where it stops being a fight.
-        Kaflow uses RocksDB.
-      </p>
-      <p>
-        The other two hand over much of the indexing work already done, which is a real convenience to give up. But
-        ksqlDB reaches for RocksDB for a reason, and it is the same one here: an LSM tree matches the way Kafka
-        data accumulates, and holds its performance as the pile keeps growing.
+        Kaflow uses RocksDB. The other two hand over much of the indexing work already done, which is a real
+        convenience to give up. But ksqlDB reaches for RocksDB for a reason, and it is the same one here: an LSM
+        tree matches the way Kafka data accumulates, and holds its performance as the pile keeps growing.
       </p>
       <p>
         What that costs is the key design, the tokenizing and the rest of the matching, all written by hand — and
