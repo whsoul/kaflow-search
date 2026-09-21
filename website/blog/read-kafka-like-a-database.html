@@ -123,18 +123,15 @@
         database, and ksqlDB or Flink for counting. Each one is a service that has to be up, upgraded and paid for,
         and each is read through a different client.
       </p>
-      <div class="draft-note">
-        <p>실제로 운영해 본 입장에서 한 문단. 무엇이 제일 성가셨는지.</p>
-        <div class="draft-example">
-          <span class="lbl">예시</span>
-          <p>None of it was hard, exactly. The connector config took a day. The index mapping took another, and
-            then again every time a field changed shape. Disk on the search nodes needed watching, and its
-            retention never quite matched the topic's, so the answer to "is it still there" depended on which
-            system you asked.</p>
-          <p>None of that work was about finding messages. It was about keeping the thing that finds messages
-            alive.</p>
-        </div>
-      </div>
+      <p>
+        None of that is unpleasant work, to be fair. Building out a data pipeline is interesting, and it is good
+        for a career. The trouble is what it costs the service it sits beside — servers to run, weeks to build,
+        attention to keep alive — for a capability nobody is paying you for.
+      </p>
+      <p>
+        Inside a company that cost is somebody else's budget, so it is easy not to feel. On a service you are
+        funding yourself, you feel all of it.
+      </p>
 
       <h2>What makes a local index possible</h2>
       <p>
