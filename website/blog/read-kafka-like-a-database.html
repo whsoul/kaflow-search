@@ -367,9 +367,9 @@
         </table>
       </div>
       <p>
-        Kaflow uses RocksDB. The other two hand over much of the indexing work already done, which is a real
-        convenience to give up. But ksqlDB reaches for RocksDB for a reason, and it is the same one here: an LSM
-        tree matches the way Kafka data accumulates, and holds its performance as the pile keeps growing.
+        The first two hand over much of the indexing work already done, which is a real convenience to give up.
+        But ksqlDB reaches for RocksDB for a reason, and it is the same one here: an LSM tree matches the way
+        Kafka data accumulates, and holds its performance as the pile keeps growing.
       </p>
       <p>
         What that costs is the key design, the tokenizing and the rest of the matching, all written by hand — and
