@@ -130,80 +130,12 @@
       <p>
         The index itself lives in RocksDB — the same embedded store Kafka Streams keeps its state stores in, and
         ksqlDB with it. Putting a RocksDB index next to a consumer is not a new idea in this ecosystem. The only
-        thing that changes here is which machine the consumer runs on.
+        thing that changes here is which machine the consumer runs on. Why that store and not a database is a
+        question with a real answer, and it gets its own section further down.
       </p>
       <div class="draft-note">
         <p>위 두 문단이 핵심 논거입니다. <strong>Kafka 개론으로 늘리지 마세요</strong> — 늘리면 "교육 포장을 씌운 홍보글" 로 읽힙니다.</p>
       </div>
-
-      <h2>Where to put the index</h2>
-      <p>
-        Three embedded stores could carry this, and choosing between them is a trade rather than a ranking. Each
-        gives something away.
-      </p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th></th><th>Good at</th><th>Costs you</th><th>Pick it when</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>SQLite <span class="footnote">B-tree, FTS5</span></td>
-              <td>full-text search with ranking; substring matching through the trigram tokenizer</td>
-              <td>a trigram index runs several times a word index; B-tree inserts turn random once it outgrows
-                memory; reclaiming trimmed space rewrites the file</td>
-              <td>the data fits comfortably</td>
-            </tr>
-            <tr>
-              <td>DuckDB <span class="footnote">columnar</span></td>
-              <td>SQL over large data, <code>LIKE '%…%'</code> included</td>
-              <td>answers by scanning, so cost tracks the topic rather than the hits; trimming the oldest rows
-                rewrites data</td>
-              <td>the answer is an aggregate</td>
-            </tr>
-            <tr>
-              <td>RocksDB <span class="footnote">LSM tree</span></td>
-              <td>sustained writes and cheap bulk deletion at volume</td>
-              <td>matching is yours to build — tokenizing and n-grams both</td>
-              <td>the data keeps growing</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="footnote">
-        The last column is the short version. Each store can be pushed past it; these are the conditions under
-        which it is not a fight.
-      </p>
-
-      <p>
-        None of this makes the other two bad at their jobs. DuckDB would beat an LSM store outright at the one
-        thing this tool also does with the index — bucketing messages by time for a chart — because columnar
-        aggregation is what it is for. It loses on the other three demands, which happen to be the ones that run
-        constantly.
-      </p>
-      <p>
-        All three are workable routes, and for a few hundred thousand entries the first one is the easy answer.
-        Kaflow takes the third for the reason ksqlDB does: it is shaped like the way Kafka data arrives, append
-        after append with the oldest expiring first, and the trimming policies further down need slices removed in
-        bulk without rewriting what stays.
-      </p>
-      <p>
-        The bill for that comes due in the third column. Deriving terms, keeping them ordered, and matching against
-        them are written rather than taken off the shelf — most of the work in this tool sits there. The schema
-        those terms use is out of scope here.
-      </p>
-      <p>
-        It also sets the shape of what can be asked. A sorted key store answers <em>equals this</em> and
-        <em>starts with this</em> by seeking, and nothing else comes for free: matching words inside a sentence
-        means tokenizing before you write, and matching part of a word means an n-gram index — a second
-        index with a size of its own, since an eight-letter word is one token but six trigrams.
-      </p>
-      <p>
-        Kaflow does the first and not the second. Values are indexed whole, and fields marked for it are also split
-        into words, so a term in the middle of a free-text field is found by seeking rather than scanning. What is
-        not there is <code>%oo%</code> — matching part of a word. For an order id, a trace id, a key or a word in a
-        message that has never been the question; for a partial token it is, and a scan still wins there.
-      </p>
 
       <h2>Doing it on the laptop instead</h2>
       <figure>
@@ -366,6 +298,76 @@
             still there to read.</p>
         </div>
       </div>
+
+      <h2>Where to put the index</h2>
+      <p>
+        By now the index has shown what it demands: long sustained writes while a topic is taken on, seeks to a
+        sorted prefix on every search, and slices thrown away whenever a policy trims. Three embedded stores could
+        carry that, and choosing between them is a trade rather than a ranking — each gives something away.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>Good at</th><th>Costs you</th><th>Pick it when</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SQLite <span class="footnote">B-tree, FTS5</span></td>
+              <td>full-text search with ranking; substring matching through the trigram tokenizer</td>
+              <td>a trigram index runs several times a word index; B-tree inserts turn random once it outgrows
+                memory; reclaiming trimmed space rewrites the file</td>
+              <td>the data fits comfortably</td>
+            </tr>
+            <tr>
+              <td>DuckDB <span class="footnote">columnar</span></td>
+              <td>SQL over large data, <code>LIKE '%…%'</code> included</td>
+              <td>answers by scanning, so cost tracks the topic rather than the hits; trimming the oldest rows
+                rewrites data</td>
+              <td>the answer is an aggregate</td>
+            </tr>
+            <tr>
+              <td>RocksDB <span class="footnote">LSM tree</span></td>
+              <td>sustained writes and cheap bulk deletion at volume</td>
+              <td>matching is yours to build — tokenizing and n-grams both</td>
+              <td>the data keeps growing</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="footnote">
+        The last column is the short version. Each store can be pushed past it; these are the conditions under
+        which it is not a fight.
+      </p>
+
+      <p>
+        None of this makes the other two bad at their jobs. DuckDB would beat an LSM store outright at the one
+        thing this tool also does with the index — bucketing messages by time for a chart — because columnar
+        aggregation is what it is for. It loses on the other three demands, which happen to be the ones that run
+        constantly.
+      </p>
+      <p>
+        All three are workable routes, and for a few hundred thousand entries the first one is the easy answer.
+        Kaflow takes the third for the reason ksqlDB does: it is shaped like the way Kafka data arrives, append
+        after append with the oldest expiring first, and the trimming policies above need slices removed in
+        bulk without rewriting what stays.
+      </p>
+      <p>
+        The bill for that comes due in the third column. Deriving terms, keeping them ordered, and matching against
+        them are written rather than taken off the shelf — most of the work in this tool sits there. The schema
+        those terms use is out of scope here.
+      </p>
+      <p>
+        It also sets the shape of what can be asked. A sorted key store answers <em>equals this</em> and
+        <em>starts with this</em> by seeking, and nothing else comes for free: matching words inside a sentence
+        means tokenizing before you write, and matching part of a word means an n-gram index — a second
+        index with a size of its own, since an eight-letter word is one token but six trigrams.
+      </p>
+      <p>
+        Kaflow does the first and not the second. Values are indexed whole, and fields marked for it are also split
+        into words, so a term in the middle of a free-text field is found by seeking rather than scanning. What is
+        not there is <code>%oo%</code> — matching part of a word. For an order id, a trace id, a key or a word in a
+        message that has never been the question; for a partial token it is, and a scan still wins there.
+      </p>
 
       <h2>What you give up</h2>
       <p>
