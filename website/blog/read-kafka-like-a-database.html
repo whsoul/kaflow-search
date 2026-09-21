@@ -367,26 +367,25 @@
           </tbody>
         </table>
       </div>
-      <p class="footnote">
-        Any of the three could carry this; the last row is where it stops being a fight.
-      </p>
-
       <p>
-        Below a few hundred thousand entries SQLite is the easy answer. Kaflow takes RocksDB for the reason ksqlDB
-        does: it is shaped the way Kafka data arrives, append after append with the oldest expiring first, and the
-        trimming policies above need slices removed in bulk without rewriting what stays.
+        Any of the three could carry it, and there are others — the last row is where it stops being a fight.
+        Kaflow uses RocksDB.
       </p>
       <p>
-        What RocksDB charges for is matching. A sorted key store answers <em>equals this</em> and <em>starts with
-        this</em> by seeking; everything past that is yours to write. Matching words inside a sentence means
-        tokenizing before the write. Matching part of a word means an n-gram index — a second index with a size of
-        its own, since an eight-letter word is one token but six trigrams.
+        The other two hand over much of the indexing work already done, which is a real convenience to give up. But
+        ksqlDB reaches for RocksDB for a reason, and it is the same one here: an LSM tree matches the way Kafka
+        data accumulates, and holds its performance as the pile keeps growing.
       </p>
       <p>
-        Kaflow does the first and not the second: values indexed whole, marked fields also split into words, no
-        n-grams. A word in the middle of a free-text field is found by seeking; <code>%oo%</code> is not found at
-        all. For an id, a key or a whole word that has never been the question — for a partial token it is, and a
-        scan still wins there.
+        What that costs is the key design, the tokenizing and the rest of the matching, all written by hand — and
+        it cuts both ways. Nothing sits behind a query planner, so extending it means adding what is needed rather
+        than working around what a library will not do.
+      </p>
+      <p>
+        One consequence is worth naming. A sorted key store seeks to a value or a prefix; matching inside a
+        sentence needs tokenizing at write time, and matching part of a word needs an n-gram index with a size of
+        its own. Kaflow does the first and not the second — a whole word inside a free-text field is found by
+        seeking, <code>%oo%</code> is not found at all.
       </p>
       <p class="footnote">The schema those terms use is out of scope here.</p>
 
