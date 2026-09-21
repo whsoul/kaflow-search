@@ -15,6 +15,7 @@ svg{
 .ns{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;fill:var(--ink-3)}
 .zl{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase}
 .al{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;fill:var(--ink-2)}
+.scope{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:9.5px;font-weight:600;letter-spacing:.03em;fill:var(--local)}
 .empty{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;fill:var(--ink-3);font-style:italic}
 line,path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
 </style>
@@ -46,7 +47,7 @@ line,path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
 
         <rect x="802" y="136" width="144" height="52" rx="3" fill="var(--surface)" stroke="var(--local-line)" stroke-width="1.2"/>
         <text class="n" x="874" y="157" text-anchor="middle">Local index</text>
-        <text class="ns" x="874" y="173" text-anchor="middle">of topics you pick</text>
+        <text class="scope" x="874" y="174" text-anchor="middle">(topics you pick)</text>
 
         <path class="arw" d="M874,188 L874,218" marker-end="url(#ah2)"/>
 
