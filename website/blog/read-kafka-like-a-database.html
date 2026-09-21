@@ -48,6 +48,10 @@
       .article code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: var(--panel); padding: 0.1em 0.4em; border-radius: 4px; }
       .article .pull { margin: 3.25rem 0; padding: 1.65rem 1.8rem; border: 1px dashed var(--accent); border-radius: 10px; }
       .article .pull p { font-size: clamp(1.1rem, 2.4vw, 1.4rem); line-height: 1.5; letter-spacing: -0.012em; color: var(--accent-bright); margin: 0; text-wrap: balance; max-width: none; }
+      .article .aside { margin: 2.5rem 0; padding: 1.35rem 1.6rem; border: 1px dashed var(--line); border-radius: 10px; display: flex; flex-direction: column; gap: 0.7rem; }
+      .article .aside .lbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+      .article .aside p { margin: 0; font-size: 0.95rem; color: var(--muted); max-width: none; }
+      .article .aside p strong { color: var(--text); }
       .draft-note { border: 1px dashed var(--accent); border-radius: 10px; padding: 1rem 1.25rem; margin: 1.5rem 0; color: var(--accent-bright); font-size: 0.95rem; }
       .draft-note p { margin: 0 0 0.6rem; }
       .draft-note p:last-child { margin: 0; }
@@ -300,11 +304,14 @@
           </tbody>
         </table>
       </div>
-      <p>
-        None of it is final. A discarded index is not lost data — the messages are still in Kafka, and picking the
-        topic again builds it back. That is the difference between reclaiming space here and deleting a table in a
-        database you own.
-      </p>
+      <aside class="aside">
+        <span class="lbl">Nothing here is final</span>
+        <p>
+          <strong>A discarded index is not lost data.</strong> The messages are still in Kafka, and picking the
+          topic again builds it back. That is the difference between reclaiming space here and dropping a table in
+          a database you own — and it is why the cleanup can be left to run unattended.
+        </p>
+      </aside>
 
       <h2>Where to put the index</h2>
       <p>
