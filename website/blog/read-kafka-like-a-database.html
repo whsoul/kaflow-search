@@ -273,8 +273,13 @@
       </div>
 
       <p>
-        It scales the way you would hope. Going from a hundred thousand messages to a million landed between 0.91
-        and 1.03 times ten-fold — near enough to linear that a small sample predicts the full topic.
+        These are one store's numbers rather than a law — RocksDB with its default compression, and a different
+        store would land somewhere else. What carries over is the unit to think in: an index costs per field, per
+        message, so a topic can be priced before it is indexed.
+      </p>
+      <p>
+        It also scales the way you would hope here. Going from a hundred thousand messages to a million landed
+        between 0.91 and 1.03 times ten-fold — near enough to linear that a small sample predicts the full topic.
       </p>
       <p class="footnote">
         Measured with RocksDB's default compression. Switching to zstd took about 30% more off — worth having when
