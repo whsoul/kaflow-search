@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 330" role="img" aria-label="To-be architecture: the topics you pick are fetched directly by partition and offset into a local index on the laptop, with no extra server infrastructure">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 330" role="img" aria-label="To-be architecture: the topics you pick are fetched directly by partition and offset into a local index on the laptop disk, with no extra server infrastructure">
 <style>
 svg{
   --ink:#f4f5f8; --ink-2:#9ba3b8; --ink-3:#6f778d;
@@ -47,7 +47,7 @@ line,path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
 
         <rect x="802" y="136" width="144" height="52" rx="3" fill="var(--surface)" stroke="var(--local-line)" stroke-width="1.2"/>
         <text class="n" x="874" y="157" text-anchor="middle">Local index</text>
-        <text class="ns" x="874" y="173" text-anchor="middle">RocksDB</text>
+        <text class="ns" x="874" y="173" text-anchor="middle">on your disk</text>
 
         <path class="arw" d="M874,188 L874,218" marker-end="url(#ah2)"/>
 
