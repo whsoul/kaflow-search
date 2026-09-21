@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 320" role="img" aria-label="Two indexing modes on a time axis. Both begin with one full pass. In manual mode a single increment follows when the topic is picked again. With autoSync, small increments run on a timer while the app is open.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 320" role="img" aria-label="Two indexing modes on a time axis. Both begin with one full read. In manual mode a single increment follows when the topic is picked again. With autoSync, small increments run on a timer while the app is open.">
 <style>
 svg{
   --ink:#f4f5f8; --ink-2:#9ba3b8; --ink-3:#6f778d;
@@ -30,7 +30,7 @@ path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
   <rect x="250" y="76" width="380" height="38" rx="3" fill="var(--cost)" fill-opacity=".55"/>
   <text class="inbar" x="440" y="100" text-anchor="middle">2,099,964 messages</text>
   <rect x="680" y="76" width="150" height="38" rx="3" fill="var(--local)"/>
-  <text class="seg" x="440" y="132" text-anchor="middle" fill="var(--cost)">one full pass</text>
+  <text class="seg" x="440" y="132" text-anchor="middle" fill="var(--cost)">one full read</text>
   <text class="seg" x="755" y="132" text-anchor="middle" fill="var(--local)">one increment, when you pick it again</text>
 
   <text class="n" x="20" y="206">autoSync</text>
@@ -42,10 +42,10 @@ path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
   <rect x="774" y="190" width="40" height="38" rx="3" fill="var(--local)"/>
   <rect x="836" y="190" width="40" height="38" rx="3" fill="var(--local)"/>
   <rect x="898" y="190" width="40" height="38" rx="3" fill="var(--local)"/>
-  <text class="seg" x="440" y="246" text-anchor="middle" fill="var(--cost)">one full pass</text>
+  <text class="seg" x="440" y="246" text-anchor="middle" fill="var(--cost)">one full read</text>
   <text class="seg" x="794" y="246" text-anchor="middle" fill="var(--local)">a slice every 30s</text>
 
   <path class="arw" d="M250,276 L950,276" marker-end="url(#t)"/>
   <text class="ns" x="250" y="294">time</text>
-  <text class="ns" x="950" y="294" text-anchor="end">Schematic. The first pass dwarfs every increment after it.</text>
+  <text class="ns" x="950" y="294" text-anchor="end">Schematic. The first read dwarfs every increment after it.</text>
 </svg>

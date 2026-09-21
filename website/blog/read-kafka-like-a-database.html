@@ -182,7 +182,7 @@
         An index inverts that. Terms are stored in sorted order, so a prefix seek lands directly on the block that
         matches and reads nothing on either side of it. Each entry carries a <code>(partition, offset)</code> and
         enough to render a row, so the whole result list is built without asking the cluster for anything — zero
-        reads, however many times the query is refined. Indexing pays the full pass once, up front; everything
+        reads, however many times the query is refined. Indexing pays for one read up front; everything
         after it is proportional to the number of hits.
       </p>
       <p>
@@ -196,10 +196,10 @@
            조건 없는 숫자는 다른 장비에서 재본 사람이 "과장" 으로 결론냅니다. 실측이 없으면 이 상자만 지우세요.</p>
       </div>
 
-      <h2>The one pass you have to make</h2>
+      <h2>One read before any search</h2>
       <p>
-        None of this is free. Before the first search there is a full pass over the topic — the same read that
-        scanning would have done, paid once instead of on every query.
+        None of this is free. Nothing can be searched until it has been indexed, and indexing means reading the
+        topic through once — the same read scanning would have done, paid once instead of on every query.
       </p>
 
       <h3>The data already says what it is</h3>
@@ -210,22 +210,22 @@
         infrastructure.
       </p>
 
-      <h3>How long the pass takes</h3>
+      <h3>How long that read takes</h3>
       <p>
-        It is one sequential read, so the time goes on whatever work is done per message — decoding it, deriving
+        The topic is read straight through, so the time goes on whatever work is done per message — decoding it, deriving
         terms, writing them down. Keep that work small and a million messages is a wait you sit through rather
         than schedule. Figures from the implementation are in the appendix.
       </p>
 
       <h3>And it does not repeat</h3>
       <figure>
-        <img src="figures/index-once.svg" alt="Two indexing modes on a time axis. Both begin with one full pass. In manual mode a single increment follows when the topic is picked again. With autoSync, small increments run on a timer while the app is open." />
-        <figcaption>Both modes pay the same one-off pass. What differs after it is only when the increments run.</figcaption>
+        <img src="figures/index-once.svg" alt="Two indexing modes on a time axis. Both begin with one full read. In manual mode a single increment follows when the topic is picked again. With autoSync, small increments run on a timer while the app is open." />
+        <figcaption>Both modes pay the same one-off read. What differs after it is only when the increments run.</figcaption>
       </figure>
       <p>
         The last indexed offset is recorded per partition, so nothing is ever read twice. Leave a topic on manual
         and it catches up in one step the next time you pick it or press sync; turn on <code>autoSync</code> and it
-        keeps up in slices while the app is open. Either way the full pass happens once, and an interrupted one
+        keeps up in slices while the app is open. Either way the full read happens once, and an interrupted one
         resumes where it stopped rather than starting over.
       </p>
 
@@ -382,11 +382,11 @@
             <tr><th></th><th>Pipeline</th><th>Local index</th></tr>
           </thead>
           <tbody>
-            <tr><td>Before the first search</td><td>install and wire Connect, Elasticsearch and Kibana, then write the mapping</td><td>install an app, then one pass over the topic</td></tr>
+            <tr><td>Before the first search</td><td>install and wire Connect, Elasticsearch and Kibana, then write the mapping</td><td>install an app, then one read of the topic</td></tr>
             <tr><td>Operating</td><td>always on; versions, shards, disk</td><td>none</td></tr>
             <tr><td>Fixed cost</td><td>instances, every month</td><td>none — hardware you own</td></tr>
             <tr><td>Where the data goes</td><td>replicated out of the cluster</td><td>stays on your disk</td></tr>
-            <tr><td>Load on the cluster</td><td>continuous replication of everything</td><td>one pass to index, then only what you open</td></tr>
+            <tr><td>Load on the cluster</td><td>continuous replication of everything</td><td>one read to index, then only what you open</td></tr>
             <tr><td>Scale ceiling</td><td>whatever you pay for</td><td>whatever the disk holds</td></tr>
             <tr><td>Matching</td><td>analyzers, wildcards, partial words</td><td>values, prefixes and whole words</td></tr>
             <tr><td><strong>Sharing with a team</strong></td><td>everyone sees the same view</td><td><strong>no — each disk is its own</strong></td></tr>
