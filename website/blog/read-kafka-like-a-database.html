@@ -42,6 +42,7 @@
       .article th { background: var(--panel); color: var(--muted); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; }
       .article td.n { text-align: right; font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
       .article .footnote { color: var(--muted); font-size: 0.9rem; }
+      .article td .footnote { font-size: 0.78rem; display: block; }
       .article code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: var(--panel); padding: 0.1em 0.4em; border-radius: 4px; }
       .draft-note { border: 1px dashed var(--accent); border-radius: 10px; padding: 1rem 1.25rem; margin: 1.5rem 0; color: var(--accent-bright); font-size: 0.95rem; }
       .draft-note p { margin: 0 0 0.6rem; }
@@ -134,6 +135,33 @@
       <div class="draft-note">
         <p>위 두 문단이 핵심 논거입니다. <strong>Kafka 개론으로 늘리지 마세요</strong> — 늘리면 "교육 포장을 씌운 홍보글" 로 읽힙니다.</p>
       </div>
+
+      <h2>Why RocksDB, and not a database</h2>
+      <p>
+        The index makes three demands. It is written in long sustained runs while a topic is being indexed. It is
+        read by seeking to a sorted prefix. And slices of it get thrown away — the oldest N per partition, or a
+        whole topic at once.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th></th><th>Built around</th><th>Prefix-ordered reads</th><th>Throwing a slice away</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>RocksDB <span class="footnote">LSM tree</span></td><td>sustained ordered writes</td><td>native</td><td>drop a column family, or a key range</td></tr>
+            <tr><td>SQLite <span class="footnote">B-tree</span></td><td>read-heavy, moderate writes</td><td>native</td><td>delete rows, then reclaim</td></tr>
+            <tr><td>DuckDB <span class="footnote">columnar</span></td><td>bulk loads, analytical scans</td><td>not the access pattern</td><td>rewrite the affected data</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        SQLite would have been simpler, and at a few hundred thousand entries it would have been fine — this is not
+        a case of it being unable to do the job. What decided it was volume together with disposability: the
+        two-million-message topic measured below carries thirty million index entries, and the trimming policies
+        further down have to drop them in bulk without rewriting what stays. That is what an LSM tree is shaped
+        for, and it is the shape Kafka data arrives in anyway — append after append, oldest expiring first.
+      </p>
+      <p class="footnote">The schema those entries use is out of scope here.</p>
 
       <h2>Doing it on the laptop instead</h2>
       <figure>
