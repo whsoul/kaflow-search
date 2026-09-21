@@ -199,7 +199,13 @@
       <h2>One read before any search</h2>
       <p>
         None of this is free. Nothing can be searched until it has been indexed, and indexing means reading the
-        topic through once — the same read scanning would have done, paid once instead of on every query.
+        topic through once.
+      </p>
+      <p>
+        That read is not an extra one, though. A scan would have pulled every message across anyway and then
+        thrown the work away; indexing moves the same bytes and keeps what it found. What it adds is the work per
+        message — decode it, derive terms, write them down — and that is the whole of the difference. It is also
+        paid once, where the scan pays its share again on every query.
       </p>
 
       <h3>The data already says what it is</h3>
