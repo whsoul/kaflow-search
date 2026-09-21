@@ -162,17 +162,17 @@
         Fetch by explicit partition and offset, build the index locally, search it locally. No consumer group is
         joined and no offsets are committed, so the cluster does not notice.
       </p>
-      <div class="draft-note">
-        <p>인덱싱이 실제로 어떻게 도는지. key/value 파싱 → 항목 생성 → 저장 → 조회. 키 스키마 같은 내부는 개념 수준까지만.</p>
-        <div class="draft-example">
-          <span class="lbl">예시 — 사실관계는 확인하고 쓰세요</span>
-          <p>For each message the tool reads the key and the value, decodes them in whatever format the topic
-            turned out to be in, and walks the result. Every scalar it finds becomes a term: the path it sat under,
-            and its value. Each term is written down with the <code>(partition, offset)</code> it came from.</p>
-          <p>That is the whole index — a sorted map from term to positions, plus one small record per message
-            holding what a result row needs to show. Nothing else is kept.</p>
-        </div>
-      </div>
+      <p>
+        For each message it reads the key, the headers and the value, decodes them in whatever format the topic
+        turned out to be in, and walks the result. Every scalar it finds becomes a term — the path it sat under,
+        and the value there — and a field can be split into words as well, when that is how you would go looking
+        for it. Each term is written down with the <code>(partition, offset)</code> it came from.
+      </p>
+      <p>
+        That is the whole of it: a sorted map from term to positions, and one record per message holding what a
+        result row needs to show. Nothing else is kept, which is why the body still has to be fetched when you
+        open one.
+      </p>
 
       <h2>Scanning versus looking up</h2>
       <figure>
