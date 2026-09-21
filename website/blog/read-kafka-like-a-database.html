@@ -222,11 +222,11 @@
       </div>
       <p class="footnote">
         Fifteen fields: one key, eleven in the payload, three headers. Sizes are what the store holds after
-        compression, not what the broker sends. The rate was measured on an M4 laptop with 32 GB,
-        with the local side as the bottleneck
-        rather than the network — an order of magnitude, not a benchmark. It moves with message size and field
-        count, and against a cloud-hosted cluster the fetch side is usually the limit instead of the laptop —
-        expect less there.
+        compression, not what the broker sends. The rate came off an M4
+        laptop with 32 GB, where the laptop and not the network was the limit — a quicker machine should push
+        past it, and against a cloud-hosted cluster the fetch side usually becomes the limit instead and it
+        drops. It also moves with message size and field count. Treat it as an order of magnitude, not a
+        benchmark.
       </p>
 
       <h3>And it does not repeat</h3>
