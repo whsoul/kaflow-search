@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 600" role="img" aria-label="Two pipelines side by side. Scanning and filtering pulls every message out of the cluster and tests each one. An index lookup seeks straight to the matching block of sorted terms on local disk, contacts the cluster not at all, and fetches a single message only when one is opened.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 628" role="img" aria-label="Two pipelines side by side. Scanning and filtering pulls every message out of the cluster and tests each one. An index lookup seeks straight to the matching block of sorted terms on local disk, contacts the cluster not at all, and fetches a single message only when one is opened.">
 <style>
 svg{
   --ink:#f4f5f8; --ink-2:#9ba3b8; --ink-3:#6f778d;
@@ -15,6 +15,7 @@ svg{
 .zl{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
 .tot{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:16px;font-weight:600}
 .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px}
+.frame{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;font-weight:600;fill:var(--ink-2)}
 path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
 </style>
   <defs>
@@ -22,6 +23,9 @@ path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
       <path d="M0,0 L8,3 L0,6 z" fill="var(--arrow)"/>
     </marker>
   </defs>
+
+  <text class="frame" x="490" y="24" text-anchor="middle">One topic you picked &#183; 2,099,964 messages &#183; 2 of them match</text>
+  <g transform="translate(0,28)">
 
   <line x1="490" y1="18" x2="490" y2="582" stroke="var(--rule)" stroke-width="1"/>
 
@@ -91,4 +95,5 @@ path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
   <rect x="610" y="524" width="240" height="52" rx="4" fill="none" stroke="var(--local-line)" stroke-width="1.2" stroke-dasharray="4 4"/>
   <text class="ns" x="730" y="546" text-anchor="middle" fill="var(--ink-2)">open one message</text>
   <text class="mono" x="730" y="564" text-anchor="middle" fill="var(--local)">1 fetch, by (partition, offset)</text>
+  </g>
 </svg>
