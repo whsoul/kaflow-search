@@ -203,11 +203,28 @@
       </p>
 
       <h3>How long the pass takes</h3>
-      <p>
-        On an M4 laptop the pass ran at roughly ten thousand messages a second, with the local side the bottleneck
-        rather than the network — about three and a half minutes for the two-million-message topic measured below.
-        That number moves with message size and field count, and a slower disk or a distant cluster moves it
-        further; treat it as an order of magnitude, not a benchmark.
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Topic</th><th>Fields</th><th>On disk / msg</th><th>Per field</th><th>Rate</th><th>1M messages</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>chat-messages <span class="footnote">JSON key and value</span></td>
+              <td class="n">15</td>
+              <td class="n">237 B</td>
+              <td class="n">16 B</td>
+              <td class="n">~10,000 / sec</td>
+              <td class="n">~100 sec</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="footnote">
+        Fifteen fields: one key, eleven in the payload, three headers. Sizes are what the store holds after
+        compression, not what the broker sends. The rate is an M4 laptop with the local side as the bottleneck
+        rather than the network — an order of magnitude, not a benchmark. It moves with message size and field
+        count, and a slower disk or a distant cluster moves it further.
       </p>
 
       <h3>And it does not repeat</h3>
