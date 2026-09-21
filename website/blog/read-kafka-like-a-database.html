@@ -191,18 +191,18 @@
       <h2>The one pass you have to make</h2>
       <p>
         None of this is free. Before the first search there is a full pass over the topic — the same read that
-        scanning would have done, except it happens once instead of on every query. That is the honest cost of the
-        approach, and it is worth being precise about what it does and does not involve.
+        scanning would have done, paid once instead of on every query.
       </p>
 
-      <h3>You do not describe the data</h3>
+      <h3>The data already says what it is</h3>
       <p>
-        Picking a topic samples its messages, classifies the wire format, and ranks which fields are worth
-        indexing. There is no mapping to write, no schema to register and no connector config — the parts of a
-        pipeline that usually cost more than the infrastructure itself.
+        Most of what a pipeline makes you declare up front is already in the data. Sample the messages and the
+        wire format falls out of the bytes, the fields worth indexing out of what actually appears in them. So no
+        mapping, no schema to register, no connector config — the parts that usually cost more than the
+        infrastructure.
       </p>
 
-      <h3>It is quicker than the pipeline it replaces</h3>
+      <h3>How long the pass takes</h3>
       <div class="draft-note">
         <p><strong>이 표를 채워주세요.</strong> M4 에서 측정한 값으로. 비워 두면 절 전체를 지우는 편이 낫습니다.</p>
         <p>조건을 표 아래 한 줄로 밝혀 두면 반박이 줄어듭니다 — 장비, 로컬/원격 클러스터, 필드 수.</p>
@@ -221,7 +221,7 @@
       </div>
       <p class="footnote">Measured on <!-- 장비 -->, against <!-- 로컬/원격 --> Kafka. Rates move with message size and field count.</p>
 
-      <h3>And it is not repeated</h3>
+      <h3>And it does not repeat</h3>
       <figure>
         <img src="figures/index-once.svg" alt="Two indexing modes on a time axis. Both begin with one full pass. In manual mode a single increment follows when the topic is picked again. With autoSync, small increments run on a timer while the app is open." />
         <figcaption>Both modes pay the same one-off pass. What differs after it is only when the increments run.</figcaption>
