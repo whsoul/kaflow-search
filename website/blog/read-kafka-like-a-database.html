@@ -47,7 +47,9 @@
       .article td:first-child { color: var(--muted); }
       .article code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: var(--panel); padding: 0.1em 0.4em; border-radius: 4px; }
       .article .pull { margin: 3.25rem 0; padding: 1.65rem 1.8rem; border: 1px dashed var(--accent); border-radius: 10px; }
-      .article .pull p { font-size: clamp(1.1rem, 2.4vw, 1.4rem); line-height: 1.5; letter-spacing: -0.012em; color: var(--accent-bright); margin: 0; text-wrap: balance; max-width: none; }
+      .article .pull p { font-size: clamp(1.1rem, 2.4vw, 1.4rem); line-height: 1.5; letter-spacing: -0.012em; color: var(--accent-bright); margin: 0; text-wrap: balance; max-width: none; font-style: italic; text-indent: -0.44em; }
+      .article .pull p::before { content: "\201C"; }
+      .article .pull p::after { content: "\201D"; }
       .article .aside { margin: 2.5rem 0; padding: 1.35rem 1.6rem; border: 1px dashed var(--line); border-radius: 10px; display: flex; flex-direction: column; gap: 0.7rem; }
       .article .aside .lbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
       .article .aside p { margin: 0; font-size: 0.95rem; color: var(--muted); max-width: none; }
