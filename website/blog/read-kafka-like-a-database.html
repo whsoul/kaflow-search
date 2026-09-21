@@ -363,39 +363,31 @@
         </table>
       </div>
       <p class="footnote">
-        The last column is the short version. Each store can be pushed past it; these are the conditions under
-        which it is not a fight.
+        Each store can be pushed past that last column; those are the conditions under which it is not a fight.
       </p>
-
       <p>
-        None of this makes the other two bad at their jobs. DuckDB would beat an LSM store outright at the one
-        thing this tool also does with the index — bucketing messages by time for a chart — because columnar
-        aggregation is what it is for. It loses on the other three demands, which happen to be the ones that run
+        None of them is bad at its job. DuckDB would beat an LSM store outright at the one thing this tool also
+        does with the index — bucketing messages by time for a chart. It loses on the three demands that run
         constantly.
       </p>
       <p>
-        All three are workable routes, and for a few hundred thousand entries the first one is the easy answer.
-        Kaflow takes the third for the reason ksqlDB does: it is shaped like the way Kafka data arrives, append
-        after append with the oldest expiring first, and the trimming policies above need slices removed in
-        bulk without rewriting what stays.
+        Below a few hundred thousand entries SQLite is the easy answer. Kaflow takes RocksDB for the reason ksqlDB
+        does: it is shaped the way Kafka data arrives, append after append with the oldest expiring first, and the
+        trimming policies above need slices removed in bulk without rewriting what stays.
       </p>
       <p>
-        The bill for that comes due in the third column. Deriving terms, keeping them ordered, and matching against
-        them are written rather than taken off the shelf — most of the work in this tool sits there. The schema
-        those terms use is out of scope here.
+        What RocksDB charges for is matching. A sorted key store answers <em>equals this</em> and <em>starts with
+        this</em> by seeking; everything past that is yours to write. Matching words inside a sentence means
+        tokenizing before the write. Matching part of a word means an n-gram index — a second index with a size of
+        its own, since an eight-letter word is one token but six trigrams.
       </p>
       <p>
-        It also sets the shape of what can be asked. A sorted key store answers <em>equals this</em> and
-        <em>starts with this</em> by seeking, and nothing else comes for free: matching words inside a sentence
-        means tokenizing before you write, and matching part of a word means an n-gram index — a second
-        index with a size of its own, since an eight-letter word is one token but six trigrams.
+        Kaflow does the first and not the second: values indexed whole, marked fields also split into words, no
+        n-grams. A word in the middle of a free-text field is found by seeking; <code>%oo%</code> is not found at
+        all. For an id, a key or a whole word that has never been the question — for a partial token it is, and a
+        scan still wins there.
       </p>
-      <p>
-        Kaflow does the first and not the second. Values are indexed whole, and fields marked for it are also split
-        into words, so a term in the middle of a free-text field is found by seeking rather than scanning. What is
-        not there is <code>%oo%</code> — matching part of a word. For an order id, a trace id, a key or a word in a
-        message that has never been the question; for a partial token it is, and a scan still wins there.
-      </p>
+      <p class="footnote">The schema those terms use is out of scope here.</p>
 
       <h2>What you give up</h2>
       <p>
