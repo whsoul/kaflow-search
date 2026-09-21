@@ -225,7 +225,8 @@
         compression, not what the broker sends. The rate was measured on an M4 laptop with 32 GB,
         with the local side as the bottleneck
         rather than the network — an order of magnitude, not a benchmark. It moves with message size and field
-        count, and a slower disk or a distant cluster moves it further.
+        count, and against a cloud-hosted cluster the fetch side is usually the limit instead of the laptop —
+        expect less there.
       </p>
 
       <h3>And it does not repeat</h3>
