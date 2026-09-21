@@ -42,7 +42,9 @@
       .article th { background: var(--panel); color: var(--muted); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; }
       .article td.n { text-align: right; font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
       .article .footnote { color: var(--muted); font-size: 0.9rem; }
-      .article td .footnote { font-size: 0.78rem; display: block; }
+      .article td .footnote, .article th .footnote { font-size: 0.78rem; display: block; text-transform: none; letter-spacing: 0; font-weight: 400; }
+      .article th { vertical-align: bottom; }
+      .article td:first-child { color: var(--muted); }
       .article code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: var(--panel); padding: 0.1em 0.4em; border-radius: 4px; }
       .draft-note { border: 1px dashed var(--accent); border-radius: 10px; padding: 1rem 1.25rem; margin: 1.5rem 0; color: var(--accent-bright); font-size: 0.95rem; }
       .draft-note p { margin: 0 0 0.6rem; }
@@ -336,35 +338,39 @@
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th></th><th>Good at</th><th>Costs you</th><th>Pick it when</th></tr>
+            <tr>
+              <th></th>
+              <th>SQLite <span class="footnote">B-tree, FTS5</span></th>
+              <th>DuckDB <span class="footnote">columnar</span></th>
+              <th>RocksDB <span class="footnote">LSM tree</span></th>
+            </tr>
           </thead>
           <tbody>
             <tr>
-              <td>SQLite <span class="footnote">B-tree, FTS5</span></td>
-              <td>full-text search with ranking; substring matching through the trigram tokenizer</td>
-              <td>a trigram index runs several times a word index; B-tree inserts turn random once it outgrows
-                memory; reclaiming trimmed space rewrites the file</td>
+              <td>Good at</td>
+              <td>ranked full-text, substrings via trigrams</td>
+              <td>SQL and aggregation over large data</td>
+              <td>sustained writes, cheap bulk deletion</td>
+            </tr>
+            <tr>
+              <td>Costs you</td>
+              <td>index size grows fast; trimmed space needs reclaiming</td>
+              <td>every lookup is a scan; trimming rewrites data</td>
+              <td>matching is yours to build, n-grams included</td>
+            </tr>
+            <tr>
+              <td>Pick it when</td>
               <td>the data fits comfortably</td>
-            </tr>
-            <tr>
-              <td>DuckDB <span class="footnote">columnar</span></td>
-              <td>SQL over large data, <code>LIKE '%…%'</code> included</td>
-              <td>answers by scanning, so cost tracks the topic rather than the hits; trimming the oldest rows
-                rewrites data</td>
               <td>the answer is an aggregate</td>
-            </tr>
-            <tr>
-              <td>RocksDB <span class="footnote">LSM tree</span></td>
-              <td>sustained writes and cheap bulk deletion at volume</td>
-              <td>matching is yours to build — tokenizing and n-grams both</td>
               <td>the data keeps growing</td>
             </tr>
           </tbody>
         </table>
       </div>
       <p class="footnote">
-        Each store can be pushed past that last column; those are the conditions under which it is not a fight.
+        Any of the three could carry this; the last row is where it stops being a fight.
       </p>
+
       <p>
         None of them is bad at its job. DuckDB would beat an LSM store outright at the one thing this tool also
         does with the index — bucketing messages by time for a chart. It loses on the three demands that run
