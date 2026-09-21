@@ -282,16 +282,17 @@
         Because the cost falls per field, dropping fields takes the index down with them, near enough in proportion.
         Cutting a JSON topic to the fields actually searched took about a fifth off its index.
       </p>
-      <div class="draft-note">
-        <p>어떤 필드를 버릴지 정하는 감각. 실제로 뭘 남기고 뭘 버렸는지 예시 하나.</p>
-        <div class="draft-example">
-          <span class="lbl">예시</span>
-          <p>On the topic above I keep the identifiers and the status, and drop the payload and the debug context.
-            The test I use is whether I would ever type the value into a search box. An order id, yes. A base64
-            blob or a stack trace, no — those I want to read once I have found the message, and the message is
-            still there to read.</p>
-        </div>
-      </div>
+      <p>
+        Which fields are worth keeping is usually clear once the question is put plainly: would you ever type this
+        value into a search box? An order id, a trace id, a status — yes. A base64 blob, a stack trace, a rendered
+        body — no. Those are things you read <em>after</em> finding the message, and the message is still there to
+        read.
+      </p>
+      <p>
+        The saving is not spread evenly either. A field holding a short status costs almost nothing to index; one
+        holding a long string costs in proportion to its length. The fields you would never search are usually the
+        ones that were costing the most.
+      </p>
 
       <h2>When the disk fills anyway</h2>
       <p>
