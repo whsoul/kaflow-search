@@ -149,8 +149,8 @@
           <tbody>
             <tr>
               <td>SQLite <span class="footnote">B-tree, FTS5</span></td>
-              <td>full-text and n-gram search out of the box</td>
-              <td>index size and search time grow with volume; trimming leaves space to reclaim</td>
+              <td>full-text search with ranking, and substring matching through FTS5's trigram tokenizer</td>
+              <td>a trigram index runs several times the size of a word index; B-tree inserts turn random once it outgrows memory, and reclaiming trimmed space rewrites the file</td>
             </tr>
             <tr>
               <td>DuckDB <span class="footnote">columnar</span></td>
@@ -185,8 +185,8 @@
       <p>
         It also sets the shape of what can be asked. A sorted key store answers <em>equals this</em> and
         <em>starts with this</em> by seeking, and nothing else comes for free: matching words inside a sentence
-        means tokenizing before you write, and matching part of a word means an n-gram index, which is a second
-        index with a size of its own.
+        means tokenizing before you write, and matching part of a word means an n-gram index — a second
+        index with a size of its own, since an eight-letter word is one token but six trigrams.
       </p>
       <p>
         Kaflow does the first and not the second. Values are indexed whole, and fields marked for it are also split
