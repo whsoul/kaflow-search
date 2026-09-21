@@ -54,6 +54,9 @@
       .article .aside .lbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
       .article .aside p { margin: 0; font-size: 0.95rem; color: var(--muted); max-width: none; }
       .article .aside p strong { color: var(--text); }
+      .article .cta { margin: 2.75rem 0 0; padding: 1.9rem 0 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 1.1rem; align-items: flex-start; }
+      .article .cta-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+      .article .cta-note { margin: 0; font-size: 0.875rem; color: var(--muted); }
       .draft-note { border: 2px dashed #c9915a; border-radius: 10px; padding: 1rem 1.25rem; margin: 1.5rem 0; color: #d8a96f; font-size: 0.95rem; background: rgba(201,145,90,.05); }
       .draft-note p { margin: 0 0 0.6rem; }
       .draft-note p:last-child { margin: 0; }
@@ -403,16 +406,24 @@
 
       <h2>Closing</h2>
       <p>
-        The architecture above is implemented in <a href="/">Kaflow Search</a>.
+        The architecture above is implemented in Kaflow Search.
       </p>
       <p>
         It indexes the topics you pick and goes straight to the message instead of walking the topic to find it —
-        which was the question this page started from.
+        which was the question this page started from. The figures in the appendix came off it, not out of a
+        benchmark built to flatter it.
       </p>
-      <p>
-        The figures in the appendix came off it, not out of a benchmark built to flatter it. It is free while it
-        is in beta, and it is not signed, so the first launch needs the usual override.
-      </p>
+
+      <div class="cta">
+        <div class="cta-actions">
+          <a class="button" href="/">Download Kaflow Search</a>
+          <a class="button button-ghost" href="https://github.com/whsoul/kaflow-search">Source on GitHub</a>
+        </div>
+        <p class="cta-note">
+          macOS and Windows. Free while it is in beta, and not signed — the first launch needs the usual override.
+          There is a demo build if you have no cluster to point it at.
+        </p>
+      </div>
 
       <h2>Appendix: numbers from one implementation</h2>
       <p>
