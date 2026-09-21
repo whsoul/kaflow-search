@@ -304,21 +304,21 @@
         over it and space is reclaimed without being asked.
       </p>
       <p>
-        What gets given up is decided in a fixed order. A topic can be pinned, and a pinned topic is never touched.
-        Among the rest the cheapest sacrifice goes first — trimming to the newest N costs least, dropping
-        rarely-searched fields costs more, and discarding a topic's index outright costs most. Ties go to whichever
-        topic was synced longest ago, then searched longest ago, then to the largest index.
+        What gets reclaimed is governed by per-topic policies. A topic can be pinned and left alone, trimmed to the
+        newest N per partition, stripped of the fields that are rarely searched, or have its index discarded
+        outright. Which one applies where is a tuning decision rather than a guarantee, so it is not worth writing
+        down as one.
       </p>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Order</th><th>What happens</th><th>What it costs you</th></tr>
+            <tr><th>Policy</th><th>What it gives up</th></tr>
           </thead>
           <tbody>
-            <tr><td class="num">never</td><td>Pinned topics</td><td>nothing — they are skipped</td></tr>
-            <tr><td class="num">1st</td><td>Trim to the newest N <span class="footnote">CountBased</span></td><td>older messages stop being searchable</td></tr>
-            <tr><td class="num">2nd</td><td>Drop rarely-searched fields <span class="footnote">FieldBased</span></td><td>those fields stop being searchable</td></tr>
-            <tr><td class="num">3rd</td><td>Discard the index <span class="footnote">DropIndex</span></td><td>the topic goes back to unindexed</td></tr>
+            <tr><td class="num">Pinned</td><td>nothing — the topic is left alone</td></tr>
+            <tr><td class="num">CountBased</td><td>older messages stop being searchable</td></tr>
+            <tr><td class="num">FieldBased</td><td>those fields stop being searchable</td></tr>
+            <tr><td class="num">DropIndex</td><td>the topic goes back to unindexed</td></tr>
           </tbody>
         </table>
       </div>
