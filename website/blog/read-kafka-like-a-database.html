@@ -507,31 +507,38 @@
 
       <h3 id="disk">Disk</h3>
       <p>
-        Four topics, a million messages each, every field indexed. The size is what RocksDB ends up holding: the
-        messages and the index over them, which come out close to the same — the index runs about the size of the
-        messages it covers. An entry is one term at one position — one for each
-        value a message actually carries, so a field holding a list contributes several and an absent one
-        contributes none.
+        Four topics, a million messages each, every field indexed. <em>Raw message</em> is the key, the value and
+        the headers as plain JSON, before anyone compresses anything; <em>stored locally</em> is what RocksDB ends
+        up holding, messages and the index over them together. A million of either is the same figure in megabytes.
+      </p>
+      <p>
+        A full index over every field costs about a tenth to a fifth more than the messages by themselves. It is
+        that cheap because compressing the stored copy recovers most of what the index spends — between two thirds
+        and four fifths of it, on these four.
+      </p>
+      <p>
+        An entry is one term at one position — one for each value a message actually carries, so a field holding a
+        list contributes several and an absent one contributes none.
       </p>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Topic</th><th>Entries / msg</th><th>Bytes / msg</th><th>Index + meta</th></tr>
+            <tr><th>Topic</th><th>Entries / msg</th><th>Raw message</th><th>Stored locally</th><th>Ratio</th></tr>
           </thead>
           <tbody>
-            <tr><td>inventory-events</td><td class="n">20.6</td><td class="n">586 B</td><td class="n">586 MB</td></tr>
-            <tr><td>notification-events</td><td class="n">21.5</td><td class="n">673 B</td><td class="n">673 MB</td></tr>
-            <tr><td>payments-events</td><td class="n">25.9</td><td class="n">768 B</td><td class="n">768 MB</td></tr>
-            <tr><td>crawled-market-signals</td><td class="n">31.2</td><td class="n">927 B</td><td class="n">927 MB</td></tr>
+            <tr><td>inventory-events</td><td class="n">20.6</td><td class="n">515 B</td><td class="n">586 B</td><td class="n">1.14&times;</td></tr>
+            <tr><td>notification-events</td><td class="n">21.5</td><td class="n">593 B</td><td class="n">673 B</td><td class="n">1.14&times;</td></tr>
+            <tr><td>payments-events</td><td class="n">25.9</td><td class="n">636 B</td><td class="n">768 B</td><td class="n">1.21&times;</td></tr>
+            <tr><td>crawled-market-signals</td><td class="n">31.2</td><td class="n">840 B</td><td class="n">927 B</td><td class="n">1.10&times;</td></tr>
           </tbody>
         </table>
       </div>
 
       <div class="derived">
         <div>
-          <span class="l">A message costs</span>
-          <span class="v">600–900 B</span>
-          <span class="s">Messages and index together, at 20 to 31 indexed values each. Count the values you would index and you have your estimate.</span>
+          <span class="l">Index and messages</span>
+          <span class="v">1.1–1.2&times; raw</span>
+          <span class="s">Keeping a searchable copy costs barely more than the messages did. Count the bytes you send and you have your estimate.</span>
         </div>
         <div>
           <span class="l">A million messages</span>
