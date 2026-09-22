@@ -29,6 +29,7 @@
       .article { max-width: 47rem; margin: 0 auto; padding: 3rem 1.25rem 6rem; }
       .article-head { border-bottom: 1px solid var(--line); padding-bottom: 1.75rem; margin-bottom: 2.25rem; }
       .article-head h1 { font-size: clamp(2rem, 5vw, 2.85rem); line-height: 1.15; margin: 0.5rem 0 0; letter-spacing: -0.02em; }
+      .article-head .lead { font-size: 1.05rem; line-height: 1.8; color: var(--text); margin: 1.4rem 0 0; max-width: 62ch; }
       .article-head .standfirst { color: var(--muted); font-size: 1.05rem; margin: 0.9rem 0 0; }
       .article h3 { font-size: 1.05rem; margin: 2rem 0 0.75rem; color: var(--accent-bright); letter-spacing: -0.005em; }
       .article h2 { font-size: 1.4rem; margin: 3rem 0 1rem; letter-spacing: -0.01em; }
@@ -98,7 +99,11 @@
     <main class="article">
       <div class="article-head">
         <h1>Kafka 를 DB 처럼 읽기</h1>
-        <p class="standfirst">Kafka 토픽을 바로 조회할 수 있도록, 로컬에 인덱스를 만드는 이야기.</p>
+        <p class="standfirst">로컬 인덱싱으로 Kafka 에 저장된 데이터를 유연하게 활용하기</p>
+        <p class="lead">
+          Kafka 를 쓰면 으레 검색 스택이 따라붙는다. 그런데 찾으려는 메시지는 이미 토픽 안에 있다. 어떤 형식인지,
+          어떤 필드가 쓸 만한지는 데이터가 스스로 말해 주니, 토픽만 고르면 인덱스는 알아서 만들어진다.
+        </p>
       </div>
 
 
@@ -295,11 +300,17 @@
       <div class="summary">
         <h2>요약</h2>
         <ul class="recap">
-          <li>토픽은 오프셋으로 주소를 지정할 수 있어서, 그 위의 인덱스는 읽은 것의 순수 함수가 된다. 증분으로 짓고, 멈춘 자리에서 이어간다.</li>
-          <li>짓는 비용은 한 번의 읽기다. 훑기도 어차피 했을 그 읽기를, 쿼리마다가 아니라 한 번만 지불한다.</li>
-          <li>인덱스는 메시지와 같은 자릿수에 들어앉고, 빼는 필드만큼 줄어든다.</li>
-          <li>검색은 클러스터에 아무 비용도 지우지 않는다. 메시지를 열 때만 파티션과 오프셋을 명시해 Kafka 로 돌아간다.</li>
-          <li>포기하는 것: 단어 일부 매칭, 팀이 공유하는 하나의 화면, 그리고 Kafka 보존 기간보다 오래 살아야 하는 모든 것.</li>
+          <li><strong>선언할 것이 없다.</strong> 형식도 필드도 데이터에서 드러나므로 매핑도, 스키마 등록도,
+            커넥터 설정도 필요하지 않다.</li>
+          <li><strong>토픽은 오프셋으로 주소를 지정할 수 있다.</strong> 그래서 그 위의 인덱스는 읽은 것의 순수
+            함수가 된다. 증분으로 짓고, 멈춘 자리에서 이어간다.</li>
+          <li><strong>짓는 비용은 한 번의 읽기다.</strong> 훑기도 어차피 했을 그 읽기를, 쿼리마다가 아니라 한 번만
+            지불한다.</li>
+          <li><strong>인덱스는 메시지와 같은 자릿수에 들어앉는다.</strong> 그리고 빼는 필드만큼 줄어든다.</li>
+          <li><strong>검색은 클러스터에 아무 비용도 지우지 않는다.</strong> 메시지를 열 때만 파티션과 오프셋을
+            명시해 Kafka 로 돌아간다.</li>
+          <li><strong>포기하는 것:</strong> 단어 일부 매칭, 팀이 공유하는 하나의 화면, 그리고 Kafka 보존 기간보다
+            오래 살아야 하는 모든 것.</li>
         </ul>
         </div>
 
