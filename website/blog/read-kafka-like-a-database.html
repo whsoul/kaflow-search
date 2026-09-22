@@ -507,21 +507,22 @@
 
       <h3 id="disk">Disk</h3>
       <p>
-        Four topics, a million messages each, every field indexed. Sizes are the SST files RocksDB ends up
-        holding: <code>M</code> for the messages, <code>I</code> for the inverted index. An entry is one term at one position — one for each
+        Four topics, a million messages each, every field indexed. The size is what RocksDB ends up holding: the
+        messages and the index over them, which come out close to the same — the index runs about the size of the
+        messages it covers. An entry is one term at one position — one for each
         value a message actually carries, so a field holding a list contributes several and an absent one
         contributes none.
       </p>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Topic</th><th>Entries / msg</th><th>Bytes / msg</th><th>M</th><th>I</th><th>Total</th></tr>
+            <tr><th>Topic</th><th>Entries / msg</th><th>Bytes / msg</th><th>Index + meta</th></tr>
           </thead>
           <tbody>
-            <tr><td>inventory-events</td><td class="n">20.6</td><td class="n">586 B</td><td class="n">299 MB</td><td class="n">287 MB</td><td class="n">586 MB</td></tr>
-            <tr><td>notification-events</td><td class="n">21.5</td><td class="n">673 B</td><td class="n">338 MB</td><td class="n">335 MB</td><td class="n">673 MB</td></tr>
-            <tr><td>payments-events</td><td class="n">25.9</td><td class="n">768 B</td><td class="n">360 MB</td><td class="n">408 MB</td><td class="n">768 MB</td></tr>
-            <tr><td>crawled-market-signals</td><td class="n">31.2</td><td class="n">927 B</td><td class="n">488 MB</td><td class="n">438 MB</td><td class="n">927 MB</td></tr>
+            <tr><td>inventory-events</td><td class="n">20.6</td><td class="n">586 B</td><td class="n">586 MB</td></tr>
+            <tr><td>notification-events</td><td class="n">21.5</td><td class="n">673 B</td><td class="n">673 MB</td></tr>
+            <tr><td>payments-events</td><td class="n">25.9</td><td class="n">768 B</td><td class="n">768 MB</td></tr>
+            <tr><td>crawled-market-signals</td><td class="n">31.2</td><td class="n">927 B</td><td class="n">927 MB</td></tr>
           </tbody>
         </table>
       </div>
