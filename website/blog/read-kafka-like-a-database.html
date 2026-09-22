@@ -60,7 +60,8 @@
       .article .recap li { position: relative; padding-left: 1.35rem; line-height: 1.7; }
       .article .recap li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
       .article .recap li strong { color: var(--text); }
-      .article .getit { margin: 2.75rem 0 0; padding: 1.9rem 0 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 1.1rem; align-items: flex-start; }
+      .article .getit { margin: 2.75rem 0 0; padding: 1.9rem 0 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 1.1rem; align-items: stretch; }
+      .article .getit-lead { margin: 0; }
       .article .getit-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
       .article .getit-note { margin: 0; font-size: 0.875rem; color: var(--muted); display: flex; flex-direction: column; gap: 0.35rem; }
       .draft-note { border: 2px dashed #c9915a; border-radius: 10px; padding: 1rem 1.25rem; margin: 1.5rem 0; color: #d8a96f; font-size: 0.95rem; background: rgba(201,145,90,.05); }
@@ -425,12 +426,11 @@
             that has to outlive Kafka's retention.</li>
         </ul>
       </div>
-      <p>
-        The architecture above is implemented in Kaflow Search, a desktop application you install on your own
-        machine. The numbers in the appendix came off it.
-      </p>
-
       <div class="getit">
+        <p class="getit-lead">
+          The architecture above is implemented in <strong>Kaflow Search</strong>, a desktop application you
+          install on your own machine. The numbers in the appendix came off it.
+        </p>
         <div class="getit-actions">
           <a class="button" href="/">Try Kaflow Search</a>
         </div>
