@@ -508,29 +508,29 @@
       <h3 id="disk">Disk</h3>
       <p>
         Four topics, a million messages each, every field indexed. Sizes are the SST files RocksDB ends up
-        holding: <code>M</code> for the messages, <code>I</code> for the inverted index. An entry is one term at
-        one position — roughly one per field a message carries, and a little under the field count because not
-        every field appears in every message.
+        holding: <code>M</code> for the messages, <code>I</code> for the inverted index. An entry is one term at one position — one for each
+        value a message actually carries, so a field holding a list contributes several and an absent one
+        contributes none.
       </p>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Topic</th><th>Fields</th><th>Entries / msg</th><th>M</th><th>I</th><th>Total</th><th>Per field</th></tr>
+            <tr><th>Topic</th><th>Entries / msg</th><th>Bytes / msg</th><th>M</th><th>I</th><th>Total</th></tr>
           </thead>
           <tbody>
-            <tr><td>inventory-events</td><td class="n">23</td><td class="n">20.6</td><td class="n">299 MB</td><td class="n">287 MB</td><td class="n">586 MB</td><td class="n">25.5 MB</td></tr>
-            <tr><td>notification-events</td><td class="n">24</td><td class="n">21.5</td><td class="n">338 MB</td><td class="n">335 MB</td><td class="n">673 MB</td><td class="n">28.1 MB</td></tr>
-            <tr><td>payments-events</td><td class="n">29</td><td class="n">25.9</td><td class="n">360 MB</td><td class="n">408 MB</td><td class="n">768 MB</td><td class="n">26.5 MB</td></tr>
-            <tr><td>crawled-market-signals</td><td class="n">35</td><td class="n">31.2</td><td class="n">488 MB</td><td class="n">438 MB</td><td class="n">927 MB</td><td class="n">26.5 MB</td></tr>
+            <tr><td>inventory-events</td><td class="n">20.6</td><td class="n">586 B</td><td class="n">299 MB</td><td class="n">287 MB</td><td class="n">586 MB</td></tr>
+            <tr><td>notification-events</td><td class="n">21.5</td><td class="n">673 B</td><td class="n">338 MB</td><td class="n">335 MB</td><td class="n">673 MB</td></tr>
+            <tr><td>payments-events</td><td class="n">25.9</td><td class="n">768 B</td><td class="n">360 MB</td><td class="n">408 MB</td><td class="n">768 MB</td></tr>
+            <tr><td>crawled-market-signals</td><td class="n">31.2</td><td class="n">927 B</td><td class="n">488 MB</td><td class="n">438 MB</td><td class="n">927 MB</td></tr>
           </tbody>
         </table>
       </div>
 
       <div class="derived">
         <div>
-          <span class="l">Per million, per field</span>
-          <span class="v">about 26 MB</span>
-          <span class="s">25.5 to 28.1 across four topics with field counts from 23 to 35. Count your fields and you have your answer.</span>
+          <span class="l">A message costs</span>
+          <span class="v">600–900 B</span>
+          <span class="s">Messages and index together, at 20 to 31 indexed values each. Count the values you would index and you have your estimate.</span>
         </div>
         <div>
           <span class="l">A million messages</span>
