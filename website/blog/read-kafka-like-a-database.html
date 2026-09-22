@@ -513,20 +513,20 @@
         searchable copy ends up costing roughly what the messages did.
       </p>
       <p>
-        The last two columns are totals on disk at the default setting. Each message contributed 20 to 31 index
-        entries across these four — one per value it actually carries, so a field holding a list contributes
-        several and an absent one contributes none.
+        <em>Fields</em> is how many values a message actually carries — one index entry each, so a field holding a
+        list counts for several and an absent one counts for none. The last two columns are totals on disk at the
+        default setting.
       </p>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Topic</th><th>Raw / msg</th><th>Stored / msg</th><th>With zstd</th><th>100K msgs</th><th>1M msgs</th></tr>
+            <tr><th>Topic</th><th>Fields</th><th>Raw / msg</th><th>Stored / msg</th><th>With zstd</th><th>100K msgs</th><th>1M msgs</th></tr>
           </thead>
           <tbody>
-            <tr><td>inventory-events</td><td class="n">515 B</td><td class="n">586 B<span class="footnote">1.14&times;</span></td><td class="n">418 B<span class="footnote">0.81&times;</span></td><td class="n">64 MB</td><td class="n">586 MB</td></tr>
-            <tr><td>notification-events</td><td class="n">593 B</td><td class="n">673 B<span class="footnote">1.14&times;</span></td><td class="n">516 B<span class="footnote">0.87&times;</span></td><td class="n">71 MB</td><td class="n">673 MB</td></tr>
-            <tr><td>payments-events</td><td class="n">636 B</td><td class="n">768 B<span class="footnote">1.21&times;</span></td><td class="n">483 B<span class="footnote">0.76&times;</span></td><td class="n">79 MB</td><td class="n">768 MB</td></tr>
-            <tr><td>crawled-market-signals</td><td class="n">840 B</td><td class="n">927 B<span class="footnote">1.10&times;</span></td><td class="n">656 B<span class="footnote">0.78&times;</span></td><td class="n">90 MB</td><td class="n">927 MB</td></tr>
+            <tr><td>inventory-events</td><td class="n">21</td><td class="n">515 B</td><td class="n">586 B<span class="footnote">1.14&times;</span></td><td class="n">418 B<span class="footnote">0.81&times;</span></td><td class="n">64 MB</td><td class="n">586 MB</td></tr>
+            <tr><td>notification-events</td><td class="n">22</td><td class="n">593 B</td><td class="n">673 B<span class="footnote">1.14&times;</span></td><td class="n">516 B<span class="footnote">0.87&times;</span></td><td class="n">71 MB</td><td class="n">673 MB</td></tr>
+            <tr><td>payments-events</td><td class="n">26</td><td class="n">636 B</td><td class="n">768 B<span class="footnote">1.21&times;</span></td><td class="n">483 B<span class="footnote">0.76&times;</span></td><td class="n">79 MB</td><td class="n">768 MB</td></tr>
+            <tr><td>crawled-market-signals</td><td class="n">31</td><td class="n">840 B</td><td class="n">927 B<span class="footnote">1.10&times;</span></td><td class="n">656 B<span class="footnote">0.78&times;</span></td><td class="n">90 MB</td><td class="n">927 MB</td></tr>
           </tbody>
         </table>
       </div>
