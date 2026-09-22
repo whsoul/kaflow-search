@@ -472,9 +472,12 @@
 
       <h2>Appendix: numbers from one implementation</h2>
       <p>
-        Everything above holds whatever you build it on. These are what it came to here — RocksDB with its default
-        compression — so that the claims have something behind them. A different store lands somewhere else; the
-        unit to carry away is per field, per message.
+        These are what the numbers came to here — RocksDB with its default compression. A different store lands
+        somewhere else; the unit to carry away is per field, per message.
+      </p>
+      <p class="footnote">
+        No comparison to the Kafka-side size is given. The same messages occupy wildly different numbers of bytes
+        on a broker depending on producer compression and batching, so it is not a stable baseline.
       </p>
 
       <h3>Indexing rate</h3>
@@ -537,7 +540,7 @@
       </div>
 
       <p>
-        It also scales the way you would hope here. Going from a hundred thousand messages to a million landed
+        Size scales as you would hope. Going from a hundred thousand messages to a million landed
         between 0.91 and 1.03 times ten-fold — near enough to linear that a small sample predicts the full topic.
       </p>
       <p class="footnote">
