@@ -26,11 +26,12 @@
     <link rel="stylesheet" href="../styles.css" />
     <style>
       .article { max-width: 47rem; margin: 0 auto; padding: 3rem 1.25rem 6rem; }
-      .article-head { border-bottom: 1px solid var(--line); padding-bottom: 1.75rem; margin-bottom: 2.5rem; }
+      .article-head { border-bottom: 1px solid var(--line); padding-bottom: 1.75rem; margin-bottom: 2.25rem; }
       .article-head h1 { font-size: clamp(2rem, 5vw, 2.85rem); line-height: 1.15; margin: 0.5rem 0 0; letter-spacing: -0.02em; }
       .article-head .standfirst { color: var(--muted); font-size: 1.05rem; margin: 0.9rem 0 0; }
       .article h3 { font-size: 1.05rem; margin: 2rem 0 0.75rem; color: var(--accent-bright); letter-spacing: -0.005em; }
       .article h2 { font-size: 1.4rem; margin: 3rem 0 1rem; letter-spacing: -0.01em; }
+      .article > h2:first-of-type { margin-top: 0; }
       .article p { line-height: 1.75; margin: 0 0 1.15rem; }
       .article figure { margin: 2rem 0; }
       .article figure img { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
@@ -62,7 +63,7 @@
       @media (min-width: 1180px) {
         .article { max-width: 70rem; display: grid; grid-template-columns: minmax(0, 44rem) 15rem; justify-content: center; column-gap: 3.5rem; }
         .article > * { grid-column: 1; }
-        .article > .rail { grid-column: 2; grid-row: 2 / -1; position: sticky; top: 2.5rem; align-self: start; height: max-content; margin: 0; }
+        .article > .rail { grid-column: 2; grid-row: 2 / span 200; position: sticky; top: 2.5rem; align-self: start; height: max-content; margin: 0; }
       }
       .article .recap { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
       .article .recap li { position: relative; padding-left: 1.35rem; line-height: 1.7; }
