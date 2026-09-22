@@ -508,7 +508,9 @@
       <h3 id="disk">Disk</h3>
       <p>
         Four topics, a million messages each, every field indexed. Sizes are the SST files RocksDB ends up
-        holding: <code>M</code> for the messages, <code>I</code> for the inverted index.
+        holding: <code>M</code> for the messages, <code>I</code> for the inverted index. An entry is one term at
+        one position — roughly one per field a message carries, and a little under the field count because not
+        every field appears in every message.
       </p>
       <div class="table-wrap">
         <table>
