@@ -33,6 +33,9 @@
       .article h2 { font-size: 1.4rem; margin: 3rem 0 1rem; letter-spacing: -0.01em; }
       .article > h2:first-of-type { margin-top: 0; }
       .article p { line-height: 1.75; margin: 0 0 1.15rem; }
+      .article p a { color: var(--accent-bright); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+      .article p a:hover { text-decoration-thickness: 2px; }
+      .article h2, .article h3 { scroll-margin-top: 1.5rem; }
       .article figure { margin: 2rem 0; }
       .article figure img { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
       .article figcaption { color: var(--muted); font-size: 0.875rem; margin-top: 0.7rem; }
@@ -260,7 +263,7 @@
       <h3>How long that read takes</h3>
       <p>
         So the time goes on that per-message work, not on the reading. Keep it small and a million messages is a
-        wait you sit through rather than schedule. Figures from the implementation are in the appendix.
+        wait you sit through rather than schedule. <a href="#rate">Figures from the implementation</a> are in the appendix.
       </p>
 
       <h3>And it does not repeat</h3>
@@ -289,7 +292,7 @@
       </p>
       <p>
         That is what makes a laptop a plausible place to keep it. The number to plan against is the data you
-        already have, not a multiple of it. Figures in the appendix.
+        already have, not a multiple of it. <a href="#disk">Figures in the appendix.</a>
       </p>
 
       <h2>Not indexing everything</h2>
@@ -470,7 +473,7 @@
         </p>
       </div>
 
-      <h2>Appendix: numbers from Kaflow Search</h2>
+      <h2 id="appendix">Appendix: numbers from Kaflow Search</h2>
       <p>
         These came off Kaflow Search, on RocksDB with its default compression. A different store lands
         somewhere else; the unit to carry away is per field, per message.
@@ -480,7 +483,7 @@
         on a broker depending on producer compression and batching, so it is not a stable baseline.
       </p>
 
-      <h3>Indexing rate</h3>
+      <h3 id="rate">Indexing rate</h3>
       <div class="table-wrap">
         <table>
           <thead>
@@ -502,7 +505,7 @@
       </p>
 
 
-      <h3>Disk</h3>
+      <h3 id="disk">Disk</h3>
       <p>
         Four topics, a million messages each, every field indexed. Sizes are the SST files RocksDB ends up
         holding: <code>M</code> for the messages, <code>I</code> for the inverted index.
