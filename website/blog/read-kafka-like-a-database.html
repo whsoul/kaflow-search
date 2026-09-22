@@ -54,6 +54,16 @@
       .article .aside .lbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
       .article .aside p { margin: 0; font-size: 0.95rem; color: var(--muted); max-width: none; }
       .article .aside p strong { color: var(--text); }
+      .article .rail { margin: 0 0 2.5rem; padding: 1.2rem 1.4rem; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.02); }
+      .article .rail h2 { margin: 0 0 0.9rem; padding: 0; font-size: 0.72rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+      .article .rail .recap { font-size: 0.85rem; line-height: 1.6; gap: 0.6rem; }
+      .article .rail .recap li { padding-left: 1.1rem; line-height: 1.6; }
+      .article .rail .recap li::before { top: 0.6em; width: 5px; height: 5px; }
+      @media (min-width: 1180px) {
+        .article { max-width: 70rem; display: grid; grid-template-columns: minmax(0, 44rem) 15rem; justify-content: center; column-gap: 3.5rem; }
+        .article > * { grid-column: 1; }
+        .article > .rail { grid-column: 2; grid-row: 2 / -1; position: sticky; top: 2.5rem; align-self: start; height: max-content; margin: 0; }
+      }
       .article .recap { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
       .article .recap li { position: relative; padding-left: 1.35rem; line-height: 1.7; }
       .article .recap li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
@@ -93,6 +103,22 @@
         <h1>Read Kafka like a Database</h1>
         <p class="standfirst">Building a local index so a Kafka topic can be queried directly.</p>
       </div>
+
+      <div class="rail">
+        <h2>In short</h2>
+        <ul class="recap">
+          <li><strong>A topic is addressable by offset</strong>, so an index over it is a pure function of what it
+            has read — built incrementally, resumed wherever it stopped.</li>
+          <li><strong>Building it costs one read</strong> — the read a scan would have done anyway, paid once
+            instead of on every query.</li>
+          <li><strong>The index lands in the same order of magnitude as the messages</strong>, and comes down per
+            field you leave out of it.</li>
+          <li><strong>Searching costs the cluster nothing.</strong> Only opening a message goes back to Kafka, by
+            explicit partition and offset.</li>
+          <li><strong>What you give up:</strong> matching part of a word, one shared view for a team, and anything
+            that has to outlive Kafka's retention.</li>
+        </ul>
+        </div>
 
       <div class="draft-note">
         <p><strong>초안입니다.</strong> 산문은 비어 있습니다 — 아래 점선 상자를 채우거나 지우면서 쓰시면 됩니다.</p>
@@ -409,36 +435,22 @@
         The last three rows are the honest part. If you need to match part of a word, if a team has to share one view, or if the data must outlive Kafka's retention, the pipeline is the right answer. A local index trades those three away to get everything above them.
       </p>
 
-      <h2>In short</h2>
-      <ul class="recap">
-        <li><strong>A topic is addressable by offset</strong>, so an index over it is a pure function of what it
-          has read — built incrementally, resumed wherever it stopped.</li>
-        <li><strong>Building it costs one read</strong> — the read a scan would have done anyway, paid once
-          instead of on every query.</li>
-        <li><strong>The index lands in the same order of magnitude as the messages</strong>, and comes down per
-          field you leave out of it.</li>
-        <li><strong>Searching costs the cluster nothing.</strong> Only opening a message goes back to Kafka, by
-          explicit partition and offset.</li>
-        <li><strong>What you give up:</strong> matching part of a word, one shared view for a team, and anything
-          that has to outlive Kafka's retention.</li>
-      </ul>
+      <h2>Conclusion</h2>
       <p>
-        Kafka is good infrastructure. It scales sideways, it stays up, it answers quickly, and plenty of services
-        lean on it for those reasons alone.
+        Kafka is good infrastructure, and a great many services run on it for good reasons — it scales sideways,
+        it stays up, it answers quickly.
       </p>
       <p>
-        What it has never been is easy to search. The usual answer is to copy the data somewhere that is — a
-        reasonable answer, and a large one.
+        What tends to follow it is a data pipeline, built less because a particular service needed one than
+        because that is what one does with Kafka.
       </p>
       <p>
-        Local indexing is a smaller one. The messages are already in the topic; what was missing was a way to
-        reach them.
+        But the data is already in Kafka. Given an index of its own, a topic can be read the way a database is
+        read — by going to the message rather than walking to it.
       </p>
       <p>
-        Where a pipeline is already up and paid for, none of this argues for tearing it down. But when the next
-        one is about to be built, it is worth asking whether the service needs it — or whether it is simply what
-        one does with Kafka. Read Kafka like a database, and a fair amount of what usually surrounds it turns out
-        to be optional.
+        For anyone bringing Kafka into a service, that is worth holding in view before the pipeline gets drawn.
+        There is more than one shape the architecture can take.
       </p>
 
       <div class="getit">
