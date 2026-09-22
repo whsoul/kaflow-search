@@ -363,12 +363,12 @@
         than working around what a library will not do.
       </p>
       <div class="callout">
-        <span class="lbl">What it will not do</span>
+        <span class="lbl">What seeking will not do</span>
         <p>
-          One consequence is worth naming. A sorted key store seeks to a value or a prefix; matching inside a
-          sentence needs tokenizing at write time, and matching part of a word needs an n-gram index with a size of
-          its own. What is built here is the first and not the second — a whole word inside a free-text field is found by
-          seeking, <code>%oo%</code> is not found at all.
+          A sorted key store seeks to a value or to a prefix, and nothing past that comes free. Matching a word
+          inside a sentence means tokenizing before the write. Matching part of a word means an n-gram index — a
+          second index, with a size of its own. Pay for the first and a whole word in a free-text field is found
+          by seeking; skip the second and <code>%oo%</code> is not found at all.
         </p>
       </div>
       <p class="footnote">The schema those terms use is out of scope here.</p>
