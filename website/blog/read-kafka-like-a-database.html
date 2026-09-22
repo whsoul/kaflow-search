@@ -513,19 +513,20 @@
         searchable copy ends up costing roughly what the messages did.
       </p>
       <p>
-        An entry is one term at one position — one for each value a message actually carries, so a field holding a
-        list contributes several and an absent one contributes none.
+        The last two columns are totals on disk at the default setting. Each message contributed 20 to 31 index
+        entries across these four — one per value it actually carries, so a field holding a list contributes
+        several and an absent one contributes none.
       </p>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Topic</th><th>Entries / msg</th><th>Raw message</th><th>Stored</th><th>With zstd</th></tr>
+            <tr><th>Topic</th><th>Raw / msg</th><th>Stored / msg</th><th>With zstd</th><th>100K</th><th>1M</th></tr>
           </thead>
           <tbody>
-            <tr><td>inventory-events</td><td class="n">20.6</td><td class="n">515 B</td><td class="n">586 B<span class="footnote">1.14&times; raw</span></td><td class="n">418 B<span class="footnote">0.81&times; raw</span></td></tr>
-            <tr><td>notification-events</td><td class="n">21.5</td><td class="n">593 B</td><td class="n">673 B<span class="footnote">1.14&times; raw</span></td><td class="n">516 B<span class="footnote">0.87&times; raw</span></td></tr>
-            <tr><td>payments-events</td><td class="n">25.9</td><td class="n">636 B</td><td class="n">768 B<span class="footnote">1.21&times; raw</span></td><td class="n">483 B<span class="footnote">0.76&times; raw</span></td></tr>
-            <tr><td>crawled-market-signals</td><td class="n">31.2</td><td class="n">840 B</td><td class="n">927 B<span class="footnote">1.10&times; raw</span></td><td class="n">656 B<span class="footnote">0.78&times; raw</span></td></tr>
+            <tr><td>inventory-events</td><td class="n">515 B</td><td class="n">586 B<span class="footnote">1.14&times;</span></td><td class="n">418 B<span class="footnote">0.81&times;</span></td><td class="n">64 MB</td><td class="n">586 MB</td></tr>
+            <tr><td>notification-events</td><td class="n">593 B</td><td class="n">673 B<span class="footnote">1.14&times;</span></td><td class="n">516 B<span class="footnote">0.87&times;</span></td><td class="n">71 MB</td><td class="n">673 MB</td></tr>
+            <tr><td>payments-events</td><td class="n">636 B</td><td class="n">768 B<span class="footnote">1.21&times;</span></td><td class="n">483 B<span class="footnote">0.76&times;</span></td><td class="n">79 MB</td><td class="n">768 MB</td></tr>
+            <tr><td>crawled-market-signals</td><td class="n">840 B</td><td class="n">927 B<span class="footnote">1.10&times;</span></td><td class="n">656 B<span class="footnote">0.78&times;</span></td><td class="n">90 MB</td><td class="n">927 MB</td></tr>
           </tbody>
         </table>
       </div>
@@ -535,16 +536,6 @@
           <span class="l">Index and messages</span>
           <span class="v">0.8–1.2&times; raw</span>
           <span class="s">A fully searchable copy costs about what the messages did — less than that with zstd on.</span>
-        </div>
-        <div>
-          <span class="l">100K messages</span>
-          <span class="v">64–90 MB</span>
-          <span class="s">Measured, not scaled down from the million.</span>
-        </div>
-        <div>
-          <span class="l">1M messages</span>
-          <span class="v">586–927 MB</span>
-          <span class="s">Under a gigabyte for every field of a million messages.</span>
         </div>
         <div>
           <span class="l">100 GB of free disk</span>
