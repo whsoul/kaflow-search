@@ -125,7 +125,7 @@
       <h2>결국 운영하게 되는 스택</h2>
       <figure>
         <img src="../../blog/figures/as-is.svg" alt="Kafka feeding Kafka Connect or Logstash into Elasticsearch and Kibana, a sink connector into a database, and ksqlDB or Flink — all running as extra always-on infrastructure, viewed through three separate clients." />
-        <figcaption>운영할 컴포넌트 다섯, 열어야 할 클라이언트 셋. 그중 어느 것도 원하던 것이 아니다.</figcaption>
+        <figcaption>하나하나는 다 이유가 있어서 들어왔다. 합치면 운영할 컴포넌트 다섯, 열어야 할 클라이언트 셋이 된다.</figcaption>
       </figure>
       <p>메시지를 검색하려면 Kafka Connect(또는 Logstash)로 Elasticsearch 에 넣고, 싱크 커넥터로 DB 에 보내고, 집계는 ksqlDB 나 Flink 로 한다. 하나하나가 떠 있어야 하고, 올려야 하고, 돈이 드는 서비스이며, 각각 다른 클라이언트로 들여다본다.</p>
       <p>솔직히 그 일이 싫지는 않다. 데이터 파이프라인을 짓는 건 재미있고 커리어에도 도움이 된다. 문제는 그게 옆에 있는 서비스에 지우는 비용이다. 돌릴 서버, 짓는 데 드는 몇 주, 살려두는 데 드는 주의력 — 아무도 그 대가를 지불하지 않는 기능을 위해서.</p>
