@@ -52,10 +52,9 @@
       .article .pull p { font-size: clamp(1rem, 2vw, 1.2rem); line-height: 1.55; letter-spacing: -0.012em; color: var(--accent-bright); margin: 0; text-wrap: balance; max-width: none; font-style: italic; text-indent: -0.44em; }
       .article .pull p::before { content: "\201C"; }
       .article .pull p::after { content: "\201D"; }
-      .article .aside { margin: 2.5rem 0; padding: 1.35rem 1.6rem; border: 1px dashed var(--line); border-radius: 10px; display: flex; flex-direction: column; gap: 0.7rem; }
-      .article .aside .lbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
-      .article .aside p { margin: 0; font-size: 0.95rem; color: var(--muted); max-width: none; }
-      .article .aside p strong { color: var(--text); }
+      .article .callout { margin: 2.5rem 0; padding: 1.35rem 1.6rem; background: rgba(201,145,90,.05); border: 2px dashed #c9915a; border-radius: 12px; display: flex; flex-direction: column; gap: 0.7rem; }
+      .article .callout .lbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: #d8a96f; }
+      .article .callout p { margin: 0; }
       .article .summary { margin: 3.5rem 0 1.75rem; padding: 1.6rem 1.8rem 1.75rem; background: rgba(201,145,90,.05); border: 2px dashed #c9915a; border-radius: 12px; }
       .article .summary h2 { margin: 0 0 1.1rem; font-size: 1.18rem; color: #d8a96f; letter-spacing: .01em; }
       .article .summary .recap li::before { background: #c9915a; }
@@ -188,22 +187,28 @@
         reads, however many times the query is refined. Indexing pays for one read up front; everything
         after it is proportional to the number of hits.
       </p>
-      <p>
-        Opening a row is the only thing that goes outward, and it asks for exactly one message by
-        <code>(partition, offset)</code> — the raw payload and any field that was not indexed. No consumer group is
-        joined and no offsets are committed, so no rebalance is triggered and nobody else's position moves.
-      </p>
+      <div class="callout">
+        <span class="lbl">What the cluster sees</span>
+        <p>
+          Opening a row is the only thing that goes outward, and it asks for exactly one message by
+          <code>(partition, offset)</code> — the raw payload and any field that was not indexed. No consumer group is
+          joined and no offsets are committed, so no rebalance is triggered and nobody else's position moves.
+        </p>
+      </div>
       <h2>One read before any search</h2>
       <p>
         None of this is free. Nothing can be searched until it has been indexed, and indexing means reading the
         topic through once.
       </p>
-      <p>
-        That read is not an extra one, though. A scan would have pulled every message across anyway and then
-        thrown the work away; indexing moves the same bytes and keeps what it found. What it adds is the work per
-        message — decode it, derive terms, write them down — and that is the whole of the difference. It is also
-        paid once, where the scan pays its share again on every query.
-      </p>
+      <div class="callout">
+        <span class="lbl">The read was happening anyway</span>
+        <p>
+          That read is not an extra one, though. A scan would have pulled every message across anyway and then
+          thrown the work away; indexing moves the same bytes and keeps what it found. What it adds is the work per
+          message — decode it, derive terms, write them down — and that is the whole of the difference. It is also
+          paid once, where the scan pays its share again on every query.
+        </p>
+      </div>
 
       <h3>The data already says what it is</h3>
       <p>
@@ -300,14 +305,14 @@
           </tbody>
         </table>
       </div>
-      <aside class="aside">
+      <div class="callout">
         <span class="lbl">Nothing here is final</span>
         <p>
           <strong>A discarded index is not lost data.</strong> The messages are still in Kafka, and picking the
           topic again builds it back. That is the difference between reclaiming space here and dropping a table in
           a database you own — and it is why the cleanup can be left to run unattended.
         </p>
-      </aside>
+      </div>
 
       <h2>Where to put the index</h2>
       <p>
@@ -357,12 +362,15 @@
         it cuts both ways. Nothing sits behind a query planner, so extending it means adding what is needed rather
         than working around what a library will not do.
       </p>
-      <p>
-        One consequence is worth naming. A sorted key store seeks to a value or a prefix; matching inside a
-        sentence needs tokenizing at write time, and matching part of a word needs an n-gram index with a size of
-        its own. What is built here is the first and not the second — a whole word inside a free-text field is found by
-        seeking, <code>%oo%</code> is not found at all.
-      </p>
+      <div class="callout">
+        <span class="lbl">What it will not do</span>
+        <p>
+          One consequence is worth naming. A sorted key store seeks to a value or a prefix; matching inside a
+          sentence needs tokenizing at write time, and matching part of a word needs an n-gram index with a size of
+          its own. What is built here is the first and not the second — a whole word inside a free-text field is found by
+          seeking, <code>%oo%</code> is not found at all.
+        </p>
+      </div>
       <p class="footnote">The schema those terms use is out of scope here.</p>
 
       <h2>What you give up</h2>
