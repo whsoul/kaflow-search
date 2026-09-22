@@ -537,15 +537,21 @@
           <span class="s">A fully searchable copy costs about what the messages did — less than that with zstd on.</span>
         </div>
         <div>
-          <span class="l">A million messages</span>
-          <span class="v">under 1 GB</span>
-          <span class="s">586 MB to 927 MB, messages and index together. The index runs roughly the size of the messages it covers.</span>
+          <span class="l">100K messages</span>
+          <span class="v">64–90 MB</span>
+          <span class="s">Measured, not scaled down from the million.</span>
+        </div>
+        <div>
+          <span class="l">1M messages</span>
+          <span class="v">586–927 MB</span>
+          <span class="s">Under a gigabyte for every field of a million messages.</span>
         </div>
         <div>
           <span class="l">100 GB of free disk</span>
           <span class="v">100–170M</span>
-          <span class="s">Messages, at these field counts. More fields, fewer messages.</span>
+          <span class="s">Messages, at these sizes. Bigger messages, fewer of them.</span>
         </div>
+      </div>
       </div>
 
       <p>
