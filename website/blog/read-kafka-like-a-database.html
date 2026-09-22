@@ -54,7 +54,9 @@
       .article .aside .lbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
       .article .aside p { margin: 0; font-size: 0.95rem; color: var(--muted); max-width: none; }
       .article .aside p strong { color: var(--text); }
-      .article .recap { margin: 0 0 1.6rem; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+      .article .summary { margin: 3.5rem 0 1.75rem; padding: 1.8rem 1.9rem 1.9rem; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+      .article .summary h2 { margin: 0 0 1.2rem; font-size: 1.18rem; color: var(--accent-bright); letter-spacing: .01em; }
+      .article .recap { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
       .article .recap li { position: relative; padding-left: 1.35rem; line-height: 1.7; }
       .article .recap li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
       .article .recap li strong { color: var(--text); }
@@ -408,19 +410,21 @@
         The last three rows are the honest part. If you need to match part of a word, if a team has to share one view, or if the data must outlive Kafka's retention, the pipeline is the right answer. A local index trades those three away to get everything above them.
       </p>
 
-      <h2>In short</h2>
-      <ul class="recap">
-        <li><strong>A topic is addressable by offset</strong>, so an index over it is a pure function of what it
-          has read — built incrementally, resumed wherever it stopped.</li>
-        <li><strong>Building it costs one read</strong> — the read a scan would have done anyway, paid once
-          instead of on every query.</li>
-        <li><strong>The index lands in the same order of magnitude as the messages</strong>, and comes down per
-          field you leave out of it.</li>
-        <li><strong>Searching costs the cluster nothing.</strong> Only opening a message goes back to Kafka, by
-          explicit partition and offset.</li>
-        <li><strong>What you give up:</strong> matching part of a word, one shared view for a team, and anything
-          that has to outlive Kafka's retention.</li>
-      </ul>
+      <div class="summary">
+        <h2>In short</h2>
+        <ul class="recap">
+          <li><strong>A topic is addressable by offset</strong>, so an index over it is a pure function of what it
+            has read — built incrementally, resumed wherever it stopped.</li>
+          <li><strong>Building it costs one read</strong> — the read a scan would have done anyway, paid once
+            instead of on every query.</li>
+          <li><strong>The index lands in the same order of magnitude as the messages</strong>, and comes down per
+            field you leave out of it.</li>
+          <li><strong>Searching costs the cluster nothing.</strong> Only opening a message goes back to Kafka, by
+            explicit partition and offset.</li>
+          <li><strong>What you give up:</strong> matching part of a word, one shared view for a team, and anything
+            that has to outlive Kafka's retention.</li>
+        </ul>
+      </div>
       <p>
         The architecture above is implemented in Kaflow Search, a desktop application you install on your own
         machine. The numbers in the appendix came off it.
