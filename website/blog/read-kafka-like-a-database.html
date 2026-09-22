@@ -3,8 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- DRAFT: remove this robots line to publish. -->
-    <meta name="robots" content="noindex, nofollow" />
     <meta
       name="description"
       content="A local-first approach to Kafka: indexing topics on a laptop instead of running a search pipeline — the architecture, what it costs on disk, and what it gives up."
@@ -68,13 +66,6 @@
       .article .getit-lead { margin: 0; display: flex; flex-direction: column; gap: 0.4rem; }
       .article .getit-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
       .article .getit-note { margin: 0; font-size: 0.875rem; color: var(--muted); display: flex; flex-direction: column; gap: 0.35rem; }
-      .draft-note { border: 2px dashed #c9915a; border-radius: 10px; padding: 1rem 1.25rem; margin: 1.5rem 0; color: #d8a96f; font-size: 0.95rem; background: rgba(201,145,90,.05); }
-      .draft-note p { margin: 0 0 0.6rem; }
-      .draft-note p:last-child { margin: 0; }
-      .draft-example { margin-top: 0.9rem; padding-left: 0.9rem; border-left: 2px solid var(--line); color: var(--muted); }
-      .draft-example .lbl { display: block; font-size: 0.75rem; letter-spacing: 0.09em; text-transform: uppercase; color: #d8a96f; margin-bottom: 0.45rem; }
-      .draft-example p { margin: 0 0 0.7rem; font-size: 0.925rem; line-height: 1.7; }
-      .draft-example p:last-child { margin: 0; }
     </style>
   </head>
   <body>
@@ -100,12 +91,6 @@
         <p class="standfirst">Building a local index so a Kafka topic can be queried directly.</p>
       </div>
 
-
-      <div class="draft-note">
-        <p><strong>초안입니다.</strong> 산문은 비어 있습니다 — 아래 점선 상자를 채우거나 지우면서 쓰시면 됩니다.</p>
-        <p><strong>예시 문단은 그대로 쓰지 마세요.</strong> HN 은 생성 텍스트 게시를 금지하고, 무엇보다 직접 겪은 이야기여야 힘이 붙습니다 — 방향만 참고하고 본인 문장으로 다시 쓰세요.</p>
-        <p>발행 전: 이 상자들과 <code>&lt;head&gt;</code> 의 <code>robots noindex</code> 한 줄을 지우고, <code>sitemap.xml</code> 에 이 URL 을 추가하세요.</p>
-      </div>
 
       <h2>Why this exists</h2>
       <p>
@@ -164,10 +149,6 @@
         is already familiar here — Kafka Streams keeps its state in RocksDB, ksqlDB with it. The only thing that
         changes is which machine the consumer runs on.
       </p>
-      <div class="draft-note">
-        <p>위 두 문단이 핵심 논거입니다. <strong>Kafka 개론으로 늘리지 마세요</strong> — 늘리면 "교육 포장을 씌운 홍보글" 로 읽힙니다.</p>
-      </div>
-
       <h2>Doing it on the laptop instead</h2>
       <figure>
         <img src="figures/to-be.svg" alt="Kafka fetched directly by partition and offset into a local index and search UI on the laptop, with the extra-infrastructure frame left empty." />
@@ -211,12 +192,6 @@
         <code>(partition, offset)</code> — the raw payload and any field that was not indexed. No consumer group is
         joined and no offsets are committed, so no rebalance is triggered and nobody else's position moves.
       </p>
-      <div class="draft-note">
-        <p>검색 속도를 한 문장 넣는다면 여기입니다 — <strong>표는 만들지 마세요.</strong></p>
-        <p>조건을 붙여서: <em>"2M 건 인덱스에서 키워드 검색이 노트북(M4) 기준 약 N초"</em> 형태로.
-           조건 없는 숫자는 다른 장비에서 재본 사람이 "과장" 으로 결론냅니다. 실측이 없으면 이 상자만 지우세요.</p>
-      </div>
-
       <h2>One read before any search</h2>
       <p>
         None of this is free. Nothing can be searched until it has been indexed, and indexing means reading the
