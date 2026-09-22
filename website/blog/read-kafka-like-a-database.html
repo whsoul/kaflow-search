@@ -422,6 +422,20 @@
         <li><strong>What you give up:</strong> matching part of a word, one shared view for a team, and anything
           that has to outlive Kafka's retention.</li>
       </ul>
+      <p>
+        Kafka is good infrastructure. It scales sideways, it stays up, it answers quickly, and plenty of services
+        lean on it for those reasons alone.
+      </p>
+      <p>
+        What it has never been is easy to search. The usual answer is to copy the data somewhere that is — a
+        reasonable answer, and a large one.
+      </p>
+      <p>
+        Local indexing is a smaller one. The messages are already in the topic; what was missing was a way to
+        reach them. Read Kafka like a database, and a fair amount of what usually surrounds it turns out to be
+        optional.
+      </p>
+
       <div class="getit">
         <p class="getit-lead">
           The architecture above is implemented in <strong>Kaflow Search</strong>, a desktop application you
