@@ -476,21 +476,17 @@
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Topic</th><th>Fields</th><th>Rate</th><th>1M messages</th></tr>
+            <tr><th>Topic</th><th>Fields</th><th>Rate</th><th>100K msgs</th><th>1M msgs</th></tr>
           </thead>
           <tbody>
-            <tr>
-              <td>chat-messages <span class="footnote">JSON key and value</span></td>
-              <td class="n">15</td>
-              <td class="n">about 10,000 / sec</td>
-              <td class="n">about 100 sec</td>
-            </tr>
+            <tr><td>chat-messages</td><td class="n">19</td><td class="n">about 10,000 / sec</td><td class="n">about 10 sec</td><td class="n">about 100 sec</td></tr>
           </tbody>
         </table>
       </div>
       <p class="footnote">
-        Fields: 1 key, 11 payload, 3 headers. Measured on an M4 with
-        32 GB, where the laptop was the limit — a faster machine does more, a remote cluster less.
+        Fields counted as below — about 19 values per message, from 15 declared ones once the list-valued fields
+        are expanded. Measured on an M4 with 32 GB, where the laptop was the limit: a faster machine does more, a
+        remote cluster less.
       </p>
 
 
