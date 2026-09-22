@@ -478,10 +478,6 @@
         These came off Kaflow Search, on RocksDB with its default compression. A different store lands
         somewhere else; the unit to carry away is per field, per message.
       </p>
-      <p class="footnote">
-        No comparison to the Kafka-side size is given. The same messages occupy wildly different numbers of bytes
-        on a broker depending on producer compression and batching, so it is not a stable baseline.
-      </p>
 
       <h3 id="rate">Indexing rate</h3>
       <div class="table-wrap">
@@ -512,9 +508,9 @@
         up holding, messages and the index over them together. A million of either is the same figure in megabytes.
       </p>
       <p>
-        A full index over every field costs about a tenth to a fifth more than the messages by themselves. It is
-        that cheap because compressing the stored copy recovers most of what the index spends — between two thirds
-        and four fifths of it, on these four.
+        A full index over every field costs about a tenth to a fifth more than the messages by themselves — and
+        on zstd it comes in under them. Compressing the stored copy recovers most of what the index spends, so a
+        searchable copy ends up costing roughly what the messages did.
       </p>
       <p>
         An entry is one term at one position — one for each value a message actually carries, so a field holding a
@@ -523,13 +519,13 @@
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Topic</th><th>Entries / msg</th><th>Raw message</th><th>Stored locally</th><th>Ratio</th></tr>
+            <tr><th>Topic</th><th>Entries / msg</th><th>Raw message</th><th>Stored</th><th>With zstd</th></tr>
           </thead>
           <tbody>
-            <tr><td>inventory-events</td><td class="n">20.6</td><td class="n">515 B</td><td class="n">586 B</td><td class="n">1.14&times;</td></tr>
-            <tr><td>notification-events</td><td class="n">21.5</td><td class="n">593 B</td><td class="n">673 B</td><td class="n">1.14&times;</td></tr>
-            <tr><td>payments-events</td><td class="n">25.9</td><td class="n">636 B</td><td class="n">768 B</td><td class="n">1.21&times;</td></tr>
-            <tr><td>crawled-market-signals</td><td class="n">31.2</td><td class="n">840 B</td><td class="n">927 B</td><td class="n">1.10&times;</td></tr>
+            <tr><td>inventory-events</td><td class="n">20.6</td><td class="n">515 B</td><td class="n">586 B<span class="footnote">1.14&times; raw</span></td><td class="n">418 B<span class="footnote">0.81&times; raw</span></td></tr>
+            <tr><td>notification-events</td><td class="n">21.5</td><td class="n">593 B</td><td class="n">673 B<span class="footnote">1.14&times; raw</span></td><td class="n">516 B<span class="footnote">0.87&times; raw</span></td></tr>
+            <tr><td>payments-events</td><td class="n">25.9</td><td class="n">636 B</td><td class="n">768 B<span class="footnote">1.21&times; raw</span></td><td class="n">483 B<span class="footnote">0.76&times; raw</span></td></tr>
+            <tr><td>crawled-market-signals</td><td class="n">31.2</td><td class="n">840 B</td><td class="n">927 B<span class="footnote">1.10&times; raw</span></td><td class="n">656 B<span class="footnote">0.78&times; raw</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -537,8 +533,8 @@
       <div class="derived">
         <div>
           <span class="l">Index and messages</span>
-          <span class="v">1.1–1.2&times; raw</span>
-          <span class="s">Keeping a searchable copy costs barely more than the messages did. Count the bytes you send and you have your estimate.</span>
+          <span class="v">0.8–1.2&times; raw</span>
+          <span class="s">A fully searchable copy costs about what the messages did — less than that with zstd on.</span>
         </div>
         <div>
           <span class="l">A million messages</span>
@@ -557,8 +553,7 @@
         between 0.91 and 1.03 times ten-fold — near enough to linear that a small sample predicts the full topic.
       </p>
       <p class="footnote">
-        Switching to zstd took about 30% more off — worth having when disk is tight, at the cost of
-        slower writes.
+        zstd costs slower writes for that; the default trades the other way.
       </p>
 
     </main>
