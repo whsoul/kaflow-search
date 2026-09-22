@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <meta
       name="description"
-      content="Indexing Kafka topics on a laptop instead of running a search pipeline: the architecture, what it costs on disk, and what it gives up."
+      content="A local-first approach to Kafka: indexing topics on a laptop instead of running a search pipeline — the architecture, what it costs on disk, and what it gives up."
     />
     <meta name="author" content="Kaflow Search" />
     <meta name="theme-color" content="#090b12" />
@@ -19,7 +19,7 @@
     <meta property="og:title" content="Read Kafka like a Database" />
     <meta
       property="og:description"
-      content="Indexing Kafka topics on a laptop instead of running a search pipeline: the architecture, what it costs on disk, and what it gives up."
+      content="A local-first approach to Kafka: indexing topics on a laptop instead of running a search pipeline — the architecture, what it costs on disk, and what it gives up."
     />
     <meta name="twitter:card" content="summary_large_image" />
     <title>Read Kafka like a Database — Kaflow Search</title>
@@ -69,7 +69,7 @@
       .article .recap li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
       .article .recap li strong { color: var(--text); }
       .article .getit { margin: 3rem 0 0; padding: 1.8rem 1.9rem 1.9rem; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; display: flex; flex-direction: column; gap: 1.1rem; align-items: stretch; }
-      .article .getit-lead { margin: 0; }
+      .article .getit-lead { margin: 0; display: flex; flex-direction: column; gap: 0.4rem; }
       .article .getit-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
       .article .getit-note { margin: 0; font-size: 0.875rem; color: var(--muted); display: flex; flex-direction: column; gap: 0.35rem; }
       .draft-note { border: 2px dashed #c9915a; border-radius: 10px; padding: 1rem 1.25rem; margin: 1.5rem 0; color: #d8a96f; font-size: 0.95rem; background: rgba(201,145,90,.05); }
@@ -193,8 +193,8 @@
         <figcaption>Nothing to run on the server side. The dashed frame is the same size and place as in the figure above.</figcaption>
       </figure>
       <p>
-        Fetch by explicit partition and offset, build the index locally, search it locally. No consumer group is
-        joined and no offsets are committed, so the cluster does not notice.
+        Fetch by explicit partition and offset, build the index locally, search it locally — the local-first
+        version of the same idea. No consumer group is joined and no offsets are committed, so the cluster does not notice.
       </p>
       <p>
         For each message it reads the key, the headers and the value, decodes them in whatever format the topic
@@ -455,8 +455,9 @@
 
       <div class="getit">
         <p class="getit-lead">
-          The architecture above is implemented in <strong>Kaflow Search</strong>, a desktop application you
-          install on your own machine. The numbers in the appendix came off it.
+          <span>The architecture above is implemented in <strong>Kaflow Search</strong>, a local-first desktop
+            application.</span>
+          <span>The numbers in the appendix came off it.</span>
         </p>
         <div class="getit-actions">
           <a class="button" href="/">Try Kaflow Search</a>
