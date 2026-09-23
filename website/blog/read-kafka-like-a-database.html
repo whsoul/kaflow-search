@@ -400,10 +400,10 @@
       </div>
       <p>And how those keys are designed is what the implementation turns on.</p>
 
-      <h2>What you give up</h2>
+      <h2>Where a local index stops</h2>
       <p>
-        Most of this table falls the local index's way, which is why the rows that do not are the ones worth
-        reading first.
+        Most of this table falls the local index's way. The limits are in the rows that do not, and those are
+        the ones worth reading first.
       </p>
       <div class="table-wrap">
         <table class="wrap">
@@ -444,7 +444,7 @@
             every field and every message you leave out of it.</li>
           <li><strong>Searching costs the cluster nothing.</strong> Only opening a message goes back to Kafka, by
             explicit partition and offset.</li>
-          <li><strong>What you give up:</strong> matching part of a word, one shared view for a team, anything
+          <li><strong>The limits:</strong> matching part of a word, one shared view for a team, anything
             that has to outlive Kafka's retention, and data that has to keep landing in a persistent store.</li>
         </ul>
         </div>
