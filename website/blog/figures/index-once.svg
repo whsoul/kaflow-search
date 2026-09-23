@@ -43,7 +43,7 @@ path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
   <rect x="836" y="190" width="40" height="38" rx="3" fill="var(--local)"/>
   <rect x="898" y="190" width="40" height="38" rx="3" fill="var(--local)"/>
   <text class="seg" x="440" y="246" text-anchor="middle" fill="var(--cost)">one full read</text>
-  <text class="seg" x="794" y="246" text-anchor="middle" fill="var(--local)">a slice every 30s</text>
+  <text class="seg" x="794" y="246" text-anchor="middle" fill="var(--local)">a slice on a timer</text>
 
   <path class="arw" d="M250,276 L950,276" marker-end="url(#t)"/>
   <text class="ns" x="250" y="294">time</text>
