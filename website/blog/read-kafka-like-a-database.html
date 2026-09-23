@@ -427,8 +427,7 @@
         </table>
       </div>
       <p>
-        The last four rows are the honest part. If you need to match part of a word, if a team has to share one
-        view, or if the data must outlive Kafka's retention, the pipeline is the right answer. The largest of
+        If you need to match part of a word, if a team has to share one view, or if the data must outlive Kafka's retention, the pipeline is the right answer. The largest of
         them is the last row: if the data has to end up somewhere permanent — a warehouse, a database, whatever
         reads from it downstream — an index that runs only when someone opens it cannot stand in for that. A local index only works where none of those four is needed.
       </p>
