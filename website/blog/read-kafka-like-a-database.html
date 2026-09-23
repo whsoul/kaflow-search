@@ -244,7 +244,8 @@
       <h3>The whole topic is read once</h3>
       <figure>
         <img src="figures/index-once.svg" alt="Two indexing modes on a time axis. Both begin with one full read. In manual mode a single increment follows when the topic is picked again. With autoSync, small increments run on a timer while the app is open." />
-        <figcaption>Both modes pay the same one-off read. What differs after it is only when the increments run.</figcaption>
+        <figcaption>Both modes pay the same one-off read. What differs after it is only when the increments run.
+          Drop the index and rebuild it, and that read is paid again.</figcaption>
       </figure>
       <p>
         The last indexed offset is recorded per partition, so nothing is ever read twice. Leave a topic on manual
