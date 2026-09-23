@@ -129,7 +129,7 @@
         the topic. All I needed to know was where.
       </p>
 
-      <h2>The stack you end up running</h2>
+      <h2>The usual Kafka architecture</h2>
       <figure>
         <img src="figures/as-is.svg" alt="Kafka feeding Kafka Connect or Logstash into Elasticsearch and Kibana, a sink connector into a database, and ksqlDB or Flink — all running as extra always-on infrastructure, viewed through three separate clients." />
         <figcaption>The usual pipeline, assembled one piece at a time, grows into this.</figcaption>
@@ -165,7 +165,7 @@
         is already familiar here — Kafka Streams keeps its state in RocksDB, ksqlDB with it. The only thing that
         changes is which machine the consumer runs on.
       </p>
-      <h2>Doing it on the laptop instead</h2>
+      <h2>Kafka on the server, the rest on your laptop</h2>
       <figure>
         <img src="figures/to-be.svg" alt="Kafka fetched directly by partition and offset into a local index and search UI on the laptop, with the extra-infrastructure frame left empty." />
         <figcaption>Nothing to run on the server side. The dashed frame is the same size and place as in the figure above.</figcaption>
