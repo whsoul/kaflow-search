@@ -445,9 +445,9 @@
             every field and every message you leave out of it.</li>
           <li><strong>Searching costs the cluster nothing.</strong> Only opening a message goes back to Kafka, by
             explicit partition and offset.</li>
-          <li><strong>The limits:</strong> whatever one machine holds (no scaling sideways), one shared view
-            for a team, data that has to outlive Kafka's
-            retention, and standing in for a persistent store.</li>
+          <li><strong>Where it does not cover you:</strong> when the index will not fit on one machine, when
+            a team has to share one view, when the data must outlive Kafka's retention, and when something
+            has to serve as a persistent store.</li>
         </ul>
         </div>
 
