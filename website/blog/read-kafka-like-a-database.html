@@ -420,16 +420,15 @@
             <tr><td>Matching</td><td>analyzers, wildcards, partial words</td><td>values, prefixes and whole words</td></tr>
             <tr><td><strong>Sharing with a team</strong></td><td>everyone sees the same view</td><td><strong>no — each disk is its own</strong></td></tr>
             <tr><td>Retention</td><td>keep it forever</td><td>Kafka retention plus local trimming</td></tr>
-            <tr><td>Ongoing use</td><td>feeds dashboards, alerts and downstream systems</td><td>only when a person opens it</td></tr>
+            <tr><td>Ongoing use</td><td>lands in a warehouse, a database, some persistent layer</td><td>only when a person opens it</td></tr>
           </tbody>
         </table>
       </div>
       <p>
         The last four rows are the honest part. If you need to match part of a word, if a team has to share one
         view, or if the data must outlive Kafka's retention, the pipeline is the right answer. The largest of
-        them is the last row: if something has to keep happening with the data — a dashboard refreshing, an
-        alert firing, another system downstream — an index that runs only when someone opens it cannot stand in
-        for that. A local index trades those four away to get everything above them.
+        them is the last row: if the data has to end up somewhere permanent — a warehouse, a database, whatever
+        reads from it downstream — an index that runs only when someone opens it cannot stand in for that. A local index trades those four away to get everything above them.
       </p>
 
       <div class="summary">
