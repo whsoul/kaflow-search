@@ -518,11 +518,6 @@
         Kafka cluster keeps on disk. Tokenizing, or building n-grams, makes search finer and the index larger
         in proportion. zstd can bring it under that, by how much depends on the data.
       </p>
-      <p>
-        <em>Fields</em> is how many values a message actually carries — one index entry each, so a field holding a
-        list counts for several and an absent one counts for none. The last two columns are totals on disk at the
-        default setting.
-      </p>
       <div class="table-wrap">
         <table>
           <thead>
@@ -543,7 +538,7 @@
         somewhere between 100 and 170 million messages — fewer when the messages are bigger.
       </p>
       <p class="footnote">
-        zstd costs slower writes for that; the default trades the other way.
+        The last two columns are at the default compression; zstd trims more and writes slower.
       </p>
 
     </main>
