@@ -511,7 +511,7 @@
       <p>
         Four topics, a million messages each, every field indexed. <em>Raw message</em> is the key, the value and
         the headers as plain JSON, before anyone compresses anything; <em>stored locally</em> is what RocksDB ends
-        up holding, messages and the index over them together. A million of either is the same figure in megabytes.
+        up holding, messages and the index over them together. Bytes per message read straight across as megabytes per million.
       </p>
       <p>
         A full index over every field costs about a tenth to a fifth more than the raw JSON — and on zstd it
