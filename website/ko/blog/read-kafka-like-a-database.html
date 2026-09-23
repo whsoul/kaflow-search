@@ -145,7 +145,8 @@
       <p>Kafka 토픽의 데이터는 계속 덧붙는 방식으로 쌓이고, 파티션 안에서는 순서가 보장되며, 오프셋이라는 주소를 갖는다.
         그래서 그 위의 인덱스는 <code>(토픽, 파티션, 오프셋 범위)</code> 의 순수 함수가 된다. 증분으로 만들어 갈 수 있고,
         중단된 지점부터 이어갈 수 있으며, 그러는 동안 어디에도 진행 상태를 맞출 필요가 없다.</p>
-      <p>새로운 기술이 필요한 것도 아니다. SQLite, DuckDB, RocksDB 를 비롯해 로컬 디스크에 인덱스를 담을 수 있는 것은 많고, 무엇을 고를지는 아래에서 따로 다룬다. 그리고 컨슈머 옆에 인덱스를 두는 일은 이 생태계에서 이미 익숙하다. Kafka Streams 가 상태를 RocksDB 에 두고, ksqlDB 도 그렇다. 달라지는 건 그 컨슈머가 어느 기계에서 도느냐뿐이다.</p>
+      <p>SQLite, DuckDB, RocksDB 등으로 로컬 디스크에 인덱스를 만들 수 있다. 각각의 비교와 선택 기준은
+        아래에서 따로 다룬다. 그리고 컨슈머 옆에 인덱스를 두는 일은 이 생태계에서 이미 익숙하다. Kafka Streams 가 상태를 RocksDB 에 두고, ksqlDB 도 그렇다. 달라지는 건 그 컨슈머가 어느 기계에서 도느냐뿐이다.</p>
       <h2>그 일을 노트북에서 하기</h2>
       <figure>
         <img src="../../blog/figures/to-be.svg" alt="Kafka fetched directly by partition and offset into a local index and search UI on the laptop, with the extra-infrastructure frame left empty." />
