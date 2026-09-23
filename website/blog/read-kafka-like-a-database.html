@@ -443,7 +443,8 @@
             only increments, resumed wherever they stopped.</li>
           <li><strong>The index does not swell far beyond the messages it describes</strong>, and comes down with
             every field and every message you leave out of it.</li>
-          <li><strong>Searching costs the cluster nothing.</strong> Only opening a message goes back to Kafka, by
+          <li><strong>A search runs entirely in the local index, so it costs the cluster
+            nothing.</strong> Only opening a message goes back to Kafka, by
             explicit partition and offset.</li>
           <li><strong>Where it does not cover you:</strong> when the index will not fit on one machine, when
             a team has to share one view, when the data must outlive Kafka's retention, and when something
