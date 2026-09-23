@@ -391,7 +391,8 @@
       <div class="callout">
         <span class="lbl">What seeking will not do</span>
         <p>
-          A sorted key store seeks to a value or to a prefix, and nothing past that comes free. Matching a word
+          Keys kept in sorted order buy two moves: jump to an exact value, or to where a given prefix begins.
+          Nothing past that comes free. Matching a word
           inside a sentence means tokenizing before the write. Matching part of a word means an n-gram index — a
           second index, with a size of its own. So it comes down to a choice: carry that size to support
           <code>%oo%</code>, or leave it out and stay small.
