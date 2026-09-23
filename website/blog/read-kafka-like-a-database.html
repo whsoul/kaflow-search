@@ -486,8 +486,8 @@
 
       <h2 id="appendix">Appendix: numbers from Kaflow Search</h2>
       <p>
-        These came off Kaflow Search, on RocksDB with its default compression. A different store lands
-        somewhere else. What holds either way is that the size scales with the number of fields and the number
+        These came off Kaflow Search on an M4 with 32 GB, on RocksDB with its default compression. A
+        different machine or store lands somewhere else, so take the absolute figures as a reference. What holds either way is that the size scales with the number of fields and the number
         of messages, so the table can be rescaled to your own data.
       </p>
 
@@ -504,8 +504,7 @@
       </div>
       <p class="footnote">
         Fields counted as below — about 19 values per message, from 15 declared ones once the list-valued fields
-        are expanded. Measured on an M4 with 32 GB, where the laptop was the limit: a faster machine does more, a
-        remote cluster less.
+        are expanded. The laptop was the limit here, not the network: a faster machine does more, a remote cluster less.
       </p>
 
 
