@@ -206,9 +206,10 @@
       <div class="callout">
         <span class="lbl">What the cluster sees</span>
         <p>
-          Opening a row is the only thing that goes outward, and it asks for exactly one message by
-          <code>(partition, offset)</code> — the raw payload and any field that was not indexed. No consumer group is
-          joined and no offsets are committed, so no rebalance is triggered and nobody else's position moves.
+          The fields that were indexed are in the index, so building the result list asks the cluster for
+          nothing. Only opening one of those rows needs the original message, and that fetch names exactly
+          one by <code>(partition, offset)</code>. If no consumer group is joined there are no offsets to
+          commit, so no rebalance is triggered and nobody else's position moves.
         </p>
       </div>
       <h2>One read before any search</h2>
