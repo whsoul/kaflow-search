@@ -185,10 +185,10 @@
         하고 나면, 이후 인덱싱은 알아서 돌아간다.</p>
 
       <h3>인덱싱에 걸리는 시간</h3>
-      <p>인덱싱 시간을 좌우하는 건 읽기가 아니라 메시지당 작업이다. 그 작업이 가벼우면 백만 건도 배치로 걸어 둘 일이 아니라,
+      <p>인덱싱 시간을 좌우하는 건 읽기가 아니라 메시지당 작업이다. 그 작업을 가볍게 다듬으면 백만 건도 배치로 걸어 둘 일이 아니라,
         앉아서 기다리면 끝나는 일이 된다. <a href="#rate">구현체에서 잰 수치</a>는 부록에 있다.</p>
 
-      <h3>그리고 반복되지 않는다</h3>
+      <h3>그 읽기는 한 번뿐이다</h3>
       <figure>
         <img src="../../blog/figures/index-once.svg" alt="Two indexing modes on a time axis. Both begin with one full read. In manual mode a single increment follows when the topic is picked again. With autoSync, small increments run on a timer while the app is open." />
         <figcaption>두 모드 모두 같은 한 번의 읽기를 치른다. 그 뒤로 달라지는 건 증분이 언제 도느냐뿐이다.</figcaption>
