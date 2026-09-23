@@ -109,7 +109,7 @@
         <p class="standfirst">Working with Kafka data on your own terms, using a local index.</p>
         <p class="lead">
           A search stack usually follows Kafka into a service. But the message you are looking for is already in
-          the topic — and what format it is in, which fields are worth having, the data says for itself. Pick a
+          the topic — and what format it is in, which fields are worth indexing, the data says for itself. Pick a
           topic and the index builds itself.
         </p>
       </div>
@@ -117,7 +117,7 @@
 
       <h2>Why this exists</h2>
       <p>
-        I have used Kafka on services for a long time — tracing user actions, propagating events for event
+        I have used Kafka in services for a long time — tracing user actions, propagating events for event
         sourcing, moving work between pipeline steps. And every time, the same ecosystem went up around it. ELK, so
         that someone could search the messages when operations or an incident called for it. A sink connector, to
         forward data into some persistent store. ksqlDB, or Flink, to count and watch the stream. More
@@ -142,9 +142,9 @@
         <figcaption>The usual pipeline, assembled one piece at a time, grows into this.</figcaption>
       </figure>
       <p>
-        To search messages you operate Kafka Connect (or Logstash) into Elasticsearch, a sink connector into a
+        To search messages you wire Kafka Connect (or Logstash) into Elasticsearch, a sink connector into a
         database, and ksqlDB or Flink for counting. Each one is a service that has to be up, upgraded and paid for,
-        and each is read through a different client.
+        and each one is reached through a different client.
       </p>
       <p>
         Building out a data pipeline is good work for a data engineer — interesting, and good for a career.
@@ -156,7 +156,7 @@
         funding yourself, you feel all of it.
       </p>
       <p>
-        <strong>Which is worth asking plainly: does the service need the pipeline, or does it just need to find a
+        <strong>So it is worth asking plainly: does the service need the pipeline, or does it just need to find a
         message?</strong>
       </p>
 
@@ -262,7 +262,7 @@
       </p>
 
       <blockquote class="pull">
-        <p>My desktop and yours are too powerful, and too expensive, to spend only on a web browser and a chat
+        <p>My desktop and yours are too powerful, and too expensive, to use only for a web browser and a chat
           window.</p>
       </blockquote>
 
@@ -271,8 +271,7 @@
         A fair question by now: can one machine hold an index over what a Kafka cluster has been accumulating?
       </p>
       <p>
-        Managed well, an index does not swell far beyond the messages it describes. The cost falls per field,
-        per message, so it can be judged before a byte is read. <a href="#disk">Figures in the appendix.</a>
+        Managed well, an index does not swell far beyond the messages it describes. The cost is per field and per message, so it can be judged before a byte is read. <a href="#disk">Figures in the appendix.</a>
       </p>
       <p>
         So the question is not how large the cluster is, but how much of it you keep. There is no reason to take
@@ -317,8 +316,7 @@
       </p>
       <p>
         What gets reclaimed is governed by per-topic policies, and each one is a different answer to the same
-        question: what is the cheapest thing to stop knowing? These are the ones that exist today. Which applies
-        where is a tuning decision rather than a guarantee, so it is not worth writing down as one.
+        question: what is the cheapest thing to stop knowing? These are the ones that exist today.
       </p>
       <div class="table-wrap">
         <table class="wrap">
@@ -454,12 +452,11 @@
 
       <h2>Conclusion</h2>
       <p>
-        Kafka is a good data store — it scales sideways, it stays up, it answers quickly. A great many services
+        Kafka is a good data store — it scales horizontally, it stays up, it answers quickly. A great many services
         run on it for good reasons.
       </p>
       <p>
-        A data pipeline usually follows — not because the service needed one, but because that is what you
-        do with Kafka.
+        A data pipeline usually follows, because that is how Kafka tends to get used.
       </p>
       <p>
         But the data is already in Kafka. Give a topic an index it builds for itself, and it reads the way a database does — straight to the
@@ -533,8 +530,8 @@
       </div>
 
       <p>
-        The last two columns also say the shape holds: ten times the messages came out between 0.92 and 1.03
-        times the size, so a small sample predicts a large topic. In principle, 100 GB of local
+        The last two columns also say the shape holds: ten times the messages came out at 0.92 to 1.03
+        times the size per message, so a small sample predicts a large topic. In principle, 100 GB of local
         disk covers well over a hundred million messages. Holding that much locally is not what this is for,
         though.
       </p>
