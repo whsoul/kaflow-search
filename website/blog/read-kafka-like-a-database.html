@@ -514,11 +514,9 @@
         up holding, messages and the index over them together. Bytes per message read straight across as megabytes per million.
       </p>
       <p>
-        A full index over every field costs about a tenth to a fifth more than the raw JSON — and on zstd it
-        comes in under it. Two things to be clear about, though. <em>Stored</em> is compressed and <em>raw</em> is
-        not, so the ratio between those columns is not the ratio against what Kafka holds — a cluster that
-        compresses stores less too. And these sizes come from an index that matches exact values and prefixes
-        only; building n-grams for substring search would multiply every figure here.
+        Indexing every field runs 1.1 to 1.2 times the raw data — raw meaning the data itself, not what the
+        Kafka cluster keeps on disk. Tokenizing, or building n-grams, makes search finer and the index larger
+        in proportion. zstd can bring it under that, by how much depends on the data.
       </p>
       <p>
         <em>Fields</em> is how many values a message actually carries — one index entry each, so a field holding a
