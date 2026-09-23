@@ -427,10 +427,9 @@
         </table>
       </div>
       <p>
-        If a team has to share one view, or if the data must outlive Kafka's retention, the pipeline is the
-        right answer. The largest of
-        them is the last row: if the data has to end up somewhere permanent — a warehouse, a database, whatever
-        reads from it downstream — an index that runs only when someone opens it cannot stand in for that. A local index only works where none of those three is needed.
+        If the index will not fit on one machine, if a team has to share one view, or if the data must
+        outlive Kafka's retention, the pipeline is the right answer. The largest of the four is the last row: if the data has to end up somewhere permanent — a warehouse, a database, whatever
+        reads from it downstream — an index that runs only when someone opens it cannot stand in for that. A local index only works where none of those four applies.
       </p>
 
       <div class="summary">
@@ -446,7 +445,8 @@
             every field and every message you leave out of it.</li>
           <li><strong>Searching costs the cluster nothing.</strong> Only opening a message goes back to Kafka, by
             explicit partition and offset.</li>
-          <li><strong>The limits:</strong> one shared view for a team, data that has to outlive Kafka's
+          <li><strong>The limits:</strong> whatever one machine holds (no scaling sideways), one shared view
+            for a team, data that has to outlive Kafka's
             retention, and standing in for a persistent store. Matching part of a word is less a limit than a
             choice about how large the index may grow.</li>
         </ul>
