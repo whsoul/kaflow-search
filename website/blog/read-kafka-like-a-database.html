@@ -212,7 +212,7 @@
           commit, so no rebalance is triggered and nobody else's position moves.
         </p>
       </div>
-      <h2>One read before any search</h2>
+      <h2>Indexing before any search</h2>
       <p>
         None of this is free. Nothing can be searched until it has been indexed, and indexing means reading the
         topic through once.
@@ -235,7 +235,7 @@
         infrastructure.
       </p>
 
-      <h3>How long that read takes</h3>
+      <h3>How long indexing takes</h3>
       <p>
         So the time goes on that per-message work, not on the reading. Keep it small and a million messages is a
         wait you sit through rather than schedule. <a href="#rate">Figures from the implementation</a> are in the appendix.
