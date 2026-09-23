@@ -505,9 +505,11 @@
         up holding, messages and the index over them together. A million of either is the same figure in megabytes.
       </p>
       <p>
-        A full index over every field costs about a tenth to a fifth more than the messages by themselves — and
-        on zstd it comes in under them. Compressing the stored copy recovers most of what the index spends, so a
-        searchable copy ends up costing roughly what the messages did.
+        A full index over every field costs about a tenth to a fifth more than the raw JSON — and on zstd it
+        comes in under it. Two things to be clear about, though. <em>Stored</em> is compressed and <em>raw</em> is
+        not, so the ratio between those columns is not the ratio against what Kafka holds — a cluster that
+        compresses stores less too. And these sizes come from an index that matches exact values and prefixes
+        only; building n-grams for substring search would multiply every figure here.
       </p>
       <p>
         <em>Fields</em> is how many values a message actually carries — one index entry each, so a field holding a
