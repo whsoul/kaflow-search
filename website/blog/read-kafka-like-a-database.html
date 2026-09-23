@@ -434,18 +434,19 @@
       <div class="summary">
         <h2>In short</h2>
         <ul class="recap">
-          <li><strong>Nothing to declare.</strong> The format and the useful fields fall out of the data, so there
-          is no mapping to write, no schema to register and no connector to configure.</li>
-        <li><strong>A topic is addressable by offset</strong>, so an index over it is a pure function of what it
+          <li><strong>Almost nothing to declare.</strong> The format and the useful fields fall out of the data,
+            so past a few choices there is no mapping to write, no schema to register and no connector to
+            configure.</li>
+          <li><strong>A topic is addressable by offset</strong>, so an index over it is a pure function of what it
             has read — built incrementally, resumed wherever it stopped.</li>
           <li><strong>Building it costs one read</strong> — the read a scan would have done anyway, paid once
             instead of on every query.</li>
-          <li><strong>The index lands in the same order of magnitude as the messages</strong>, and comes down per
-            field you leave out of it.</li>
+          <li><strong>The index does not swell far beyond the messages it describes</strong>, and comes down with
+            every field and every message you leave out of it.</li>
           <li><strong>Searching costs the cluster nothing.</strong> Only opening a message goes back to Kafka, by
             explicit partition and offset.</li>
-          <li><strong>What you give up:</strong> matching part of a word, one shared view for a team, and anything
-            that has to outlive Kafka's retention.</li>
+          <li><strong>What you give up:</strong> matching part of a word, one shared view for a team, anything
+            that has to outlive Kafka's retention, and data that has to keep landing in a persistent store.</li>
         </ul>
         </div>
 
