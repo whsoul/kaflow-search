@@ -264,13 +264,14 @@
         A fair question by now: can one machine hold what a Kafka cluster has been accumulating?
       </p>
       <p>
-        Index every field of every message and it lands in the same order of magnitude as the messages themselves.
-        That is what makes a laptop a plausible place to keep it — the number to plan against is the data you
-        already have, not a multiple of it. And because the cost falls per field, per message, that number can be
-        worked out before a byte is read. <a href="#disk">Figures in the appendix.</a>
+        It splits in two. The first is the <strong>multiplier</strong> — whether an index balloons to several
+        times the data it describes. It does not. Index every field of every message and it lands in the same
+        order of magnitude as the messages themselves, and because the cost falls per field, per message, that
+        size can be worked out before a byte is read. <a href="#disk">Figures in the appendix.</a>
       </p>
       <p>
-        And that is the figure for indexing all of it.
+        The second is the <strong>total</strong>. No laptop is going to absorb a topic spread across dozens of
+        partitions in its entirety. So you do not index all of it.
       </p>
 
       <h2>Not indexing everything</h2>
