@@ -365,7 +365,7 @@
             <tr>
               <td>Costs you</td>
               <td>index size grows fast; trimmed space needs reclaiming</td>
-              <td>every lookup is a scan; trimming rewrites data</td>
+              <td>indexes cover <code>=</code> and <code>IN</code>; a prefix lookup is still a scan, and trimming rewrites data</td>
               <td>matching is yours to build, n-grams included</td>
             </tr>
             <tr>
