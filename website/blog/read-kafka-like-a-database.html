@@ -227,12 +227,12 @@
         </p>
       </div>
 
-      <h3>The data already says what it is</h3>
+      <h3>Given the data, indexing configures itself</h3>
       <p>
         Most of what a pipeline makes you declare up front is already in the data. Sample the messages and the
-        wire format falls out of the bytes, the fields worth indexing out of what actually appears in them. So no
-        mapping, no schema to register, no connector config — the parts that usually cost more than the
-        infrastructure.
+        wire format falls out of the bytes, the fields worth indexing out of what actually appears in them.
+        Formats that rely on a schema registry carry their schema id in the message, so an address for the
+        registry is the whole of the setup. Past those few choices, the indexing runs itself.
       </p>
 
       <h3>How long indexing takes</h3>
