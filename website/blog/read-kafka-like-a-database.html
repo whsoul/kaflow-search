@@ -51,6 +51,11 @@
       .article td .footnote, .article th .footnote { font-size: 0.78rem; display: block; text-transform: none; letter-spacing: 0; font-weight: 400; }
       .article th { vertical-align: bottom; }
       .article td:first-child { color: var(--muted); }
+    .article table.wrap th,
+    .article table.wrap td { white-space: normal; vertical-align: top; }
+    .article table.cols3 { table-layout: fixed; }
+    .article table.cols3 td:first-child,
+    .article table.cols3 th:first-child { width: 16%; }
       .article code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: var(--panel); padding: 0.1em 0.4em; border-radius: 4px; }
       .article .pull { margin: 3.25rem 0; padding: 1.65rem 1.8rem; border: 1px dashed var(--accent); border-radius: 10px; }
       .article .pull p { font-size: clamp(1rem, 2vw, 1.2rem); line-height: 1.55; letter-spacing: -0.012em; color: var(--accent-bright); margin: 0; text-wrap: balance; max-width: none; font-style: italic; text-indent: -0.44em; }
@@ -283,7 +288,7 @@
         cleanup policy, and can be tightened after the fact.
       </p>
       <div class="table-wrap">
-        <table>
+        <table class="wrap">
           <thead>
             <tr><th>Strategy</th><th>What it trims</th><th>Setting</th></tr>
           </thead>
@@ -314,7 +319,7 @@
         where is a tuning decision rather than a guarantee, so it is not worth writing down as one.
       </p>
       <div class="table-wrap">
-        <table>
+        <table class="wrap">
           <thead>
             <tr><th>Policy</th><th>What it gives up</th></tr>
           </thead>
@@ -341,7 +346,7 @@
         sorted prefix on every search, and slices thrown away whenever a policy trims.
       </p>
       <div class="table-wrap">
-        <table>
+        <table class="wrap cols3">
           <thead>
             <tr>
               <th></th>

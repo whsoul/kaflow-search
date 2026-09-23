@@ -51,6 +51,11 @@
       .article td .footnote, .article th .footnote { font-size: 0.78rem; display: block; text-transform: none; letter-spacing: 0; font-weight: 400; }
       .article th { vertical-align: bottom; }
       .article td:first-child { color: var(--muted); }
+    .article table.wrap th,
+    .article table.wrap td { white-space: normal; vertical-align: top; }
+    .article table.cols3 { table-layout: fixed; }
+    .article table.cols3 td:first-child,
+    .article table.cols3 th:first-child { width: 16%; }
       .article code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: var(--panel); padding: 0.1em 0.4em; border-radius: 4px; }
       .article .pull { margin: 3.25rem 0; padding: 1.65rem 1.8rem; border: 1px dashed var(--accent); border-radius: 10px; }
       .article .pull p { font-size: clamp(1rem, 2vw, 1.2rem); line-height: 1.55; letter-spacing: -0.012em; color: var(--accent-bright); margin: 0; text-wrap: balance; max-width: none; font-style: italic; text-indent: -0.44em; }
@@ -214,7 +219,7 @@
       </figure>
       <p>셋은 걸리는 방식이 다르다. 토픽은 고를 때 정해지고, 건수와 필드는 정리 정책으로 뒤에도 조일 수 있다.</p>
       <div class="table-wrap">
-        <table>
+        <table class="wrap">
           <thead>
             <tr><th>전략</th><th>줄이는 축</th><th>설정</th></tr>
           </thead>
@@ -233,7 +238,7 @@
         말하자면 인덱스의 GC 다. 언제 정리할지를 사람이 기억하고 있을 필요가 없다.</p>
       <p>무엇을 회수할지는 토픽별 정책이 정하고, 각각은 같은 질문에 대한 서로 다른 답이다. 무엇을 모르게 되는 것이 가장 싼가? 아래는 지금 존재하는 것들이다. 어디에 무엇이 적용되는지는 보장이 아니라 튜닝의 문제라, 약속처럼 적어 둘 일은 아니다.</p>
       <div class="table-wrap">
-        <table>
+        <table class="wrap">
           <thead>
             <tr><th>정책</th><th>포기하는 것</th></tr>
           </thead>
@@ -253,7 +258,7 @@
       <h2>인덱스를 어디에 둘 것인가</h2>
       <p>여기까지 오면 인덱스가 무엇을 요구하는지 드러난다. 토픽을 받아들이는 동안의 길고 지속적인 쓰기, 검색할 때마다의 정렬된 prefix seek, 그리고 정책이 잘라낼 때마다 통째로 버려지는 조각들.</p>
       <div class="table-wrap">
-        <table>
+        <table class="wrap cols3">
           <thead>
             <tr>
               <th></th>
