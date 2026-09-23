@@ -264,10 +264,8 @@
         A fair question by now: can one machine hold what a Kafka cluster has been accumulating?
       </p>
       <p>
-        Index size goes with message count. For a JSON topic carrying twenty to thirty fields, indexing every
-        one of them runs 600 to 900 bytes per message — under a gigabyte per million. The cost falls per field,
-        per message, so that size can be worked out before a byte is read.
-        <a href="#disk">Figures in the appendix.</a>
+        Managed well, an index does not swell far beyond the messages it describes. The cost falls per field,
+        per message, so it can be judged before a byte is read. <a href="#disk">Figures in the appendix.</a>
       </p>
       <p>
         So the question is not how large the cluster is, but how much of it you keep. There is no reason to take
