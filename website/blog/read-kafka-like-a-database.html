@@ -29,6 +29,7 @@
       .article { max-width: 47rem; margin: 0 auto; padding: 3rem 1.25rem 6rem; }
       .article-head { border-bottom: 1px solid var(--line); padding-bottom: 1.75rem; margin-bottom: 2.25rem; }
       .article-head h1 { font-size: clamp(2rem, 5vw, 2.85rem); line-height: 1.15; margin: 0.5rem 0 0; letter-spacing: -0.02em; }
+      .article-head .lead { font-size: 1.05rem; line-height: 1.8; color: var(--text); margin: 1.4rem 0 0; max-width: 62ch; }
       .article-head .standfirst { color: var(--muted); font-size: 1.05rem; margin: 0.9rem 0 0; }
       .article h3 { font-size: 1.05rem; margin: 2rem 0 0.75rem; color: var(--accent-bright); letter-spacing: -0.005em; }
       .article h2 { font-size: 1.4rem; margin: 3rem 0 1rem; letter-spacing: -0.01em; }
@@ -98,7 +99,12 @@
     <main class="article">
       <div class="article-head">
         <h1>Read Kafka like a Database</h1>
-        <p class="standfirst">Building a local index so a Kafka topic can be queried directly.</p>
+        <p class="standfirst">Working with Kafka data on your own terms, using a local index.</p>
+        <p class="lead">
+          A search stack usually follows Kafka into a service. But the message you are looking for is already in
+          the topic — and what format it is in, which fields are worth having, the data says for itself. Pick a
+          topic and the index builds itself.
+        </p>
       </div>
 
 
@@ -134,9 +140,9 @@
         and each is read through a different client.
       </p>
       <p>
-        None of that is unpleasant work, to be fair. Building out a data pipeline is interesting, and it is good
-        for a career. The trouble is what it costs the service it sits beside — servers to run, weeks to build,
-        attention to keep alive — for a capability nobody is paying you for.
+        Building out a data pipeline is good work for a data engineer — interesting, and good for a career.
+        Running cost is a separate matter. The more systems there are to manage, the more it takes to build them
+        and to keep them running.
       </p>
       <p>
         Inside a company that cost is somebody else's budget, so it is easy not to feel. On a service you are
@@ -413,7 +419,9 @@
       <div class="summary">
         <h2>In short</h2>
         <ul class="recap">
-          <li><strong>A topic is addressable by offset</strong>, so an index over it is a pure function of what it
+          <li><strong>Nothing to declare.</strong> The format and the useful fields fall out of the data, so there
+          is no mapping to write, no schema to register and no connector to configure.</li>
+        <li><strong>A topic is addressable by offset</strong>, so an index over it is a pure function of what it
             has read — built incrementally, resumed wherever it stopped.</li>
           <li><strong>Building it costs one read</strong> — the read a scan would have done anyway, paid once
             instead of on every query.</li>
