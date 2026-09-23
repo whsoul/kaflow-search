@@ -147,7 +147,7 @@
         중단된 지점부터 이어갈 수 있으며, 그러는 동안 어디에도 진행 상태를 맞출 필요가 없다.</p>
       <p>SQLite, DuckDB, RocksDB 등으로 로컬 디스크에 인덱스를 만들 수 있다. 각각의 비교와 선택 기준은
         아래에서 따로 다룬다. 그리고 컨슈머 옆에 인덱스를 두는 일은 이 생태계에서 이미 익숙하다. Kafka Streams 가 상태를 RocksDB 에 두고, ksqlDB 도 그렇다. 달라지는 건 그 컨슈머가 어느 기계에서 도느냐뿐이다.</p>
-      <h2>서버에는 Kafka 만, 나머지는 내 노트북에서</h2>
+      <h2>Kafka 만을 이용한 로컬 인덱싱 경량 아키텍처</h2>
       <figure>
         <img src="../../blog/figures/to-be.svg" alt="Kafka fetched directly by partition and offset into a local index and search UI on the laptop, with the extra-infrastructure frame left empty." />
         <figcaption>서버 쪽에 돌릴 것이 없다. 점선 사각형은 위 그림과 같은 크기, 같은 자리다.</figcaption>
