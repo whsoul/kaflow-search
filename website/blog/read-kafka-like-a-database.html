@@ -303,9 +303,9 @@
 
       <h2>When the disk fills anyway</h2>
       <p>
-        The strategies above are choices made up front. There is also a ceiling that holds regardless: a size
-        budget per cluster, 10 GB by default and adjustable between 1 and 100 GB, checked every ten minutes. Go
-        over it and space is reclaimed without being asked.
+        The strategies above are choices made up front. Alongside them there has to be a ceiling that holds
+        whatever those choices were: a size budget over the index as a whole, checked on a timer, reclaiming
+        space without being asked once it is passed.
       </p>
       <p>
         What gets reclaimed is governed by per-topic policies, and each one is a different answer to the same
