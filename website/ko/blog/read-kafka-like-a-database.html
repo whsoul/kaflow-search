@@ -53,6 +53,8 @@
       .article td:first-child { color: var(--muted); }
     .article table.wrap th,
     .article table.wrap td { white-space: normal; vertical-align: top; }
+    .article table .limit td { background: rgba(224, 139, 125, 0.07); }
+    .article table .limit td:last-child { color: #e08b7d; }
     .article table.cols3 { table-layout: fixed; }
     .article table.cols3 td:first-child,
     .article table.cols3 th:first-child { width: 16%; }
@@ -317,10 +319,10 @@
             <tr><td>데이터가 가는 곳</td><td>클러스터 밖으로 복제됨</td><td>내 디스크에 머묾</td></tr>
             <tr><td>클러스터 부하</td><td>전부를 계속 복제</td><td>인덱싱 한 번, 그 뒤엔 여는 것만</td></tr>
             <tr><td>규모 한계</td><td>지불하는 만큼</td><td>디스크가 담는 만큼</td></tr>
-            <tr><td>매칭</td><td>애널라이저·와일드카드·단어 일부</td><td>값·prefix·온전한 단어</td></tr>
-            <tr><td><strong>팀 공유</strong></td><td>모두가 같은 화면을 봄</td><td><strong>안 됨 — 각자의 디스크</strong></td></tr>
-            <tr><td>보존</td><td>영구 보관 가능</td><td>Kafka 보존 기간 + 로컬 정리</td></tr>
-            <tr><td>지속적 활용</td><td>빅데이터 시스템·DB 같은 영속화 레이어로 계속 적재</td><td>사람이 열어 볼 때만</td></tr>
+            <tr class="limit"><td>매칭</td><td>애널라이저·와일드카드·단어 일부</td><td>값·prefix·온전한 단어</td></tr>
+            <tr class="limit"><td>팀 공유</td><td>모두가 같은 화면을 봄</td><td>안 됨 — 각자의 디스크</td></tr>
+            <tr class="limit"><td>보존</td><td>영구 보관 가능</td><td>Kafka 보존 기간 + 로컬 정리</td></tr>
+            <tr class="limit"><td>지속적 활용</td><td>빅데이터 시스템·DB 같은 영속화 레이어로 계속 적재</td><td>사람이 열어 볼 때만</td></tr>
           </tbody>
         </table>
       </div>

@@ -53,6 +53,8 @@
       .article td:first-child { color: var(--muted); }
     .article table.wrap th,
     .article table.wrap td { white-space: normal; vertical-align: top; }
+    .article table .limit td { background: rgba(224, 139, 125, 0.07); }
+    .article table .limit td:last-child { color: #e08b7d; }
     .article table.cols3 { table-layout: fixed; }
     .article table.cols3 td:first-child,
     .article table.cols3 th:first-child { width: 16%; }
@@ -417,10 +419,10 @@
             <tr><td>Where the data goes</td><td>replicated out of the cluster</td><td>stays on your disk</td></tr>
             <tr><td>Load on the cluster</td><td>continuous replication of everything</td><td>one read to index, then only what you open</td></tr>
             <tr><td>Scale ceiling</td><td>whatever you pay for</td><td>whatever the disk holds</td></tr>
-            <tr><td>Matching</td><td>analyzers, wildcards, partial words</td><td>values, prefixes and whole words</td></tr>
-            <tr><td><strong>Sharing with a team</strong></td><td>everyone sees the same view</td><td><strong>no — each disk is its own</strong></td></tr>
-            <tr><td>Retention</td><td>keep it forever</td><td>Kafka retention plus local trimming</td></tr>
-            <tr><td>Ongoing use</td><td>lands in a warehouse, a database, some persistent layer</td><td>only when a person opens it</td></tr>
+            <tr class="limit"><td>Matching</td><td>analyzers, wildcards, partial words</td><td>values, prefixes and whole words</td></tr>
+            <tr class="limit"><td>Sharing with a team</td><td>everyone sees the same view</td><td>no — each disk is its own</td></tr>
+            <tr class="limit"><td>Retention</td><td>keep it forever</td><td>Kafka retention plus local trimming</td></tr>
+            <tr class="limit"><td>Ongoing use</td><td>lands in a warehouse, a database, some persistent layer</td><td>only when a person opens it</td></tr>
           </tbody>
         </table>
       </div>
