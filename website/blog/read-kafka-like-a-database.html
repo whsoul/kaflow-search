@@ -25,59 +25,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <title>Read Kafka like a Database — Kaflow Search</title>
     <link rel="stylesheet" href="../styles.css" />
-    <style>
-      .article { max-width: 47rem; margin: 0 auto; padding: 3rem 1.25rem 6rem; }
-      .article-head { border-bottom: 1px solid var(--line); padding-bottom: 1.75rem; margin-bottom: 2.25rem; }
-      .article-head h1 { font-size: clamp(2rem, 5vw, 2.85rem); line-height: 1.15; margin: 0.5rem 0 0; letter-spacing: -0.02em; }
-      .article-head .lead { font-size: 1.05rem; line-height: 1.8; color: var(--text); margin: 1.4rem 0 0; max-width: 62ch; }
-      .article-head .standfirst { color: var(--muted); font-size: 1.05rem; margin: 0.9rem 0 0; }
-      .article h3 { font-size: 1.05rem; margin: 2rem 0 0.75rem; color: var(--accent-bright); letter-spacing: -0.005em; }
-      .article h2 { font-size: 1.4rem; margin: 3rem 0 1rem; letter-spacing: -0.01em; }
-      .article > h2:first-of-type { margin-top: 0; }
-      .article p { line-height: 1.75; margin: 0 0 1.15rem; }
-      .article p a { color: var(--accent-bright); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
-      .article p a:hover { text-decoration-thickness: 2px; }
-      .article h2, .article h3 { scroll-margin-top: 1.5rem; }
-      .article figure { margin: 2rem 0; }
-      .article figure img { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
-      .article figcaption { color: var(--muted); font-size: 0.875rem; margin-top: 0.7rem; }
-      .article .table-wrap { overflow-x: auto; margin: 1.75rem 0; border: 1px solid var(--line); border-radius: 10px; }
-      .article table { border-collapse: collapse; width: 100%; font-size: 0.925rem; }
-      .article th, .article td { padding: 0.7rem 1rem; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
-      .article tbody tr:last-child td { border-bottom: 0; }
-      .article th { background: var(--panel); color: var(--muted); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; }
-      .article td.n { text-align: right; font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-      .article .footnote { color: var(--muted); font-size: 0.9rem; }
-      .article td .footnote, .article th .footnote { font-size: 0.78rem; display: block; text-transform: none; letter-spacing: 0; font-weight: 400; }
-      .article th { vertical-align: bottom; }
-      .article td:first-child { color: var(--muted); }
-    .article table.wrap th,
-    .article table.wrap td { white-space: normal; vertical-align: top; }
-    .article table .limit td { background: rgba(224, 139, 125, 0.07); }
-    .article table .limit td:last-child { color: #e08b7d; }
-    .article table.cols3 { table-layout: fixed; }
-    .article table.cols3 td:first-child,
-    .article table.cols3 th:first-child { width: 16%; }
-      .article code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: var(--panel); padding: 0.1em 0.4em; border-radius: 4px; }
-      .article .pull { margin: 3.25rem 0; padding: 1.65rem 1.8rem; border: 1px dashed var(--accent); border-radius: 10px; }
-      .article .pull p { font-size: clamp(1rem, 2vw, 1.2rem); line-height: 1.55; letter-spacing: -0.012em; color: var(--accent-bright); margin: 0; text-wrap: balance; max-width: none; font-style: italic; text-indent: -0.44em; }
-      .article .pull p::before { content: "\201C"; }
-      .article .pull p::after { content: "\201D"; }
-      .article .callout { margin: 2.5rem 0; padding: 1.35rem 1.6rem; background: rgba(201,145,90,.05); border: 2px dashed #c9915a; border-radius: 12px; display: flex; flex-direction: column; gap: 0.7rem; }
-      .article .callout .lbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: #d8a96f; }
-      .article .callout p { margin: 0; }
-      .article .summary { margin: 3.5rem 0 1.75rem; padding: 1.6rem 1.8rem 1.75rem; background: rgba(201,145,90,.05); border: 2px dashed #c9915a; border-radius: 12px; }
-      .article .summary h2 { margin: 0 0 1.1rem; font-size: 1.18rem; color: #d8a96f; letter-spacing: .01em; }
-      .article .summary .recap li::before { background: #c9915a; }
-      .article .recap { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
-      .article .recap li { position: relative; padding-left: 1.35rem; line-height: 1.7; }
-      .article .recap li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-      .article .recap li strong { color: var(--text); }
-      .article .getit { margin: 3rem 0 0; padding: 1.8rem 1.9rem 1.9rem; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; display: flex; flex-direction: column; gap: 1.1rem; align-items: stretch; }
-      .article .getit-lead { margin: 0; display: flex; flex-direction: column; gap: 0.4rem; }
-      .article .getit-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-      .article .getit-note { margin: 0; font-size: 0.875rem; color: var(--muted); display: flex; flex-direction: column; gap: 0.35rem; }
-    </style>
+    <link rel="stylesheet" href="article.css" />
   </head>
   <body>
     <header class="site-header">
