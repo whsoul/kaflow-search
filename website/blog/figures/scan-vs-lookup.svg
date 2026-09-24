@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 628" role="img" aria-label="Two pipelines side by side. Scanning and filtering pulls every message out of the cluster and tests each one. An index lookup seeks straight to the matching block of sorted terms on local disk, contacts the cluster not at all, and fetches a single message only when one is opened.">
+<style>
+svg{
+  --ink:#f4f5f8; --ink-2:#9ba3b8; --ink-3:#6f778d;
+  --surface:#111522; --surface-2:#171c2c;
+  --rule:rgba(255,255,255,.13); --rule-strong:rgba(255,255,255,.26);
+  --cost:#c9915a; --cost-line:#6d5436;
+  --local:#8b7cff; --local-line:#5b51a8;
+  --arrow:#7b849a;
+  background:#090b12;
+}
+.n{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;font-weight:500;fill:var(--ink)}
+.ns{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;fill:var(--ink-3)}
+.zl{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.tot{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:16px;font-weight:600}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px}
+.frame{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;font-weight:600;fill:var(--ink-2)}
+path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
+</style>
+  <defs>
+    <marker id="a" viewBox="0 0 8 6" refX="7.5" refY="3" markerWidth="8" markerHeight="6" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--arrow)"/>
+    </marker>
+  </defs>
+
+  <text class="frame" x="490" y="24" text-anchor="middle">One topic you picked &#183; 2,099,964 messages &#183; 2 of them match</text>
+  <g transform="translate(0,28)">
+
+  <line x1="490" y1="18" x2="490" y2="582" stroke="var(--rule)" stroke-width="1"/>
+
+  <text class="zl" x="250" y="30" text-anchor="middle" fill="var(--cost)">Scan + filter</text>
+  <text class="zl" x="730" y="30" text-anchor="middle" fill="var(--local)">Index lookup</text>
+
+  <rect x="130" y="52" width="240" height="44" rx="4" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.2"/>
+  <text class="n" x="250" y="79" text-anchor="middle">Search query</text>
+  <rect x="610" y="52" width="240" height="44" rx="4" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.2"/>
+  <text class="n" x="730" y="79" text-anchor="middle">Search query</text>
+  <path class="arw" d="M250,96 L250,116" marker-end="url(#a)"/>
+  <path class="arw" d="M730,96 L730,116" marker-end="url(#a)"/>
+
+  <rect x="130" y="120" width="240" height="48" rx="4" fill="var(--surface)" stroke="var(--cost-line)" stroke-width="1.4"/>
+  <text class="n" x="250" y="142" text-anchor="middle" fill="var(--cost)">Kafka cluster</text>
+  <text class="ns" x="250" y="158" text-anchor="middle">consume from offset</text>
+  <rect x="610" y="120" width="240" height="48" rx="4" fill="var(--surface)" stroke="var(--local-line)" stroke-width="1.4"/>
+  <text class="n" x="730" y="142" text-anchor="middle" fill="var(--local)">Local index</text>
+  <text class="ns" x="730" y="158" text-anchor="middle">sorted terms, on your disk</text>
+
+  <path class="arw" d="M250,168 L250,200" marker-end="url(#a)" stroke="var(--cost)"/>
+  <text class="mono" x="258" y="188" fill="var(--cost)">every message over the network</text>
+  <path class="arw" d="M730,168 L730,200" marker-end="url(#a)" stroke="var(--local)"/>
+  <text class="mono" x="738" y="188" fill="var(--local)">nothing over the network</text>
+
+  <rect x="130" y="204" width="240" height="186" rx="4" fill="var(--surface-2)" stroke="var(--cost-line)" stroke-width="1.2"/>
+  <text class="ns" x="250" y="222" text-anchor="middle">test every message</text>
+  <rect x="146" y="232" width="208" height="12" rx="2" fill="var(--cost)" fill-opacity=".5"/>
+  <rect x="146" y="248" width="208" height="12" rx="2" fill="var(--cost)" fill-opacity=".5"/>
+  <rect x="146" y="264" width="208" height="12" rx="2" fill="var(--local)"/>
+  <rect x="146" y="280" width="208" height="12" rx="2" fill="var(--cost)" fill-opacity=".5"/>
+  <rect x="146" y="296" width="208" height="12" rx="2" fill="var(--cost)" fill-opacity=".5"/>
+  <rect x="146" y="312" width="208" height="12" rx="2" fill="var(--local)"/>
+  <rect x="146" y="328" width="208" height="12" rx="2" fill="var(--cost)" fill-opacity=".5"/>
+  <rect x="146" y="344" width="208" height="12" rx="2" fill="var(--cost)" fill-opacity=".5"/>
+  <text class="ns" x="250" y="378" text-anchor="middle">&#8230; 2,099,964 of them</text>
+  <path class="arw" d="M118,232 L118,356" marker-end="url(#a)" stroke="var(--cost)"/>
+  <text class="mono" x="110" y="298" text-anchor="end" fill="var(--cost)">scan</text>
+
+  <rect x="610" y="204" width="240" height="186" rx="4" fill="var(--surface-2)" stroke="var(--local-line)" stroke-width="1.2"/>
+  <text class="mono" x="730" y="222" text-anchor="middle" fill="var(--local)">prefix "order-58"</text>
+  <rect x="626" y="232" width="208" height="12" rx="2" fill="var(--rule)"/>
+  <rect x="626" y="248" width="208" height="12" rx="2" fill="var(--rule)"/>
+  <rect x="626" y="264" width="208" height="12" rx="2" fill="var(--local)"/>
+  <rect x="626" y="280" width="208" height="12" rx="2" fill="var(--local)"/>
+  <rect x="626" y="296" width="208" height="12" rx="2" fill="var(--rule)"/>
+  <rect x="626" y="312" width="208" height="12" rx="2" fill="var(--rule)"/>
+  <rect x="626" y="328" width="208" height="12" rx="2" fill="var(--rule)"/>
+  <rect x="626" y="344" width="208" height="12" rx="2" fill="var(--rule)"/>
+  <text class="ns" x="730" y="378" text-anchor="middle">the rest is never touched</text>
+  <path class="arw" d="M566,270 L622,270" marker-end="url(#a)" stroke="var(--local)"/>
+  <text class="mono" x="560" y="274" text-anchor="end" fill="var(--local)">seek</text>
+
+  <path class="arw" d="M250,390 L250,410" marker-end="url(#a)"/>
+  <path class="arw" d="M730,390 L730,410" marker-end="url(#a)"/>
+
+  <rect x="130" y="414" width="240" height="44" rx="4" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.2"/>
+  <text class="n" x="250" y="441" text-anchor="middle">2 results</text>
+  <rect x="610" y="414" width="240" height="44" rx="4" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.2"/>
+  <text class="n" x="730" y="441" text-anchor="middle">2 results</text>
+
+  <text class="tot" x="250" y="486" text-anchor="middle" fill="var(--cost)">2,099,964 read from the cluster</text>
+  <text class="tot" x="730" y="486" text-anchor="middle" fill="var(--local)">0 read from the cluster</text>
+  <text class="ns" x="250" y="508" text-anchor="middle">the bodies came down with everything else</text>
+
+  <path d="M730,500 L730,520" stroke="var(--local)" stroke-width="1.2" stroke-dasharray="3 3" fill="none"/>
+  <rect x="610" y="524" width="240" height="52" rx="4" fill="none" stroke="var(--local-line)" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <text class="ns" x="730" y="546" text-anchor="middle" fill="var(--ink-2)">open one message</text>
+  <text class="mono" x="730" y="564" text-anchor="middle" fill="var(--local)">1 fetch, by (partition, offset)</text>
+  </g>
+</svg>

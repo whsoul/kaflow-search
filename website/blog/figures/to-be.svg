@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 330" role="img" aria-label="To-be architecture: the topics you pick are fetched directly by partition and offset into a local index on the laptop disk, with no extra server infrastructure">
+<style>
+svg{
+  --ink:#f4f5f8; --ink-2:#9ba3b8; --ink-3:#6f778d;
+  --surface:#111522; --surface-2:#171c2c;
+  --rule:rgba(255,255,255,.12); --rule-strong:rgba(255,255,255,.26);
+  --cost:#c9915a; --cost-bg:#1d1a19; --cost-line:#6d5436;
+  --local:#8b7cff; --local-bg:#17162b; --local-line:#5b51a8;
+  --kafka:#9ba3b8; --kafka-bg:#161b28; --kafka-line:#414b62;
+  --arrow:#7b849a;
+  background:#090b12;
+}
+.n{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;font-weight:500;fill:var(--ink)}
+.ns{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;fill:var(--ink-3)}
+.zl{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase}
+.al{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;fill:var(--ink-2)}
+.scope{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:9.5px;font-weight:600;letter-spacing:.03em;fill:var(--local)}
+.empty{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;fill:var(--ink-3);font-style:italic}
+line,path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
+</style>
+
+        <defs>
+          <marker id="ah2" viewBox="0 0 8 6" refX="7.5" refY="3" markerWidth="8" markerHeight="6" orient="auto">
+            <path d="M0,0 L8,3 L0,6 z" fill="var(--arrow)"/>
+          </marker>
+        </defs>
+
+        <text class="zl" x="335" y="16" fill="var(--ink-3)">No extra infrastructure</text>
+        <rect x="335" y="24" width="430" height="282" rx="3" fill="none" stroke="var(--rule-strong)" stroke-width="1.2" stroke-dasharray="5 4"/>
+        <text class="empty" x="550" y="214" text-anchor="middle">nothing to run here</text>
+
+        <text class="zl" x="788" y="16" fill="var(--local)">Your laptop — already paid for</text>
+        <rect x="788" y="24" width="172" height="282" rx="3" fill="var(--local-bg)" stroke="var(--local-line)" stroke-width="1.4"/>
+
+        <rect x="20" y="134" width="110" height="56" rx="3" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.2"/>
+        <text class="n" x="75" y="159" text-anchor="middle">Your</text>
+        <text class="n" x="75" y="175" text-anchor="middle">service</text>
+
+        <rect x="175" y="124" width="120" height="76" rx="3" fill="var(--kafka-bg)" stroke="var(--kafka-line)" stroke-width="1.4"/>
+        <text class="n" x="235" y="157" text-anchor="middle" fill="var(--kafka)">Kafka</text>
+        <text class="n" x="235" y="174" text-anchor="middle" fill="var(--kafka)">cluster</text>
+
+        <path class="arw" d="M130,162 L170,162" marker-end="url(#ah2)"/>
+        <path class="arw" d="M295,162 L796,162" marker-end="url(#ah2)"/>
+        <text class="al" x="545" y="151" text-anchor="middle">fetch by (partition, offset)</text>
+
+        <rect x="802" y="136" width="144" height="52" rx="3" fill="var(--surface)" stroke="var(--local-line)" stroke-width="1.2"/>
+        <text class="n" x="874" y="157" text-anchor="middle">Local index</text>
+        <text class="scope" x="874" y="174" text-anchor="middle">(topics you pick)</text>
+
+        <path class="arw" d="M874,188 L874,218" marker-end="url(#ah2)"/>
+
+        <rect x="802" y="224" width="144" height="52" rx="3" fill="var(--surface)" stroke="var(--local-line)" stroke-width="1.2"/>
+        <text class="n" x="874" y="245" text-anchor="middle">Search</text>
+        <text class="n" x="874" y="261" text-anchor="middle">UI</text>
+
+        <text class="ns" x="874" y="296" text-anchor="middle">incremental — offsets only</text>
+      </svg>

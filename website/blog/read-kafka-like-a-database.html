@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A local-first approach to Kafka: indexing topics on a laptop instead of running a search pipeline — the architecture, what it costs on disk, and what it gives up."
+    />
+    <meta name="author" content="Kaflow Search" />
+    <meta name="theme-color" content="#090b12" />
+    <link rel="canonical" href="https://kaflow-search.whsoul-tools.com/blog/read-kafka-like-a-database.html" />
+    <link rel="alternate" hreflang="en" href="https://kaflow-search.whsoul-tools.com/blog/read-kafka-like-a-database.html" />
+    <link rel="alternate" hreflang="ko" href="https://kaflow-search.whsoul-tools.com/ko/blog/read-kafka-like-a-database.html" />
+    <link rel="alternate" hreflang="x-default" href="https://kaflow-search.whsoul-tools.com/blog/read-kafka-like-a-database.html" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Kaflow Search" />
+    <meta property="og:url" content="https://kaflow-search.whsoul-tools.com/blog/read-kafka-like-a-database.html" />
+    <meta property="og:title" content="Read Kafka like a Database" />
+    <meta
+      property="og:description"
+      content="A local-first approach to Kafka: indexing topics on a laptop instead of running a search pipeline — the architecture, what it costs on disk, and what it gives up."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Read Kafka like a Database — Kaflow Search</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <style>
+      .article { max-width: 47rem; margin: 0 auto; padding: 3rem 1.25rem 6rem; }
+      .article-head { border-bottom: 1px solid var(--line); padding-bottom: 1.75rem; margin-bottom: 2.25rem; }
+      .article-head h1 { font-size: clamp(2rem, 5vw, 2.85rem); line-height: 1.15; margin: 0.5rem 0 0; letter-spacing: -0.02em; }
+      .article-head .lead { font-size: 1.05rem; line-height: 1.8; color: var(--text); margin: 1.4rem 0 0; max-width: 62ch; }
+      .article-head .standfirst { color: var(--muted); font-size: 1.05rem; margin: 0.9rem 0 0; }
+      .article h3 { font-size: 1.05rem; margin: 2rem 0 0.75rem; color: var(--accent-bright); letter-spacing: -0.005em; }
+      .article h2 { font-size: 1.4rem; margin: 3rem 0 1rem; letter-spacing: -0.01em; }
+      .article > h2:first-of-type { margin-top: 0; }
+      .article p { line-height: 1.75; margin: 0 0 1.15rem; }
+      .article p a { color: var(--accent-bright); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+      .article p a:hover { text-decoration-thickness: 2px; }
+      .article h2, .article h3 { scroll-margin-top: 1.5rem; }
+      .article figure { margin: 2rem 0; }
+      .article figure img { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+      .article figcaption { color: var(--muted); font-size: 0.875rem; margin-top: 0.7rem; }
+      .article .table-wrap { overflow-x: auto; margin: 1.75rem 0; border: 1px solid var(--line); border-radius: 10px; }
+      .article table { border-collapse: collapse; width: 100%; font-size: 0.925rem; }
+      .article th, .article td { padding: 0.7rem 1rem; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+      .article tbody tr:last-child td { border-bottom: 0; }
+      .article th { background: var(--panel); color: var(--muted); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; }
+      .article td.n { text-align: right; font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .article .footnote { color: var(--muted); font-size: 0.9rem; }
+      .article td .footnote, .article th .footnote { font-size: 0.78rem; display: block; text-transform: none; letter-spacing: 0; font-weight: 400; }
+      .article th { vertical-align: bottom; }
+      .article td:first-child { color: var(--muted); }
+    .article table.wrap th,
+    .article table.wrap td { white-space: normal; vertical-align: top; }
+    .article table .limit td { background: rgba(224, 139, 125, 0.07); }
+    .article table .limit td:last-child { color: #e08b7d; }
+    .article table.cols3 { table-layout: fixed; }
+    .article table.cols3 td:first-child,
+    .article table.cols3 th:first-child { width: 16%; }
+      .article code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: var(--panel); padding: 0.1em 0.4em; border-radius: 4px; }
+      .article .pull { margin: 3.25rem 0; padding: 1.65rem 1.8rem; border: 1px dashed var(--accent); border-radius: 10px; }
+      .article .pull p { font-size: clamp(1rem, 2vw, 1.2rem); line-height: 1.55; letter-spacing: -0.012em; color: var(--accent-bright); margin: 0; text-wrap: balance; max-width: none; font-style: italic; text-indent: -0.44em; }
+      .article .pull p::before { content: "\201C"; }
+      .article .pull p::after { content: "\201D"; }
+      .article .callout { margin: 2.5rem 0; padding: 1.35rem 1.6rem; background: rgba(201,145,90,.05); border: 2px dashed #c9915a; border-radius: 12px; display: flex; flex-direction: column; gap: 0.7rem; }
+      .article .callout .lbl { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: #d8a96f; }
+      .article .callout p { margin: 0; }
+      .article .summary { margin: 3.5rem 0 1.75rem; padding: 1.6rem 1.8rem 1.75rem; background: rgba(201,145,90,.05); border: 2px dashed #c9915a; border-radius: 12px; }
+      .article .summary h2 { margin: 0 0 1.1rem; font-size: 1.18rem; color: #d8a96f; letter-spacing: .01em; }
+      .article .summary .recap li::before { background: #c9915a; }
+      .article .recap { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+      .article .recap li { position: relative; padding-left: 1.35rem; line-height: 1.7; }
+      .article .recap li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+      .article .recap li strong { color: var(--text); }
+      .article .getit { margin: 3rem 0 0; padding: 1.8rem 1.9rem 1.9rem; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; display: flex; flex-direction: column; gap: 1.1rem; align-items: stretch; }
+      .article .getit-lead { margin: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+      .article .getit-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+      .article .getit-note { margin: 0; font-size: 0.875rem; color: var(--muted); display: flex; flex-direction: column; gap: 0.35rem; }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true">K</span>
+        <span class="brand-copy">
+          <span class="brand-title">Kaflow Search <span class="brand-free">Free to use</span></span>
+          <span class="brand-audience">For Kafka developers &amp; operators</span>
+        </span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="/#scenarios">Scenarios</a>
+        <a href="/#features">Features</a>
+        <a href="/blog/read-kafka-like-a-database.html" aria-current="page">The idea</a>
+        <div class="language-tabs" aria-label="Language">
+          <a href="/blog/read-kafka-like-a-database.html" lang="en" hreflang="en" aria-current="page">English</a>
+          <a href="/ko/blog/read-kafka-like-a-database.html" lang="ko" hreflang="ko">한국어</a>
+          <a href="/blog/read-kafka-like-a-database.html" lang="ja" hreflang="en">日本語</a>
+          <a href="/blog/read-kafka-like-a-database.html" lang="zh-CN" hreflang="en">简体中文</a>
+        </div>
+        <a href="https://github.com/whsoul/kaflow-search" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="button button-small" href="https://github.com/whsoul/kaflow-search/releases/latest">Download</a>
+      </nav>
+    </header>
+
+    <main class="article">
+      <div class="article-head">
+        <h1>Read Kafka like a Database</h1>
+        <p class="standfirst">Working with Kafka data on your own terms, using a local index.</p>
+        <p class="lead">
+          A search stack usually follows Kafka into a service. But the message you are looking for is already in
+          the topic — and what format it is in, which fields are worth indexing, the data says for itself. Pick a
+          topic and the index builds itself.
+        </p>
+      </div>
+
+
+      <h2>Why this exists</h2>
+      <p>
+        I have used Kafka in services for a long time — tracing user actions, propagating events for event
+        sourcing, moving work between pipeline steps. And every time, the same ecosystem went up around it. ELK, so
+        that someone could search the messages when operations or an incident called for it. A sink connector, to
+        forward data into some persistent store. ksqlDB, or Flink, to count and watch the stream. More
+        infrastructure, more software.
+      </p>
+      <p>
+        Then one day a thought crossed my mind.
+      </p>
+      <blockquote class="pull">
+        <p>Kafka processes a message stream sequentially, through a consumer. So if I do not know the partition and
+          offset of the needle, I have to look for it from the beginning. But if I do know them — can I reach the
+          message directly, the way I would in any other database?</p>
+      </blockquote>
+      <p>
+        ELK was not necessary on that service. I only needed to find trace events, and they were already sitting in
+        the topic. All I needed to know was where.
+      </p>
+
+      <h2>The usual Kafka architecture</h2>
+      <figure>
+        <img src="figures/as-is.svg" alt="Kafka feeding Kafka Connect or Logstash into Elasticsearch and Kibana, a sink connector into a database, and ksqlDB or Flink — all running as extra always-on infrastructure, viewed through three separate clients." />
+        <figcaption>The usual pipeline, assembled one piece at a time, grows into this.</figcaption>
+      </figure>
+      <p>
+        To search messages you wire Kafka Connect (or Logstash) into Elasticsearch, a sink connector into a
+        database, and ksqlDB or Flink for counting. Each one is a service that has to be up, upgraded and paid for,
+        and each one is reached through a different client.
+      </p>
+      <p>
+        Building out a data pipeline is good work for a data engineer — interesting, and good for a career.
+        Running cost is a separate matter. The more systems there are to manage, the more it takes to build them
+        and to keep them running.
+      </p>
+      <p>
+        Inside a company that cost is somebody else's budget, so it is easy not to feel. On a service you are
+        funding yourself, you feel all of it.
+      </p>
+      <p>
+        <strong>So it is worth asking plainly: does the service need the pipeline, or does it just need to find a
+        message?</strong>
+      </p>
+
+      <h2>What makes a local index possible</h2>
+      <p>
+        A Kafka topic is append-only, ordered within a partition, and addressable by offset. An index over it is
+        therefore a pure function of <code>(topic, partition, offset range)</code> — it can be built incrementally,
+        and resumed from wherever it stopped, without coordinating with anything else.
+      </p>
+      <p>
+        None of this needs new technology. SQLite, DuckDB, RocksDB and plenty of others can hold an index on local
+        disk; which one to reach for gets a section of its own further down. And an index sitting beside a consumer
+        is already familiar here — Kafka Streams keeps its state in RocksDB, ksqlDB with it. The only thing that
+        changes is which machine the consumer runs on.
+      </p>
+      <h2>A lighter architecture: Kafka and a local index</h2>
+      <figure>
+        <img src="figures/to-be.svg" alt="Kafka fetched directly by partition and offset into a local index and search UI on the laptop, with the extra-infrastructure frame left empty." />
+        <figcaption>Nothing to run on the server side. The dashed frame is the same size and place as in the figure above.</figcaption>
+      </figure>
+      <p>
+        Fetch by explicit partition and offset, build the index locally, search it locally — the local-first
+        version of the same idea. No consumer group is joined and no offsets are committed, so the cluster does not notice.
+      </p>
+      <p>
+        For each message it reads the key, the headers and the value, decodes them in whatever format the topic
+        turned out to be in, and walks the result. Every scalar it finds becomes a term — the path it sat under,
+        and the value there — and a field can be split into words as well, when that is how you would go looking
+        for it. Each term is written down with the <code>(partition, offset)</code> it came from.
+      </p>
+      <p>
+        That is the whole of it: a sorted map from term to positions, and one record per message holding what a
+        result row needs to show. Nothing else is kept, which is why the body still has to be fetched when you
+        open one.
+      </p>
+
+      <h2>Scanning versus looking up</h2>
+      <figure>
+        <img src="figures/scan-vs-lookup.svg" alt="Two pipelines side by side. Scanning and filtering pulls every message out of the cluster and tests each one. An index lookup seeks straight to the matching block of sorted terms on local disk and contacts the cluster not at all." />
+        <figcaption>Run the same search again and the left column repeats end to end. The right one does not — it never asked the cluster for anything.</figcaption>
+      </figure>
+      <p>
+        Without an index there is only one way to find a message: scan the topic and filter client-side. The work
+        is proportional to the topic, not to the answer — two matches in two million messages still costs two
+        million reads across the network, and refining the query costs them again.
+      </p>
+      <p>
+        An index inverts that. Terms are stored in sorted order, so a prefix seek lands directly on the block that
+        matches and reads nothing on either side of it. Each entry carries a <code>(partition, offset)</code> and
+        enough to render a row, so the whole result list is built without asking the cluster for anything — zero
+        reads, however many times the query is refined. Indexing pays for one read up front; everything
+        after it is proportional to the number of hits.
+      </p>
+      <div class="callout">
+        <span class="lbl">What the cluster sees</span>
+        <p>
+          The fields that were indexed are in the index, so building the result list asks the cluster for
+          nothing. Only opening one of those rows needs the original message, and that fetch names exactly
+          one by <code>(partition, offset)</code>. If no consumer group is joined there are no offsets to
+          commit, so no rebalance is triggered and nobody else's position moves.
+        </p>
+      </div>
+      <h2>Search needs an index first</h2>
+      <p>
+        The search above leaves one thing out. A search runs against an index, and until a topic is indexed there
+        is nothing in it to find. Building that index means reading the topic through once.
+      </p>
+      <div class="callout">
+        <span class="lbl">The read was happening anyway</span>
+        <p>
+          That read is not an extra one, though. A scan would have pulled every message across anyway and then
+          thrown the work away; indexing moves the same bytes and keeps what it found. What it adds is the work per
+          message — decode it, derive terms, write them down — and that is the whole of the difference. It is also
+          paid once, where the scan pays its share again on every query.
+        </p>
+      </div>
+
+      <h3>Given the data, indexing configures itself</h3>
+      <p>
+        Most of what a pipeline makes you declare up front is already in the data. Sample the messages and the
+        wire format falls out of the bytes, the fields worth indexing out of what actually appears in them.
+        Formats that rely on a schema registry say what they are too — the message carries its schema id, so an
+        address for the registry is the whole of the setup. Past those few choices, the indexing runs itself.
+      </p>
+
+      <h3>How long indexing takes</h3>
+      <p>
+        So the time goes on that per-message work, not on the reading. Keep it small and a million messages is a
+        wait you sit through rather than schedule. <a href="#rate">Figures from the implementation</a> are in the appendix.
+      </p>
+
+      <h3>The whole topic is read once</h3>
+      <figure>
+        <img src="figures/index-once.svg" alt="Two indexing modes on a time axis. Both begin with one full read. In manual mode a single increment follows when the topic is picked again. With autoSync, small increments run on a timer while the app is open." />
+        <figcaption>Both modes pay the same one-off read. What differs after it is only when the increments run.
+          Drop the index and rebuild it, and that read is paid again.</figcaption>
+      </figure>
+      <p>
+        The last indexed offset is recorded per partition, so nothing is ever read twice. Leave a topic on manual
+        and it catches up in one step the next time you pick it or press sync; turn on <code>autoSync</code> and it
+        keeps up in slices while the app is open. Either way the full read happens once, and an interrupted one
+        resumes where it stopped rather than starting over.
+      </p>
+
+      <blockquote class="pull">
+        <p>My desktop and yours are too powerful, and too expensive, to use only for a web browser and a chat
+          window.</p>
+      </blockquote>
+
+      <h2>What it costs on disk</h2>
+      <p>
+        A fair question by now: can one machine hold an index over what a Kafka cluster has been accumulating?
+      </p>
+      <p>
+        Managed well, an index does not swell far beyond the messages it describes. The cost is per field and per message, so it can be judged before a byte is read. <a href="#disk">Figures in the appendix.</a>
+      </p>
+      <p>
+        So the question is not how large the cluster is, but how much of it you keep. There is no reason to take
+        all of it. The topics you search, the fields you actually use, as far back as you need to look — that much
+        fits on one machine.
+      </p>
+
+      <h2>Not indexing everything</h2>
+      <figure>
+        <img src="figures/partial-indexing.svg" alt="A grid of messages by fields showing three index shapes: a full index, a count-based index keeping only the newest messages, and a field-based index keeping only the searched fields." />
+        <figcaption>Horizontal axis is messages, vertical is fields. Dropping a field removes it from search, not from the message — the body is still read in full.</figcaption>
+      </figure>
+      <p>
+        The three are set in different places. Topics are decided when you pick them; count and fields are a
+        cleanup policy, and can be tightened after the fact.
+      </p>
+      <div class="table-wrap">
+        <table class="wrap">
+          <thead>
+            <tr><th>Strategy</th><th>What it trims</th><th>Setting</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Index only the topics you actually search</td><td>whole topics</td><td class="num">—</td></tr>
+            <tr><td>Keep the newest N per partition</td><td>messages</td><td class="num">CountBased</td></tr>
+            <tr><td>Keep only the fields you search</td><td>fields</td><td class="num">FieldBased</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        If index size starts to matter, not every field has to be in it. A Kafka payload tends to carry all
+        sorts, and the fields you would never search — the encoded ones, the long prose — can be left out. Cost
+        falls per field, so the index comes down in proportion to what you drop. Cutting one JSON topic to the
+        fields actually searched took about a fifth off.
+      </p>
+
+      <h2>When the disk fills anyway</h2>
+      <p>
+        The strategies above are choices made up front. Alongside them there has to be a ceiling that holds
+        whatever those choices were: a size budget over the index as a whole, checked on a timer, reclaiming
+        space without being asked once it is passed. Garbage collection, in effect — nobody has to remember to
+        run it.
+      </p>
+      <p>
+        What gets reclaimed is governed by per-topic policies, and each one is a different answer to the same
+        question: what is the cheapest thing to stop knowing? These are the ones that exist today.
+      </p>
+      <div class="table-wrap">
+        <table class="wrap">
+          <thead>
+            <tr><th>Policy</th><th>What it gives up</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="num">CountBased</td><td>older messages stop being searchable</td></tr>
+            <tr><td class="num">FieldBased</td><td>those fields stop being searchable</td></tr>
+            <tr><td class="num">DropIndex</td><td>the topic goes back to unindexed</td></tr>
+            <tr><td class="num">&hellip;</td><td>the list is open — sampling one message in N is the obvious next one, and anything that trades a little detail for a lot of room belongs here</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <span class="lbl">Nothing here is final</span>
+        <p>
+          <strong>A discarded index is not lost data.</strong> The messages are still in Kafka, and picking the
+          topic again builds it back. That is the difference between reclaiming space here and dropping a table in
+          a database you own — and it is why the cleanup can be left to run unattended.
+        </p>
+      </div>
+
+      <h2>Where to put the index</h2>
+      <p>
+        By now the index has shown what it demands: long sustained writes while a topic is taken on, seeks to a
+        sorted prefix on every search, and slices thrown away whenever a policy trims.
+      </p>
+      <div class="table-wrap">
+        <table class="wrap cols3">
+          <thead>
+            <tr>
+              <th></th>
+              <th>SQLite <span class="footnote">B-tree, FTS5</span></th>
+              <th>DuckDB <span class="footnote">columnar</span></th>
+              <th>RocksDB <span class="footnote">LSM tree</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Good at</td>
+              <td>ranked full-text, substrings via trigrams</td>
+              <td>SQL and aggregation over large data</td>
+              <td>sustained writes, cheap bulk deletion</td>
+            </tr>
+            <tr>
+              <td>Costs you</td>
+              <td>index size grows fast; trimmed space needs reclaiming</td>
+              <td>indexes cover <code>=</code> and <code>IN</code>; a prefix lookup is still a scan, and trimming rewrites data</td>
+              <td>matching is yours to build, n-grams included</td>
+            </tr>
+            <tr>
+              <td>Pick it when</td>
+              <td>the data fits comfortably</td>
+              <td>the answer is an aggregate</td>
+              <td>the data keeps growing</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        I went with RocksDB for the implementation all of this is drawn from; it gets its name at the end.
+        The first two hand over much of the indexing work already done, which is a real convenience to give up.
+        But ksqlDB reaches for RocksDB for a reason, and it is the same one here: an LSM tree matches the way
+        Kafka data accumulates, and holds its performance as the pile keeps growing.
+      </p>
+      <p>
+        What that costs is the key design, the tokenizing and the rest of the matching, all written by hand — and
+        it cuts both ways. The query planning is yours as well — how a lookup runs is something you decide and tune for the
+        data at hand, rather than something a library settles behind an interface you cannot reach.
+      </p>
+      <div class="callout">
+        <span class="lbl">What seeking will not do</span>
+        <p>
+          Keys kept in sorted order buy two moves: jump to an exact value, or to where a given prefix begins.
+          Nothing past that comes free. Matching a word
+          inside a sentence means tokenizing before the write. Matching part of a word means an n-gram index — a
+          second index, with a size of its own. So it comes down to a choice: carry that size to support
+          <code>%oo%</code>, or leave it out and stay small.
+        </p>
+      </div>
+      <p>And how those keys are designed is what the implementation turns on.</p>
+
+      <h2>Where a local index stops</h2>
+      <p>
+        A local index is not always the answer. Some things only a pipeline can do. Here the two are set side
+        by side, and the limits are gathered toward the bottom.
+      </p>
+      <div class="table-wrap">
+        <table class="wrap">
+          <thead>
+            <tr><th></th><th>Pipeline</th><th>Local index</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Before the first search</td><td>install and wire Connect, Elasticsearch and Kibana, then write the mapping</td><td>install an app, then one read of the topic</td></tr>
+            <tr><td>Operating</td><td>always on; versions, shards, disk</td><td>none</td></tr>
+            <tr><td>Fixed cost</td><td>instances, every month</td><td>none — hardware you own</td></tr>
+            <tr><td>Where the data goes</td><td>replicated out of the cluster</td><td>stays on your disk</td></tr>
+            <tr><td>Load on the cluster</td><td>continuous replication of everything</td><td>one read to index, then only what you open</td></tr>
+            <tr><td>Matching</td><td>analyzers, wildcards, partial words</td><td>values, prefixes and whole words</td></tr>
+            <tr class="limit"><td>Scale ceiling</td><td>add nodes, scale sideways</td><td>whatever one machine holds — growable, still one machine</td></tr>
+            <tr class="limit"><td>Sharing with a team</td><td>everyone sees the same view</td><td>no — each disk is its own</td></tr>
+            <tr class="limit"><td>Retention</td><td>keep it forever</td><td>Kafka retention plus local trimming</td></tr>
+            <tr class="limit"><td>Ongoing use</td><td>lands in a warehouse, a database, some persistent layer</td><td>only when a person opens it</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        If the index will not fit on one machine, if a team has to share one view, or if the data must
+        outlive Kafka's retention, the pipeline is the right answer. The largest of the four is the last row: if the data has to end up somewhere permanent — a warehouse, a database, whatever
+        reads from it downstream — an index that runs only when someone opens it cannot stand in for that. A local index only works where none of those four applies.
+      </p>
+
+      <div class="summary">
+        <h2>In short</h2>
+        <ul class="recap">
+          <li><strong>Given the data, indexing configures itself.</strong> The format and the useful fields fall
+            out of the data, so past a few choices there is no mapping to write, no schema to register and no
+            connector to configure.</li>
+          <li><strong>The index is a pure function of what it has read</strong>, because a topic is addressable
+            by offset. So the full read happens once — the read a scan would have done anyway — and after that
+            only increments, resumed wherever they stopped.</li>
+          <li><strong>The index does not swell far beyond the messages it describes</strong>, and comes down with
+            every field and every message you leave out of it.</li>
+          <li><strong>A search runs entirely in the local index, so it costs the cluster
+            nothing.</strong> Only opening a message goes back to Kafka, by
+            explicit partition and offset.</li>
+          <li><strong>Where it does not cover you:</strong> when the index will not fit on one machine, when
+            a team has to share one view, when the data must outlive Kafka's retention, and when something
+            has to serve as a persistent store.</li>
+        </ul>
+        </div>
+
+      <h2>Conclusion</h2>
+      <p>
+        Kafka is a good data store — it scales horizontally, it stays up, it answers quickly. A great many services
+        run on it for good reasons.
+      </p>
+      <p>
+        A data pipeline usually follows, because that is how Kafka tends to get used.
+      </p>
+      <p>
+        But the data is already in Kafka. Give a topic an index it builds for itself, and it reads the way a database does — straight to the
+        message rather than walking to it.
+      </p>
+      <p>
+        If Kafka is going into a service, the version with a local index is worth sketching too.
+      </p>
+
+      <div class="getit">
+        <p class="getit-lead">
+          <span>The architecture above is implemented in <strong>Kaflow Search</strong>, a local-first desktop
+            application you install on your own machine.</span>
+        </p>
+        <div class="getit-actions">
+          <a class="button" href="/">Try Kaflow Search</a>
+        </div>
+        <p class="getit-note">
+          <span>macOS 11+ &#183; Windows 10+ &#183; free, no account needed</span>
+          <span>Not signed yet &mdash; the first launch needs the usual override.</span>
+          <span>There is a demo build if you have no cluster to point it at.</span>
+        </p>
+      </div>
+
+      <h2 id="appendix">Appendix: numbers from Kaflow Search</h2>
+      <p>
+        These came off Kaflow Search on an M4 with 32 GB, on RocksDB with its default compression. A
+        different machine or store lands somewhere else, so take the absolute figures as a reference.
+      </p>
+
+      <h3 id="rate">Indexing rate</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Topic</th><th>Fields</th><th>Rate</th><th>100K msgs</th><th>1M msgs</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>chat-messages</td><td class="n">19</td><td class="n">about 10,000 / sec</td><td class="n">about 10 sec</td><td class="n">about 100 sec</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="footnote">
+        Fields counted as below — about 19 values per message, from 15 declared ones once the list-valued fields
+        are expanded. The laptop was the limit here, not the network: a faster machine does more, a remote cluster less.
+      </p>
+
+
+      <h3 id="disk">Disk</h3>
+      <p>
+        Four topics, a million messages each, every field indexed. <em>Raw message</em> is the key, the value and
+        the headers as plain JSON, before anyone compresses anything; <em>stored locally</em> is what RocksDB ends
+        up holding, messages and the index over them together. Bytes per message read straight across as megabytes per million.
+      </p>
+      <p>
+        Indexing every field runs 1.1 to 1.2 times the raw data — raw meaning the data itself, not what the
+        Kafka cluster keeps on disk. Tokenizing, or building n-grams, makes search finer and the index larger
+        in proportion. zstd can bring it under that, by how much depends on the data.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Topic</th><th>Fields</th><th>Raw / msg</th><th>Stored / msg</th><th>With zstd</th><th>100K msgs</th><th>1M msgs</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>inventory-events</td><td class="n">21</td><td class="n">515 B</td><td class="n">586 B<span class="footnote">1.14&times;</span></td><td class="n">418 B<span class="footnote">0.81&times;</span></td><td class="n">64 MB</td><td class="n">586 MB</td></tr>
+            <tr><td>notification-events</td><td class="n">22</td><td class="n">593 B</td><td class="n">673 B<span class="footnote">1.14&times;</span></td><td class="n">516 B<span class="footnote">0.87&times;</span></td><td class="n">71 MB</td><td class="n">673 MB</td></tr>
+            <tr><td>payments-events</td><td class="n">26</td><td class="n">636 B</td><td class="n">768 B<span class="footnote">1.21&times;</span></td><td class="n">483 B<span class="footnote">0.76&times;</span></td><td class="n">79 MB</td><td class="n">768 MB</td></tr>
+            <tr><td>crawled-market-signals</td><td class="n">31</td><td class="n">840 B</td><td class="n">927 B<span class="footnote">1.10&times;</span></td><td class="n">656 B<span class="footnote">0.78&times;</span></td><td class="n">90 MB</td><td class="n">927 MB</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        The last two columns also say the shape holds: ten times the messages came out at 0.92 to 1.03
+        times the size per message, so a small sample predicts a large topic. In principle, 100 GB of local
+        disk covers well over a hundred million messages. Holding that much locally is not what this is for,
+        though.
+      </p>
+      <p class="footnote">
+        The last two columns are at the default compression, snappy. zstd can trim more but can also slow
+        writes; the two trade off.
+      </p>
+
+    </main>
+
+    <footer><span>© 2026 Kaflow Search</span><span>Fast. Local. Private.</span></footer>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 430" role="img" aria-label="Partial indexing: a full index, a count-based index keeping only the newest messages, and a field-based index keeping only the searched fields">
+<style>
+svg{
+  --ink:#f4f5f8; --ink-2:#9ba3b8; --ink-3:#6f778d;
+  --surface:#111522; --surface-2:#171c2c;
+  --rule:rgba(255,255,255,.12); --rule-strong:rgba(255,255,255,.26);
+  --cost:#c9915a; --cost-bg:#1d1a19; --cost-line:#6d5436;
+  --local:#8b7cff; --local-bg:#17162b; --local-line:#5b51a8;
+  --kafka:#9ba3b8; --kafka-bg:#161b28; --kafka-line:#414b62;
+  --arrow:#7b849a;
+  background:#090b12;
+}
+.n{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;font-weight:500;fill:var(--ink)}
+.ns{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;fill:var(--ink-3)}
+.zl{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase}
+.al{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;fill:var(--ink-2)}
+.empty{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;fill:var(--ink-3);font-style:italic}
+line,path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
+</style>
+
+        <defs>
+          <pattern id="pOn" x="180" y="0" width="28" height="18" patternUnits="userSpaceOnUse">
+            <rect x="1" y="1" width="26" height="16" rx="1" fill="var(--local-line)"/>
+          </pattern>
+          <pattern id="pOff" x="180" y="0" width="28" height="18" patternUnits="userSpaceOnUse">
+            <rect x="1" y="1" width="26" height="16" rx="1" fill="var(--rule)"/>
+          </pattern>
+        </defs>
+
+        <text class="ns" x="180" y="38">&#8592; older</text>
+        <text class="ns" x="852" y="38" text-anchor="end">newer &#8594;</text>
+
+        <text class="zl" x="20" y="90" fill="var(--local)">Full</text>
+        <text class="ns" x="20" y="108">메시지 전체 · 필드 전체</text>
+        <rect x="180" y="54" width="672" height="90" fill="url(#pOn)"/>
+
+        <text class="zl" x="20" y="216" fill="var(--local)">CountBased</text>
+        <text class="ns" x="20" y="234">파티션당 최근 N건만</text>
+        <rect x="180" y="180" width="420" height="90" fill="url(#pOff)"/>
+        <rect x="600" y="180" width="252" height="90" fill="url(#pOn)"/>
+        <text class="al" x="390" y="290" text-anchor="middle">trimmed first</text>
+        <text class="al" x="726" y="290" text-anchor="middle" fill="var(--local)">kept</text>
+
+        <text class="zl" x="20" y="342" fill="var(--local)">FieldBased</text>
+        <text class="ns" x="20" y="360">검색에 쓰는 필드만</text>
+        <rect x="180" y="306" width="672" height="18" fill="url(#pOn)"/>
+        <rect x="180" y="324" width="672" height="18" fill="url(#pOn)"/>
+        <rect x="180" y="342" width="672" height="18" fill="url(#pOn)"/>
+        <rect x="180" y="360" width="672" height="18" fill="url(#pOff)"/>
+        <rect x="180" y="378" width="672" height="18" fill="url(#pOff)"/>
+        <text class="ns" x="862" y="319" fill="var(--ink-2)">key</text>
+        <text class="ns" x="862" y="337" fill="var(--ink-2)">orderId</text>
+        <text class="ns" x="862" y="355" fill="var(--ink-2)">status</text>
+        <text class="ns" x="862" y="373">payload</text>
+        <text class="ns" x="862" y="391">debugCtx</text>
+      </svg>

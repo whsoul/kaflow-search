@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 330" role="img" aria-label="As-is architecture: Kafka feeds Kafka Connect into Elasticsearch, Kibana, a database, and ksqlDB, all running as extra always-on infrastructure">
+<style>
+svg{
+  --ink:#f4f5f8; --ink-2:#9ba3b8; --ink-3:#6f778d;
+  --surface:#111522; --surface-2:#171c2c;
+  --rule:rgba(255,255,255,.12); --rule-strong:rgba(255,255,255,.26);
+  --cost:#c9915a; --cost-bg:#1d1a19; --cost-line:#6d5436;
+  --local:#8b7cff; --local-bg:#17162b; --local-line:#5b51a8;
+  --kafka:#9ba3b8; --kafka-bg:#161b28; --kafka-line:#414b62;
+  --arrow:#7b849a;
+  background:#090b12;
+}
+.n{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;font-weight:500;fill:var(--ink)}
+.ns{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;fill:var(--ink-3)}
+.zl{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase}
+.al{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;fill:var(--ink-2)}
+.empty{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;fill:var(--ink-3);font-style:italic}
+line,path.arw{stroke:var(--arrow);stroke-width:1.4;fill:none}
+</style>
+
+        <defs>
+          <marker id="ah1" viewBox="0 0 8 6" refX="7.5" refY="3" markerWidth="8" markerHeight="6" orient="auto">
+            <path d="M0,0 L8,3 L0,6 z" fill="var(--arrow)"/>
+          </marker>
+        </defs>
+
+        <text class="zl" x="335" y="16" fill="var(--cost)">Extra infrastructure — always on, always billed</text>
+        <rect x="335" y="24" width="430" height="282" rx="3" fill="var(--cost-bg)" stroke="var(--cost-line)" stroke-width="1.2" stroke-dasharray="5 4"/>
+
+        <text class="zl" x="788" y="16" fill="var(--ink-3)">Your laptop</text>
+        <rect x="788" y="24" width="172" height="282" rx="3" fill="var(--surface-2)" stroke="var(--rule-strong)" stroke-width="1.2"/>
+
+        <rect x="20" y="134" width="110" height="56" rx="3" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.2"/>
+        <text class="n" x="75" y="159" text-anchor="middle">Your</text>
+        <text class="n" x="75" y="175" text-anchor="middle">service</text>
+
+        <rect x="175" y="124" width="120" height="76" rx="3" fill="var(--kafka-bg)" stroke="var(--kafka-line)" stroke-width="1.4"/>
+        <text class="n" x="235" y="157" text-anchor="middle" fill="var(--kafka)">Kafka</text>
+        <text class="n" x="235" y="174" text-anchor="middle" fill="var(--kafka)">cluster</text>
+
+        <path class="arw" d="M130,162 L170,162" marker-end="url(#ah1)"/>
+
+        <line x1="318" y1="70" x2="318" y2="254"/>
+        <path class="arw" d="M295,162 L318,162"/>
+        <path class="arw" d="M318,70 L340,70" marker-end="url(#ah1)"/>
+        <path class="arw" d="M318,162 L340,162" marker-end="url(#ah1)"/>
+        <path class="arw" d="M318,254 L340,254" marker-end="url(#ah1)"/>
+
+        <rect x="345" y="48" width="118" height="44" rx="3" fill="var(--surface)" stroke="var(--cost-line)" stroke-width="1.2"/>
+        <text class="n" x="404" y="66" text-anchor="middle">Kafka Connect</text>
+        <text class="ns" x="404" y="81" text-anchor="middle">or Logstash</text>
+        <path class="arw" d="M463,70 L483,70" marker-end="url(#ah1)"/>
+        <rect x="487" y="48" width="118" height="44" rx="3" fill="var(--surface)" stroke="var(--cost-line)" stroke-width="1.2"/>
+        <text class="n" x="546" y="75" text-anchor="middle">Elasticsearch</text>
+        <path class="arw" d="M605,70 L625,70" marker-end="url(#ah1)"/>
+        <rect x="629" y="48" width="118" height="44" rx="3" fill="var(--surface)" stroke="var(--cost-line)" stroke-width="1.2"/>
+        <text class="n" x="688" y="75" text-anchor="middle">Kibana</text>
+
+        <rect x="345" y="140" width="118" height="44" rx="3" fill="var(--surface)" stroke="var(--cost-line)" stroke-width="1.2"/>
+        <text class="n" x="404" y="160" text-anchor="middle">Kafka</text>
+        <text class="n" x="404" y="175" text-anchor="middle">Connect</text>
+        <path class="arw" d="M463,162 L483,162" marker-end="url(#ah1)"/>
+        <rect x="487" y="140" width="118" height="44" rx="3" fill="var(--surface)" stroke="var(--cost-line)" stroke-width="1.2"/>
+        <text class="n" x="546" y="167" text-anchor="middle">RDB / DW</text>
+
+        <rect x="345" y="232" width="118" height="44" rx="3" fill="var(--surface)" stroke="var(--cost-line)" stroke-width="1.2"/>
+        <text class="n" x="404" y="252" text-anchor="middle">ksqlDB /</text>
+        <text class="n" x="404" y="267" text-anchor="middle">Flink</text>
+
+        <path class="arw" d="M747,70 L800,70" marker-end="url(#ah1)"/>
+        <rect x="806" y="48" width="136" height="44" rx="3" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.2"/>
+        <text class="n" x="874" y="75" text-anchor="middle">Browser</text>
+
+        <path class="arw" d="M605,162 L800,162" marker-end="url(#ah1)"/>
+        <rect x="806" y="140" width="136" height="44" rx="3" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.2"/>
+        <text class="n" x="874" y="167" text-anchor="middle">DB client</text>
+
+        <path class="arw" d="M463,254 L800,254" marker-end="url(#ah1)"/>
+        <rect x="806" y="232" width="136" height="44" rx="3" fill="var(--surface)" stroke="var(--rule-strong)" stroke-width="1.2"/>
+        <text class="n" x="874" y="252" text-anchor="middle">CLI /</text>
+        <text class="n" x="874" y="267" text-anchor="middle">web UI</text>
+
+        <text class="ns" x="874" y="296" text-anchor="middle">three tools, three places</text>
+      </svg>
