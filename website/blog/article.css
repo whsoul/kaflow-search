@@ -2,6 +2,7 @@
   .article-head { border-bottom: 1px solid var(--line); padding-bottom: 1.75rem; margin-bottom: 2.25rem; }
   .article-head h1 { font-size: clamp(2rem, 5vw, 2.85rem); line-height: 1.15; margin: 0.5rem 0 0; letter-spacing: -0.02em; }
   .article-head .lead { font-size: 1.05rem; line-height: 1.8; color: var(--text); margin: 1.4rem 0 0; max-width: 62ch; }
+  .article-head .article-meta { color: var(--muted); font-size: 0.9rem; margin: 0.75rem 0 0; }
   .article-head .standfirst { color: var(--muted); font-size: 1.05rem; margin: 0.9rem 0 0; }
   .article h3 { font-size: 1.05rem; margin: 2rem 0 0.75rem; color: var(--accent-bright); letter-spacing: -0.005em; }
   .article h2 { font-size: 1.4rem; margin: 3rem 0 1rem; letter-spacing: -0.01em; }
