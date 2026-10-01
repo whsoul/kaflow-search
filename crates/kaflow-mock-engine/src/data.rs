@@ -110,7 +110,8 @@ impl MockStore {
     }
 
     fn from_fixture(root: FxRoot) -> Self {
-        let topics = root.topics.into_iter().map(build_topic).collect();
+        let mut topics: Vec<MockTopic> = root.topics.into_iter().map(build_topic).collect();
+        shift_to_present(&mut topics);
         Self {
             topics,
             tokenized: RwLock::new(HashMap::new()),
@@ -172,6 +173,42 @@ impl MockStore {
             .get(topic)
             .cloned()
             .unwrap_or_default()
+    }
+}
+
+/// Moves the whole fixture forward so that its newest message lands at the present.
+///
+/// The fixture carries fixed timestamps, and a demo build gets downloaded and opened
+/// for months after it was made. Time filters resolve their presets against the
+/// current clock, so a visitor asking for the last 24 hours of unshifted data gets
+/// nothing back and reasonably concludes that searching is broken. Shifting keeps the
+/// sample what it was meant to be: a week of messages ending now, which is what every
+/// preset expects to find.
+///
+/// One delta for every topic, so the topics keep their positions relative to one
+/// another. Nothing else in the fixture carries a date, so nothing else has to move.
+fn shift_to_present(topics: &mut [MockTopic]) {
+    let Some(newest) = topics
+        .iter()
+        .flat_map(|t| &t.messages)
+        .map(|m| m.ts_millis)
+        .max()
+    else {
+        return;
+    };
+    let now = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_millis() as u64)
+        .unwrap_or(newest);
+    // Forward only. A clock set to the past would otherwise drag the sample with it,
+    // and data that predates the fixture is stranger than data that is merely old.
+    let Some(delta) = now.checked_sub(newest) else {
+        return;
+    };
+    for t in topics.iter_mut() {
+        for m in t.messages.iter_mut() {
+            m.ts_millis += delta;
+        }
     }
 }
 
@@ -747,6 +784,58 @@ mod tests {
             "payload fields must use the P notation: {:?}",
             t.payload_fields
         );
+    }
+
+    #[test]
+    fn fixture_timestamps_land_in_the_present() {
+        let s = store();
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_millis() as u64;
+        let newest = s
+            .topics
+            .iter()
+            .flat_map(|t| &t.messages)
+            .map(|m| m.ts_millis)
+            .max()
+            .expect("fixture must have messages");
+
+        // Presets are resolved against the clock, so the sample has to end at the
+        // present or the shortest of them selects nothing.
+        assert!(
+            newest <= now && now - newest < 60_000,
+            "newest message should sit at about now, was {newest} against {now}"
+        );
+    }
+
+    #[test]
+    fn shifting_keeps_topics_in_step() {
+        let s = store();
+        let spans: Vec<(u64, u64)> = s
+            .topics
+            .iter()
+            .filter_map(|t| {
+                let lo = t.messages.iter().map(|m| m.ts_millis).min()?;
+                let hi = t.messages.iter().map(|m| m.ts_millis).max()?;
+                Some((lo, hi))
+            })
+            .collect();
+
+        // One delta for every topic, so they still overlap the way the fixture wrote
+        // them. Shifting each topic to its own "now" would pull them apart.
+        let earliest = spans.iter().map(|(lo, _)| *lo).min().unwrap();
+        let latest = spans.iter().map(|(_, hi)| *hi).max().unwrap();
+        assert!(
+            latest - earliest < 14 * 24 * 60 * 60 * 1000,
+            "the whole sample should still span about a week, spans {spans:?}"
+        );
+        for (lo, _) in &spans {
+            assert!(
+                lo - earliest < 24 * 60 * 60 * 1000,
+                "topics should still start together, spans {spans:?}"
+            );
+        }
     }
 
     #[test]

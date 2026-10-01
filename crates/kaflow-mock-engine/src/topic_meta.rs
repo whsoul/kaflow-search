@@ -110,13 +110,13 @@ impl TopicMetaApi for MockEngine {
         })
     }
 
-    async fn list_kafka_topics(&self, _bootstrap: &str) -> Result<Vec<String>, EngineError> {
+    async fn list_kafka_topics(&self, _workspace: &str) -> Result<Vec<String>, EngineError> {
         Ok(self.store.topics.iter().map(|t| t.name.clone()).collect())
     }
 
     async fn fetch_cluster_topology(
         &self,
-        _bootstrap: &str,
+        _workspace: &str,
         topics: &[String],
     ) -> Result<ClusterTopology, EngineError> {
         // An invented three-broker cluster, so the shape has something to show.
@@ -165,13 +165,13 @@ impl TopicMetaApi for MockEngine {
         })
     }
 
-    async fn get_cluster_id(&self, _bootstrap: &str) -> Result<String, EngineError> {
+    async fn get_cluster_id(&self, _workspace: &str) -> Result<String, EngineError> {
         Ok("mock-cluster-id".to_string())
     }
 
     async fn get_kafka_version_info(
         &self,
-        _bootstrap: &str,
+        _workspace: &str,
     ) -> Result<KafkaVersionInfo, EngineError> {
         Ok(KafkaVersionInfo {
             inferred_version: Some("≈ Kafka mock".to_string()),
@@ -181,7 +181,7 @@ impl TopicMetaApi for MockEngine {
 
     async fn get_topic_message_count(
         &self,
-        _bootstrap: &str,
+        _workspace: &str,
         topic: &str,
     ) -> Result<TopicMessageCount, EngineError> {
         let (count, parts) = match self.store.topic(topic) {
@@ -197,19 +197,19 @@ impl TopicMetaApi for MockEngine {
 
     async fn list_topic_message_counts(
         &self,
-        bootstrap: &str,
+        workspace: &str,
         topics: &[String],
     ) -> Result<Vec<TopicMessageCount>, EngineError> {
         let mut out = Vec::with_capacity(topics.len());
         for t in topics {
-            out.push(self.get_topic_message_count(bootstrap, t).await?);
+            out.push(self.get_topic_message_count(workspace, t).await?);
         }
         Ok(out)
     }
 
     async fn get_topic_size_profile(
         &self,
-        _bootstrap: &str,
+        _workspace: &str,
         topic: &str,
     ) -> Result<TopicSizeProfile, EngineError> {
         let t = self.store.topic(topic);
@@ -238,7 +238,7 @@ impl TopicMetaApi for MockEngine {
 
     async fn suggest_tokenize_fields(
         &self,
-        _bootstrap: &str,
+        _workspace: &str,
         topic: &str,
         _key_spec: DeserializerSpec,
         _value_spec: DeserializerSpec,

@@ -8,17 +8,24 @@ use crate::error::EngineError;
 
 #[async_trait]
 pub trait AuthApi: Send + Sync {
-    /// Registers credentials for a cluster, to be used by later calls.
+    /// Registers credentials for a workspace, along with the cluster they are for.
+    ///
+    /// Credentials belong to a workspace, not to a cluster address. Two workspaces may
+    /// name the same broker and must still hold their own credentials — the same cluster
+    /// commonly exposes different topics to different accounts — so an implementation
+    /// must not let one workspace's credentials serve another, even where both name the
+    /// same address. Calls below identify the pair by workspace alone.
     ///
     /// **Secrets stay in memory and must never be written to disk from here.**
     async fn register_kafka_auth(
         &self,
+        workspace: &str,
         bootstrap: &str,
         auth: KafkaAuth,
     ) -> Result<(), EngineError>;
 
     /// Forgets them again.
-    async fn clear_kafka_auth(&self, bootstrap: &str) -> Result<(), EngineError>;
+    async fn clear_kafka_auth(&self, workspace: &str) -> Result<(), EngineError>;
 
     /// Tries the credentials once, so a failure is reported before anything else depends
     /// on them. Succeeds immediately where there is nothing to authenticate.
@@ -27,7 +34,7 @@ pub trait AuthApi: Send + Sync {
     /// validation, this returns `EngineError::UntrustedCert` rather than a plain failure
     /// where the certificate was captured well enough to identify — see
     /// `confirm_kafka_cert_trust`.
-    async fn verify_kafka_auth(&self, bootstrap: &str) -> Result<(), EngineError>;
+    async fn verify_kafka_auth(&self, workspace: &str) -> Result<(), EngineError>;
 
     /// Re-verifies credentials for `bootstrap` after the caller has reviewed and accepted
     /// specific TLS certificate fingerprints from a prior `EngineError::UntrustedCert`.
@@ -35,16 +42,16 @@ pub trait AuthApi: Send + Sync {
     /// An implementation must accept a presented certificate only when its fingerprint is
     /// among `accepted_fingerprints`, and must still require proof of possession of the
     /// matching private key — this is not a blanket bypass of certificate verification.
-    /// The accepted fingerprints are remembered for `bootstrap` beyond this one call, the
-    /// same as `register_kafka_auth`'s credentials.
+    /// The accepted fingerprints are remembered for the workspace beyond this one call,
+    /// the same as `register_kafka_auth`'s credentials.
     async fn confirm_kafka_cert_trust(
         &self,
-        bootstrap: &str,
+        workspace: &str,
         accepted_fingerprints: Vec<String>,
     ) -> Result<(), EngineError>;
 
     /// Verifies certificate trust for connection endpoints discovered from the cluster
-    /// itself, not only `bootstrap`.
+    /// itself, not only the address the workspace was registered with.
     ///
     /// Fails the same way `verify_kafka_auth` does, including `EngineError::UntrustedCert`,
     /// resolved the same way through `confirm_kafka_cert_trust`. On success, returns the
@@ -52,7 +59,7 @@ pub trait AuthApi: Send + Sync {
     /// should surface it rather than discard it silently.
     async fn verify_cluster_broker_trust(
         &self,
-        bootstrap: &str,
+        workspace: &str,
     ) -> Result<Vec<UnreachableBrokerInfo>, EngineError>;
 
     /// Asks the broker which SASL mechanisms it offers.

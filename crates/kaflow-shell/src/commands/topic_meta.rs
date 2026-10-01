@@ -45,10 +45,10 @@ pub async fn check_workspace_storage(
 #[tauri::command]
 pub async fn list_kafka_topics(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
-    bootstrap: String,
+    workspace: String,
 ) -> Result<Vec<String>, String> {
     engine
-        .list_kafka_topics(&bootstrap)
+        .list_kafka_topics(&workspace)
         .await
         .map_err(|e| e.into_string())
 }
@@ -57,11 +57,11 @@ pub async fn list_kafka_topics(
 #[tauri::command]
 pub async fn fetch_cluster_topology(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
-    bootstrap: String,
+    workspace: String,
     topics: Vec<String>,
 ) -> Result<ClusterTopology, String> {
     engine
-        .fetch_cluster_topology(&bootstrap, &topics)
+        .fetch_cluster_topology(&workspace, &topics)
         .await
         .map_err(|e| e.into_string())
 }
@@ -69,11 +69,11 @@ pub async fn fetch_cluster_topology(
 #[tauri::command]
 pub async fn get_topic_message_count(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
-    bootstrap: String,
+    workspace: String,
     topic: String,
 ) -> Result<TopicMessageCount, String> {
     engine
-        .get_topic_message_count(&bootstrap, &topic)
+        .get_topic_message_count(&workspace, &topic)
         .await
         .map_err(|e| e.into_string())
 }
@@ -82,11 +82,11 @@ pub async fn get_topic_message_count(
 #[tauri::command]
 pub async fn list_topic_message_counts(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
-    bootstrap: String,
+    workspace: String,
     topics: Vec<String>,
 ) -> Result<Vec<TopicMessageCount>, String> {
     engine
-        .list_topic_message_counts(&bootstrap, &topics)
+        .list_topic_message_counts(&workspace, &topics)
         .await
         .map_err(|e| e.into_string())
 }
@@ -94,11 +94,11 @@ pub async fn list_topic_message_counts(
 #[tauri::command]
 pub async fn get_topic_size_profile(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
-    bootstrap: String,
+    workspace: String,
     topic: String,
 ) -> Result<TopicSizeProfile, String> {
     engine
-        .get_topic_size_profile(&bootstrap, &topic)
+        .get_topic_size_profile(&workspace, &topic)
         .await
         .map_err(|e| e.into_string())
 }
@@ -107,13 +107,13 @@ pub async fn get_topic_size_profile(
 #[tauri::command]
 pub async fn suggest_tokenize_fields(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
-    bootstrap: String,
+    workspace: String,
     topic: String,
     key_spec: DeserializerSpec,
     value_spec: DeserializerSpec,
 ) -> Result<SuggestTokenizeFieldsResponse, String> {
     engine
-        .suggest_tokenize_fields(&bootstrap, &topic, key_spec, value_spec)
+        .suggest_tokenize_fields(&workspace, &topic, key_spec, value_spec)
         .await
         .map_err(|e| e.into_string())
 }
@@ -121,10 +121,10 @@ pub async fn suggest_tokenize_fields(
 #[tauri::command]
 pub async fn get_cluster_id(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
-    bootstrap: String,
+    workspace: String,
 ) -> Result<String, String> {
     engine
-        .get_cluster_id(&bootstrap)
+        .get_cluster_id(&workspace)
         .await
         .map_err(|e| e.into_string())
 }
@@ -132,10 +132,10 @@ pub async fn get_cluster_id(
 #[tauri::command]
 pub async fn get_kafka_version_info(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
-    bootstrap: String,
+    workspace: String,
 ) -> Result<KafkaVersionInfo, String> {
     engine
-        .get_kafka_version_info(&bootstrap)
+        .get_kafka_version_info(&workspace)
         .await
         .map_err(|e| e.into_string())
 }

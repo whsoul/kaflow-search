@@ -36,11 +36,12 @@ fn map_verify_result_with_diagnostics(
 #[tauri::command]
 pub async fn register_kafka_auth(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
+    workspace: String,
     bootstrap: String,
     auth: KafkaAuth,
 ) -> Result<(), String> {
     engine
-        .register_kafka_auth(&bootstrap, auth)
+        .register_kafka_auth(&workspace, &bootstrap, auth)
         .await
         .map_err(|e| e.into_string())
 }
@@ -48,10 +49,10 @@ pub async fn register_kafka_auth(
 #[tauri::command]
 pub async fn clear_kafka_auth(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
-    bootstrap: String,
+    workspace: String,
 ) -> Result<(), String> {
     engine
-        .clear_kafka_auth(&bootstrap)
+        .clear_kafka_auth(&workspace)
         .await
         .map_err(|e| e.into_string())
 }
@@ -59,28 +60,28 @@ pub async fn clear_kafka_auth(
 #[tauri::command]
 pub async fn verify_kafka_auth(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
-    bootstrap: String,
+    workspace: String,
 ) -> Result<VerifyKafkaAuthResult, String> {
-    map_verify_result(engine.verify_kafka_auth(&bootstrap).await)
+    map_verify_result(engine.verify_kafka_auth(&workspace).await)
 }
 
 #[tauri::command]
 pub async fn verify_cluster_broker_trust(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
-    bootstrap: String,
+    workspace: String,
 ) -> Result<VerifyKafkaAuthResult, String> {
-    map_verify_result_with_diagnostics(engine.verify_cluster_broker_trust(&bootstrap).await)
+    map_verify_result_with_diagnostics(engine.verify_cluster_broker_trust(&workspace).await)
 }
 
 #[tauri::command]
 pub async fn confirm_kafka_cert_trust(
     engine: tauri::State<'_, Arc<dyn KafkaToolEngine>>,
-    bootstrap: String,
+    workspace: String,
     accepted_fingerprints: Vec<String>,
 ) -> Result<VerifyKafkaAuthResult, String> {
     map_verify_result(
         engine
-            .confirm_kafka_cert_trust(&bootstrap, accepted_fingerprints)
+            .confirm_kafka_cert_trust(&workspace, accepted_fingerprints)
             .await,
     )
 }

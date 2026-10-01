@@ -8097,22 +8097,22 @@ Production dependencies of the bundled frontend: **94 packages**.
 
 | Package | Version | License | Homepage |
 |---|---|---|---|
-| `@babel/code-frame` | 7.29.0 | MIT | https://babel.dev/docs/en/next/babel-code-frame |
-| `@babel/compat-data` | 7.29.3 | MIT | https://github.com/babel/babel#readme |
-| `@babel/core` | 7.29.0 | MIT | https://babel.dev/docs/en/next/babel-core |
-| `@babel/generator` | 7.29.1 | MIT | https://babel.dev/docs/en/next/babel-generator |
-| `@babel/helper-compilation-targets` | 7.28.6 | MIT | https://github.com/babel/babel#readme |
-| `@babel/helper-globals` | 7.28.0 | MIT | https://github.com/babel/babel#readme |
-| `@babel/helper-module-imports` | 7.28.6 | MIT | https://babel.dev/docs/en/next/babel-helper-module-imports |
-| `@babel/helper-module-transforms` | 7.28.6 | MIT | https://babel.dev/docs/en/next/babel-helper-module-transforms |
-| `@babel/helper-string-parser` | 7.27.1 | MIT | https://babel.dev/docs/en/next/babel-helper-string-parser |
-| `@babel/helper-validator-identifier` | 7.28.5 | MIT | https://github.com/babel/babel#readme |
-| `@babel/helper-validator-option` | 7.27.1 | MIT | https://github.com/babel/babel#readme |
-| `@babel/helpers` | 7.29.2 | MIT | https://babel.dev/docs/en/next/babel-helpers |
-| `@babel/parser` | 7.29.3 | MIT | https://babel.dev/docs/en/next/babel-parser |
-| `@babel/template` | 7.28.6 | MIT | https://babel.dev/docs/en/next/babel-template |
-| `@babel/traverse` | 7.29.0 | MIT | https://babel.dev/docs/en/next/babel-traverse |
-| `@babel/types` | 7.29.0 | MIT | https://babel.dev/docs/en/next/babel-types |
+| `@babel/code-frame` | 7.29.7 | MIT | https://babel.dev/docs/en/next/babel-code-frame |
+| `@babel/compat-data` | 7.29.7 | MIT | https://github.com/babel/babel#readme |
+| `@babel/core` | 7.29.7 | MIT | https://babel.dev/docs/en/next/babel-core |
+| `@babel/generator` | 7.29.8 | MIT | https://babel.dev/docs/en/next/babel-generator |
+| `@babel/helper-compilation-targets` | 7.29.7 | MIT | https://github.com/babel/babel#readme |
+| `@babel/helper-globals` | 7.29.7 | MIT | https://github.com/babel/babel#readme |
+| `@babel/helper-module-imports` | 7.29.7 | MIT | https://babel.dev/docs/en/next/babel-helper-module-imports |
+| `@babel/helper-module-transforms` | 7.29.7 | MIT | https://babel.dev/docs/en/next/babel-helper-module-transforms |
+| `@babel/helper-string-parser` | 7.27.1, 7.29.7 | MIT | https://babel.dev/docs/en/next/babel-helper-string-parser |
+| `@babel/helper-validator-identifier` | 7.28.5, 7.29.7 | MIT | https://github.com/babel/babel#readme |
+| `@babel/helper-validator-option` | 7.29.7 | MIT | https://github.com/babel/babel#readme |
+| `@babel/helpers` | 7.29.7 | MIT | https://babel.dev/docs/en/next/babel-helpers |
+| `@babel/parser` | 7.29.9 | MIT | https://babel.dev/docs/en/next/babel-parser |
+| `@babel/template` | 7.29.7 | MIT | https://babel.dev/docs/en/next/babel-template |
+| `@babel/traverse` | 7.29.8 | MIT | https://babel.dev/docs/en/next/babel-traverse |
+| `@babel/types` | 7.29.0, 7.29.8 | MIT | https://babel.dev/docs/en/next/babel-types |
 | `@floating-ui/core` | 1.7.5 | MIT | https://floating-ui.com |
 | `@floating-ui/dom` | 1.7.6 | MIT | https://floating-ui.com |
 | `@floating-ui/react` | 0.27.19 | MIT | https://floating-ui.com/docs/react |
@@ -8143,10 +8143,10 @@ Production dependencies of the bundled frontend: **94 packages**.
 | `@types/yargs` | 17.0.35 | MIT | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/yargs |
 | `@types/yargs-parser` | 21.0.3 | MIT | https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/yargs-parser |
 | `ansi-styles` | 4.3.0, 5.2.0 | MIT | https://github.com/chalk/ansi-styles#readme |
-| `baseline-browser-mapping` | 2.10.29 | Apache-2.0 | https://github.com/web-platform-dx/baseline-browser-mapping#readme |
-| `browserslist` | 4.28.2 | MIT | https://github.com/browserslist/browserslist#readme |
+| `baseline-browser-mapping` | 2.11.26 | Apache-2.0 | https://github.com/web-platform-dx/baseline-browser-mapping#readme |
+| `browserslist` | 4.29.2 | MIT | https://github.com/browserslist/browserslist#readme |
 | `camelcase` | 6.3.0 | MIT | https://github.com/sindresorhus/camelcase#readme |
-| `caniuse-lite` | 1.0.30001792 | CC-BY-4.0 | https://github.com/browserslist/caniuse-lite#readme |
+| `caniuse-lite` | 1.0.30001812 | CC-BY-4.0 | https://github.com/browserslist/caniuse-lite#readme |
 | `chalk` | 4.1.2 | MIT | https://github.com/chalk/chalk#readme |
 | `clsx` | 2.1.1 | MIT | https://github.com/lukeed/clsx#readme |
 | `color-convert` | 2.0.1 | MIT | https://github.com/Qix-/color-convert#readme |
@@ -8154,9 +8154,9 @@ Production dependencies of the bundled frontend: **94 packages**.
 | `convert-source-map` | 2.0.0 | MIT | https://github.com/thlorenz/convert-source-map |
 | `date-fns` | 4.4.0 | MIT | https://github.com/date-fns/date-fns#readme |
 | `debug` | 4.4.3 | MIT | https://github.com/debug-js/debug#readme |
-| `echarts` | 6.0.0 | Apache-2.0 | https://echarts.apache.org |
+| `echarts` | 6.1.0 | Apache-2.0 | https://echarts.apache.org |
 | `echarts-for-react` | 3.0.6 | MIT | https://github.com/hustcc/echarts-for-react |
-| `electron-to-chromium` | 1.5.354 | ISC | https://github.com/Kilian/electron-to-chromium#readme |
+| `electron-to-chromium` | 1.5.439 | ISC | https://github.com/Kilian/electron-to-chromium#readme |
 | `escalade` | 3.2.0 | MIT | https://github.com/lukeed/escalade#readme |
 | `fast-deep-equal` | 3.1.3 | MIT | https://github.com/epoberezkin/fast-deep-equal#readme |
 | `gensync` | 1.0.0-beta.2 | MIT | https://github.com/loganfsmyth/gensync |
@@ -8173,7 +8173,7 @@ Production dependencies of the bundled frontend: **94 packages**.
 | `lru-cache` | 5.1.1 | ISC | https://github.com/isaacs/node-lru-cache#readme |
 | `moo` | 0.5.3 | BSD-3-Clause | https://github.com/tjvr/moo#readme |
 | `ms` | 2.1.3 | MIT | https://github.com/vercel/ms#readme |
-| `node-releases` | 2.0.44 | MIT | https://github.com/chicoxyzzy/node-releases#readme |
+| `node-releases` | 2.0.57 | MIT | https://github.com/chicoxyzzy/node-releases#readme |
 | `normalize-path` | 3.0.0 | MIT | https://github.com/jonschlinkert/normalize-path |
 | `picocolors` | 1.1.1 | ISC | https://github.com/alexeyraspopov/picocolors#readme |
 | `pretty-format` | 29.7.0 | MIT | https://github.com/jestjs/jest#readme |
@@ -8188,14 +8188,14 @@ Production dependencies of the bundled frontend: **94 packages**.
 | `tabbable` | 6.5.0 | MIT | https://github.com/focus-trap/tabbable#readme |
 | `tslib` | 2.3.0 | 0BSD | https://www.typescriptlang.org/ |
 | `undici-types` | 8.3.0 | MIT | https://undici.nodejs.org |
-| `update-browserslist-db` | 1.2.3 | MIT | https://github.com/browserslist/update-db#readme |
+| `update-browserslist-db` | 1.3.3 | MIT | https://github.com/browserslist/update-db#readme |
 | `yallist` | 3.1.1 | ISC | https://github.com/isaacs/yallist#readme |
-| `zrender` | 6.0.0 | BSD-3-Clause | https://github.com/ecomfe/zrender#readme |
+| `zrender` | 6.1.0 | BSD-3-Clause | https://github.com/ecomfe/zrender#readme |
 
 <details>
 <summary>Full license texts (npm)</summary>
 
-### @babel/code-frame 7.29.0
+### @babel/code-frame 7.29.7
 
 License: **MIT** · Author: The Babel Team
 
@@ -8226,7 +8226,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### @babel/compat-data 7.29.3
+### @babel/compat-data 7.29.7
 
 License: **MIT** · Author: The Babel Team
 
@@ -8257,7 +8257,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### @babel/core 7.29.0
+### @babel/core 7.29.7
 
 License: **MIT** · Author: The Babel Team
 
@@ -8288,7 +8288,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### @babel/generator 7.29.1
+### @babel/generator 7.29.8
 
 License: **MIT** · Author: The Babel Team
 
@@ -8319,7 +8319,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### @babel/helper-compilation-targets 7.28.6
+### @babel/helper-compilation-targets 7.29.7
 
 License: **MIT** · Author: The Babel Team
 
@@ -8350,7 +8350,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### @babel/helper-globals 7.28.0
+### @babel/helper-globals 7.29.7
 
 License: **MIT** · Author: The Babel Team
 
@@ -8381,7 +8381,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### @babel/helper-module-imports 7.28.6
+### @babel/helper-module-imports 7.29.7
 
 License: **MIT** · Author: The Babel Team
 
@@ -8412,7 +8412,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### @babel/helper-module-transforms 7.28.6
+### @babel/helper-module-transforms 7.29.7
 
 License: **MIT** · Author: The Babel Team
 
@@ -8443,7 +8443,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### @babel/helper-string-parser 7.27.1
+### @babel/helper-string-parser 7.27.1, 7.29.7
 
 License: **MIT** · Author: The Babel Team
 
@@ -8474,7 +8474,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### @babel/helper-validator-identifier 7.28.5
+### @babel/helper-validator-identifier 7.28.5, 7.29.7
 
 License: **MIT** · Author: The Babel Team
 
@@ -8505,7 +8505,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### @babel/helper-validator-option 7.27.1
+### @babel/helper-validator-option 7.29.7
 
 License: **MIT** · Author: The Babel Team
 
@@ -8536,7 +8536,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### @babel/helpers 7.29.2
+### @babel/helpers 7.29.7
 
 License: **MIT** · Author: The Babel Team
 
@@ -8568,7 +8568,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### @babel/parser 7.29.3
+### @babel/parser 7.29.9
 
 License: **MIT** · Author: The Babel Team
 
@@ -8596,7 +8596,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
-### @babel/template 7.28.6
+### @babel/template 7.29.7
 
 License: **MIT** · Author: The Babel Team
 
@@ -8627,7 +8627,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### @babel/traverse 7.29.0
+### @babel/traverse 7.29.8
 
 License: **MIT** · Author: The Babel Team
 
@@ -8658,7 +8658,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### @babel/types 7.29.0
+### @babel/types 7.29.0, 7.29.8
 
 License: **MIT** · Author: The Babel Team
 
@@ -9741,7 +9741,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### baseline-browser-mapping 2.10.29
+### baseline-browser-mapping 2.11.26
 
 License: **Apache-2.0**
 
@@ -9951,7 +9951,7 @@ Apache License
    limitations under the License.
 ```
 
-### browserslist 4.28.2
+### browserslist 4.29.2
 
 License: **MIT** · Author: Andrey Sitnik
 
@@ -9998,7 +9998,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### caniuse-lite 1.0.30001792
+### caniuse-lite 1.0.30001812
 
 License: **CC-BY-4.0** · Author: Ben Briggs
 
@@ -10565,7 +10565,7 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### echarts 6.0.0
+### echarts 6.1.0
 
 License: **Apache-2.0**
 
@@ -10795,7 +10795,7 @@ _NOTICE_
 
 ```text
 Apache ECharts
-Copyright 2017-2025 The Apache Software Foundation
+Copyright 2017-2026 The Apache Software Foundation
 
 This product includes software developed at
 The Apache Software Foundation (https://www.apache.org/).
@@ -10831,7 +10831,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### electron-to-chromium 1.5.354
+### electron-to-chromium 1.5.439
 
 License: **ISC** · Author: Kilian Valkhof
 
@@ -11279,7 +11279,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### node-releases 2.0.44
+### node-releases 2.0.57
 
 License: **MIT** · Author: Sergey Rubanov
 
@@ -11673,7 +11673,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### update-browserslist-db 1.2.3
+### update-browserslist-db 1.3.3
 
 License: **MIT** · Author: Andrey Sitnik
 
@@ -11682,7 +11682,7 @@ _LICENSE_
 ```text
 The MIT License (MIT)
 
-Copyright 2022 Andrey Sitnik <andrey@sitnik.ru> and other contributors
+Copyright 2022 Andrey Sitnik <andrey@sitnik.es> and other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -11726,7 +11726,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
 IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ```
 
-### zrender 6.0.0
+### zrender 6.1.0
 
 License: **BSD-3-Clause**
 
