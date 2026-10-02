@@ -10,19 +10,22 @@ use crate::MockEngine;
 
 #[async_trait]
 impl AuthApi for MockEngine {
+    /// Nothing is held: this engine answers from a bundled fixture and never connects,
+    /// so there are no credentials for a workspace to keep apart from another's.
     async fn register_kafka_auth(
         &self,
+        _workspace: &str,
         _bootstrap: &str,
         _auth: KafkaAuth,
     ) -> Result<(), EngineError> {
         Ok(())
     }
 
-    async fn clear_kafka_auth(&self, _bootstrap: &str) -> Result<(), EngineError> {
+    async fn clear_kafka_auth(&self, _workspace: &str) -> Result<(), EngineError> {
         Ok(())
     }
 
-    async fn verify_kafka_auth(&self, _bootstrap: &str) -> Result<(), EngineError> {
+    async fn verify_kafka_auth(&self, _workspace: &str) -> Result<(), EngineError> {
         Ok(())
     }
 
@@ -30,7 +33,7 @@ impl AuthApi for MockEngine {
     /// wider cluster of certificates to check, or a broker to be unreachable, either.
     async fn verify_cluster_broker_trust(
         &self,
-        _bootstrap: &str,
+        _workspace: &str,
     ) -> Result<Vec<UnreachableBrokerInfo>, EngineError> {
         Ok(Vec::new())
     }
@@ -39,7 +42,7 @@ impl AuthApi for MockEngine {
     /// distrust and nothing for a caller to confirm — trust always succeeds.
     async fn confirm_kafka_cert_trust(
         &self,
-        _bootstrap: &str,
+        _workspace: &str,
         _accepted_fingerprints: Vec<String>,
     ) -> Result<(), EngineError> {
         Ok(())

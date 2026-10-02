@@ -30,13 +30,13 @@ pub trait TopicMetaApi: Send + Sync {
         workspace: &str,
     ) -> Result<WorkspaceStorageStatus, EngineError>;
 
-    async fn list_kafka_topics(&self, bootstrap: &str) -> Result<Vec<String>, EngineError>;
+    async fn list_kafka_topics(&self, workspace: &str) -> Result<Vec<String>, EngineError>;
 
     /// The cluster's shape. With no topics named, only the brokers; name some and their
     /// partitions come too.
     async fn fetch_cluster_topology(
         &self,
-        bootstrap: &str,
+        workspace: &str,
         topics: &[String],
     ) -> Result<ClusterTopology, EngineError>;
 
@@ -44,7 +44,7 @@ pub trait TopicMetaApi: Send + Sync {
     /// nothing is created locally.
     async fn get_topic_message_count(
         &self,
-        bootstrap: &str,
+        workspace: &str,
         topic: &str,
     ) -> Result<TopicMessageCount, EngineError>;
 
@@ -57,14 +57,14 @@ pub trait TopicMetaApi: Send + Sync {
     /// index, and a remembered number would send it after a topic that has since gone.
     async fn list_topic_message_counts(
         &self,
-        bootstrap: &str,
+        workspace: &str,
         topics: &[String],
     ) -> Result<Vec<TopicMessageCount>, EngineError>;
 
     /// A sample of a topic, enough to suggest how it should be indexed.
     async fn get_topic_size_profile(
         &self,
-        bootstrap: &str,
+        workspace: &str,
         topic: &str,
     ) -> Result<TopicSizeProfile, EngineError>;
 
@@ -72,18 +72,18 @@ pub trait TopicMetaApi: Send + Sync {
     /// begins — so the choice can be made once rather than corrected later.
     async fn suggest_tokenize_fields(
         &self,
-        bootstrap: &str,
+        workspace: &str,
         topic: &str,
         key_spec: DeserializerSpec,
         value_spec: DeserializerSpec,
     ) -> Result<SuggestTokenizeFieldsResponse, EngineError>;
 
-    async fn get_cluster_id(&self, bootstrap: &str) -> Result<String, EngineError>;
+    async fn get_cluster_id(&self, workspace: &str) -> Result<String, EngineError>;
 
     /// What version the broker appears to be, and what it actually supports.
     async fn get_kafka_version_info(
         &self,
-        bootstrap: &str,
+        workspace: &str,
     ) -> Result<KafkaVersionInfo, EngineError>;
 
     async fn save_workspace_cluster_id(
